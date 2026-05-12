@@ -1,6 +1,6 @@
 ---
-title: "Set your site name, timezone, and footer text"
-description: "Configure your site name, description, footer text, and timezone from the General settings page to control how your site presents itself."
+title: "Set your site name, footer text, and company details"
+description: "Configure your site name, description, footer text, and company details from the General settings page to control how your site presents itself."
 ---
 
 The General settings page is where you set the foundational identity of your site. The details you enter here appear in the browser tab, throughout the admin UI, in outgoing emails, and at the bottom of every page — so it's worth getting them right before you start publishing content.
@@ -16,7 +16,8 @@ Navigate to **Settings → General** in your admin sidebar, or go directly to `/
 | **Site name** | The name of your site. Appears in the browser tab title, in outgoing notification emails, and in various places across the admin UI. |
 | **Site description** | A short summary of your site. Used in meta tags and wherever a brief site summary is needed. |
 | **Footer text** | The text that appears at the bottom of every page on your public site. Commonly used for copyright notices or short taglines. |
-| **Timezone** | Controls how post publish dates and all timestamps are displayed across the admin and the public site. |
+| **Company name** | The legal or operating name of your organization. Used in invoices and other formal communications. |
+| **Company address** | The mailing address for your organization. Used in invoices and email footers where required. |
 
 ## Updating your settings
 
@@ -25,7 +26,7 @@ Navigate to **Settings → General** in your admin sidebar, or go directly to `/
     In the admin sidebar, click **Settings**, then click **General**.
   </Step>
   <Step title="Edit the fields">
-    Update any combination of **Site name**, **Site description**, **Footer text**, and **Timezone** as needed.
+    Update any combination of **Site name**, **Site description**, **Footer text**, **Company name**, and **Company address** as needed.
   </Step>
   <Step title="Save your changes">
     Click **Save** to apply. Changes take effect immediately — no restart required.
@@ -42,20 +43,11 @@ If you rename your site, the new name appears immediately in the admin UI and in
 
 ## Timezone
 
-The timezone setting determines how all dates and times are displayed on your site. This includes post publish dates shown to readers, the timestamps on scheduled posts in the admin, and activity logs.
+The site timezone is set at the platform level via the `APP_TIMEZONE` environment variable (default: `America/Los_Angeles`) and is not exposed as a UI field in General settings. All publish dates and admin timestamps are displayed in that timezone.
 
-<Tabs>
-  <Tab title="Why it matters">
-    If your site timezone is set to UTC but your audience is in New York, a post published at 9:00 PM UTC will show as published at 9:00 PM — even though it's actually 5:00 PM Eastern. Setting the correct timezone keeps your publish schedule and displayed dates consistent with your expectations.
-  </Tab>
-  <Tab title="How to set it">
-    In the **Timezone** dropdown, search for or scroll to your region and city (for example, `America/New_York` or `Europe/London`). Select it and click **Save**.
-  </Tab>
-</Tabs>
-
-<Tip>
-If you manage content for a global audience, set your timezone to match where your editorial team is based — this keeps your publish schedules predictable for the people actually scheduling posts.
-</Tip>
+<Note>
+If you need to change the timezone for your site, contact your platform administrator. The setting is environment-locked because changing it affects every tenant on the platform.
+</Note>
 
 ## Frequently asked questions
 
@@ -63,8 +55,8 @@ If you manage content for a global audience, set your timezone to match where yo
   <Accordion title="Where does the site name appear publicly?">
     The site name appears in the browser tab title on every page of your site, and in the subject line and header of system emails (such as password reset and email verification messages). It does not automatically appear as a visible heading on your homepage — that is controlled by your homepage content.
   </Accordion>
-  <Accordion title="Does changing the timezone affect existing post timestamps?">
-    Yes. The timezone is applied when displaying timestamps, so changing it will cause all existing post dates and times to display in the new timezone. No data is modified — only how the stored timestamps are presented.
+  <Accordion title="Can I change the timezone from the admin?">
+    No. The timezone is set at the platform level via the `APP_TIMEZONE` environment variable and is not exposed in the General settings UI. Contact your platform administrator if you need it changed for your site.
   </Accordion>
   <Accordion title="Can I use HTML in the footer text?">
     No — the footer text field is plain text only. If you need custom HTML in your footer, use the Custom CSS field in [Brand settings](/settings/brand) for visual adjustments, or contact your site administrator for structural footer changes.

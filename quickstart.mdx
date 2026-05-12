@@ -6,16 +6,16 @@ description: "Go from zero to publishing your first KrateCMS post and making a l
 This guide walks you through logging into KrateCMS for the first time, orienting yourself in the admin dashboard, creating and publishing a post, generating an API token, and making your first API call. By the end you will have live content and a working integration point for any external tool.
 
 <Steps>
-  <Step title="Log in at your subdomain">
-    Your KrateCMS site lives at a subdomain provided in your welcome email — for example, `https://yoursite.kratecms.com/admin`. Open that URL in your browser.
+  <Step title="Set your password and sign in">
+    Your KrateCMS site lives at a subdomain provided in your welcome email — for example, `https://yoursite.kratecms.com`.
 
-    Enter the email address and temporary password from your welcome email, then click **Log in**. On first login you may be prompted to set a permanent password. Choose a strong password; KrateCMS checks it against the Have I Been Pwned database and will reject known-compromised passwords.
+    Open the welcome email and click the **set password** link inside. KrateCMS does not send temporary passwords — the link opens a one-time password setup form where you choose your own. Pick a strong password and submit the form; KrateCMS checks every password against the Have I Been Pwned database and will reject any password found in a known data breach.
 
     <Tip>
-      If you cannot find your welcome email, ask your administrator to resend your invitation from **Users → (your name) → Resend Invite**.
+      If you cannot find your welcome email, ask your administrator to resend your invitation from your user profile in **Users → (your name) → Resend Invite**.
     </Tip>
 
-    After logging in you will land on the admin dashboard at `/admin`.
+    After setting your password you are signed in and land on the admin dashboard at `/admin`.
   </Step>
 
   <Step title="Explore the admin dashboard">
@@ -55,12 +55,12 @@ This guide walks you through logging into KrateCMS for the first time, orienting
   <Step title="Get an API token">
     To authenticate write operations against the API, you need a personal access token.
 
-    Navigate to `/admin/api-tokens`. Click **Create Token**, give it a descriptive name (for example, `My Integration`), and click **Generate**.
+    Navigate to `/admin/tokens` (super-admin access required). Click **Create Token**, give it a descriptive name (for example, `My Integration`), and click **Generate**.
 
     Copy the token immediately — it is only displayed once. Store it in a secure location such as a password manager or your application's secrets store.
 
     <Warning>
-      Treat your API token like a password. Anyone who holds it can create, update, and delete posts on your behalf. Revoke it from `/admin/api-tokens` if it is ever exposed.
+      Treat your API token like a password. Anyone who holds it can create, update, and delete posts on your behalf. Revoke it from `/admin/tokens` if it is ever exposed.
     </Warning>
   </Step>
 

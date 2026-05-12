@@ -55,18 +55,18 @@ KrateCMS automatically receives bounce and complaint notifications from Postmark
 This protects your sending reputation — repeatedly sending to addresses that bounce or complain signals to email providers that you are sending spam, which can affect deliverability for all your users.
 
 <Note>
-You can monitor your email deliverability health, view bounces, and inspect the suppression list from `/admin/email-health` in your admin panel.
+You can monitor your email deliverability health, view bounces, and inspect the suppression list from `/admin/integrations/email-health` in your admin panel.
 </Note>
 
 ## Message streams and deliverability
 
 KrateCMS sends email through three separate Postmark message streams:
 
-| Stream | What it carries |
+| Stream key | What it carries |
 |---|---|
-| Transactional | Login-related emails, password resets, email verification, invitation links |
-| Notifications | Security alerts and account activity notifications |
-| Contact-admin | Contact form submissions and support messages |
+| `transactional` | Login-related emails, password resets, email verification, invitation links |
+| `notifications` | Security alerts and account activity notifications |
+| `contact_admins` | Contact form submissions and support messages |
 
 Keeping these streams separate means that a spike in contact form traffic — or a deliverability issue in one category — does not affect the other streams. Your password reset emails, for example, will continue arriving reliably even if your contact form experiences issues.
 
@@ -78,10 +78,10 @@ Postmark stream separation is managed at the platform level. No configuration is
 
 <AccordionGroup>
   <Accordion title="A user says they didn't receive their invitation email">
-    Ask them to check their spam or junk folder first. If the email is not there, the address may be on the suppression list due to a previous bounce. Check `/admin/email-health` for the address. If it is suppressed, you can remove it from the list and resend the invitation from the user's admin profile page.
+    Ask them to check their spam or junk folder first. If the email is not there, the address may be on the suppression list due to a previous bounce. Check `/admin/integrations/email-health` for the address. If it is suppressed, you can remove it from the list and resend the invitation from the user's admin profile page.
   </Accordion>
   <Accordion title="Contact form submissions are not arriving">
-    Confirm the contact form is enabled and the recipient email is saved correctly at `/admin/settings/contact`. Also check `/admin/email-health` to see if there have been any recent delivery failures. If the recipient address has bounced before, it may be on the suppression list.
+    Confirm the contact form is enabled and the recipient email is saved correctly at `/admin/settings/contact`. Also check `/admin/integrations/email-health` to see if there have been any recent delivery failures. If the recipient address has bounced before, it may be on the suppression list.
   </Accordion>
   <Accordion title="Password reset emails are going to spam">
     This is usually a deliverability issue at the recipient's email provider, not a configuration problem. KrateCMS sends reset emails through the transactional stream which is designed for high inbox placement. If the problem is consistent, contact your platform administrator — they can inspect Postmark's delivery logs for more detail.
