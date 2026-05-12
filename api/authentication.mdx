@@ -9,7 +9,7 @@ KrateCMS uses Laravel Sanctum personal access tokens for API authentication. Rea
 
 ### Admin UI (recommended)
 
-Navigate to `/admin/api-tokens` on your tenant domain. This path requires super-admin access. From there you can:
+Navigate to `/admin/tokens` on your tenant domain. This path requires super-admin access. From there you can:
 
 - Issue new tokens with a descriptive label
 - See all active tokens and their last-used timestamps
@@ -46,7 +46,7 @@ Tokens grant full write access to your tenant's content. Treat them like passwor
 
 Tokens are issued in the context of a specific tenant. A token issued on `acme.yoursite.com` **cannot** be used against `beta.yoursite.com`. Attempting to use a token across tenants returns a `403` response immediately.
 
-If you need API access across multiple tenants, issue a separate token from each tenant's `/admin/api-tokens` page.
+If you need API access across multiple tenants, issue a separate token from each tenant's `/admin/tokens` page.
 
 ## Error responses
 
@@ -62,6 +62,6 @@ If you need API access across multiple tenants, issue a separate token from each
 
 ## Revoke a token
 
-Go to `/admin/api-tokens` and click **Revoke** on the token row. The action is recorded in the audit log with the actor's identity and timestamp.
+Go to `/admin/tokens` and click **Revoke** on the token row. The action is recorded in the audit log with the actor's identity and timestamp.
 
 Revocation takes effect immediately — there is no grace period.
