@@ -27,14 +27,14 @@ KrateCMS listens for Stripe webhook events at `POST /api/stripe/webhook`. Stripe
 Every incoming webhook is verified using Stripe's webhook signature. This ensures KrateCMS only processes legitimate events sent by Stripe, not spoofed requests.
 </Note>
 
-The following events are handled:
+KrateCMS extends Laravel Cashier's webhook handler. The following events have explicit KrateCMS overrides; the rest fall through to Cashier's default subscription/customer/invoice handling:
 
-| Stripe event | What KrateCMS does |
+| Stripe event | KrateCMS override |
 |---|---|
-| `customer.subscription.deleted` | Removes Pro access from the member's account |
+| `customer.subscription.deleted` | Removes Pro access and refreshes the member's status |
 | `invoice.payment_failed` | Flags the subscription as past due |
-| `invoice.payment_succeeded` | Confirms the subscription is active |
-| `customer.subscription.updated` | Syncs plan changes (e.g. monthly → annual) |
+
+The remaining events you typically need to receive — `customer.subscription.created`, `customer.subscription.updated`, `invoice.payment_succeeded`, `payment_method.automatically_updated`, `invoice.payment_action_required` — are processed by Cashier's parent handler, which keeps the local `subscriptions` and `subscription_items` tables in sync with Stripe.
 
 ## Configure the Stripe integration
 
