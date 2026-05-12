@@ -28,24 +28,28 @@ KrateCMS AI chat offers six modes. Pick a mode from the selector at the top of t
     ```
   </Tab>
   <Tab title="Email Copy">
-    Drafts marketing or transactional email copy with a structure tuned for subject lines, preheaders, and body sections. Useful when you want output you can paste straight into an email tool.
+    Generates email marketing copy — subject lines, body copy, calls to action — that you can paste straight into your email tool.
 
     ```text
-    Write a 3-paragraph re-engagement email for customers who haven't logged in for 60 days.
+    Write 5 subject lines for a flash sale on summer apparel.
     ```
   </Tab>
-  <Tab title="Image">
-    A prompt interface for generating images from text descriptions. The output appears directly in the chat and can be saved as a post featured image. See [AI image generation](/ai/image-generation) for the in-editor flow.
-  </Tab>
-  <Tab title="Code">
-    Returns answers tuned for code: snippets, refactors, regex, and short technical explanations.
+  <Tab title="Images">
+    Generates marketing images from a text prompt. Images appear in the chat panel; for the in-post featured-image generator, see [AI image generation](/ai/image-generation).
 
     ```text
-    Write a Laravel scope that returns only published posts from the last 7 days.
+    Hero image for a summer campaign — bright, cheerful, beach setting.
+    ```
+  </Tab>
+  <Tab title="Code">
+    Generates short HTML and code snippets for marketing use — buttons, banners, embeds, small components.
+
+    ```text
+    HTML button that says "Shop Now" with rounded corners and a hover state.
     ```
   </Tab>
   <Tab title="API Q&A">
-    Lets you ask questions about JSON data read from approved external URLs (configured by the platform operator under **Settings → Chat → Allowed API hosts**). Useful for quick lookups against your own JSON endpoints without writing a script.
+    Lets you ask questions about JSON data from approved external URLs. Reference an endpoint inline with the `@` syntax — for example, `What's in @https://api.example.com/v1/products?` — and the assistant fetches the URL and answers from the JSON. Allowed hosts are configured by the platform operator under **Settings → Chat → API Read Allowed Hosts**.
   </Tab>
   <Tab title="Agent">
     Agent mode gives the AI the ability to take actions inside your KrateCMS site. Instead of just generating text, the AI can interact with your posts directly through tool-calling.
