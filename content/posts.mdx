@@ -11,10 +11,10 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
 
 <Steps>
   <Step title="Add a title">
-    Enter your post title in the **Title** field. KrateCMS automatically generates a URL slug from the title — for example, a title of "Welcome to Our Blog" becomes `/welcome-to-our-blog`. You can edit the slug manually before saving if you need a different URL.
+    Enter your post title in the **Title** field. KrateCMS automatically generates a URL slug from the title — for example, a title of "Welcome to Our Blog" becomes `/welcome-to-our-blog`. The slug is generated for you and is not editable from the post editor; if you need a different URL, change the title.
   </Step>
   <Step title="Write your content">
-    The **Content** field uses the TinyMCE rich-text editor. You can format text, add headings, insert links, create lists, and embed images directly within the body of the post. All HTML content is sanitized before saving, so you can paste from external sources without introducing unsafe markup.
+    The **Content** field uses the TinyMCE rich-text editor. You can format text, add headings, insert links, create lists, and embed images directly within the body of the post. KrateCMS sanitizes post HTML at render time (via HTMLPurifier) before showing it to readers, so unsafe markup from pasted content is stripped from the public-facing page even if it is present in the stored content.
   </Step>
   <Step title="Add an excerpt">
     The **Excerpt** field (optional, up to 500 characters) is a short summary of the post. Excerpts appear in post listings and previews.
@@ -57,11 +57,12 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
   <Step title="Set the publish date">
     The **Publish Date** field defaults to the current date and time. Change it to schedule a post for future publication — the post will only become visible to readers once that date and time has passed.
   </Step>
-  <Step title="Save as draft or publish">
+  <Step title="Save as draft, publish, or archive">
     Use the **Status** selector to control the post's state before you save.
 
     - **Draft** — saves the post without making it publicly visible. Use this while you're still writing or waiting for review.
     - **Published** — makes the post live immediately (or at the scheduled publish date if you set one in the future).
+    - **Archived** — hides the post from the public feed without deleting it. Useful for retiring outdated content while keeping the record.
   </Step>
 </Steps>
 
@@ -96,7 +97,7 @@ Category filter tabs appear on the public homepage feed, letting readers browse 
 
 ## Content security
 
-KrateCMS automatically sanitizes all post content before saving it. This means that any unsafe or potentially harmful HTML — whether pasted from an external source or entered manually — is cleaned out before the post is stored. Your readers see only safe, well-formed content.
+KrateCMS sanitizes post HTML at **render time** before showing it to readers, using HTMLPurifier. This means that any unsafe or potentially harmful markup — whether pasted from an external source or entered manually — is cleaned out before the post is displayed on a public page. Stored content may still contain the raw HTML you pasted; the protection is applied on the way out.
 
 <Note>
   The TinyMCE editor may display pasted content differently from how it will appear to readers. Always preview your post after publishing to confirm the layout looks as expected.
@@ -120,11 +121,11 @@ KrateCMS automatically sanitizes all post content before saving it. This means t
   <Accordion title="Featured Image">
     Optional. An image uploaded from your device (JPEG, PNG, or WebP; max 2 MB). Displayed at the top of the published post.
   </Accordion>
-  <Accordion title="YouTube Embed">
-    Optional. A YouTube video URL (`youtube.com/watch?v=…` or `youtu.be/…`) to embed a video in the post.
+  <Accordion title="YouTube link">
+    Optional. A YouTube video URL (`youtube.com/watch?v=…` or `youtu.be/…`) to embed a video in the post. The processed `embed_url` and `embed_provider` are computed from this value at read time.
   </Accordion>
-  <Accordion title="SoundCloud Embed">
-    Optional. A SoundCloud track URL to embed audio in the post.
+  <Accordion title="Audio">
+    Optional. Upload an audio file (`audio_url` and `audio_filename` columns) to attach to the post — useful for podcast episodes or audio-category posts. SoundCloud track URLs are also supported as an embed source via the same embed pipeline as YouTube.
   </Accordion>
   <Accordion title="Visibility">
     Controls who can read the post. **Public** is open to all visitors. **Members only** requires the reader to be logged in.
@@ -133,6 +134,6 @@ KrateCMS automatically sanitizes all post content before saving it. This means t
     The date and time the post becomes visible. Set a future date to schedule publication. Defaults to the current date and time.
   </Accordion>
   <Accordion title="Status">
-    **Draft** keeps the post hidden from public view. **Published** makes it live (at the publish date, if one is set).
+    **Draft** keeps the post hidden from public view. **Published** makes it live (at the publish date, if one is set). **Archived** hides the post from the public feed without deleting it.
   </Accordion>
 </AccordionGroup>
