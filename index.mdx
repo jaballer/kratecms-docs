@@ -1,0 +1,55 @@
+---
+title: "KrateCMS: multi-tenant CMS with AI and a built-in API"
+description: "KrateCMS is a full-featured content management system with multi-tenancy, AI writing tools, a visual block editor, and a RESTful API."
+---
+
+KrateCMS gives your team a modern content platform out of the box — write and publish posts, build pages with a drag-and-drop block editor, automate workflows with webhooks, and access everything programmatically through the REST API. Each tenant gets its own isolated subdomain, roles, and brand settings.
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Set up your site, invite your first user, and publish your first post in minutes.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api/overview">
+    Explore the REST API — list, create, update, and delete posts programmatically.
+  </Card>
+  <Card title="Content Guides" icon="pen-to-square" href="/content/posts">
+    Learn how to write posts, build pages with blocks, and configure your homepage.
+  </Card>
+  <Card title="Integrations" icon="plug" href="/integrations/n8n">
+    Connect KrateCMS to n8n, Stripe, and Postmark for automation and billing.
+  </Card>
+</CardGroup>
+
+## Get started in four steps
+
+<Steps>
+  <Step title="Log in to your site">
+    Navigate to your KrateCMS subdomain (e.g. `acme.kratecms.com`) and sign in with the credentials you received in your welcome email.
+  </Step>
+  <Step title="Customize your brand">
+    Go to **Settings → Brand** to upload your logo, set your colors, and choose your typography. Changes apply instantly across your site.
+  </Step>
+  <Step title="Create your first post">
+    Open **Posts → New Post**, write your content using the rich-text editor, optionally add a featured image, and click **Publish**.
+  </Step>
+  <Step title="Connect the API">
+    Head to **API Tokens** in the admin to generate a Bearer token, then start making calls to `/api/v1/posts` from your own apps.
+  </Step>
+</Steps>
+
+## What's inside
+
+<CardGroup cols={2}>
+  <Card title="AI Chat & Agent" icon="robot" href="/ai/chat">
+    Use the built-in OpenAI-powered assistant to draft content, search posts, and generate images — all from within the admin.
+  </Card>
+  <Card title="Block Page Editor" icon="table-cells" href="/content/pages">
+    Build rich landing pages from reusable blocks: hero images, CTAs, two-column layouts, accordions, video embeds, and more.
+  </Card>
+  <Card title="Role-Based Access" icon="shield-halved" href="/settings/security">
+    Assign roles from viewer to super-admin and control exactly who can publish, edit, or manage site settings.
+  </Card>
+  <Card title="n8n Webhooks" icon="webhook" href="/integrations/n8n">
+    Trigger n8n workflows whenever a post is published or updated — no polling required.
+  </Card>
+</CardGroup>

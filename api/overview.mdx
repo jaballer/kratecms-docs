@@ -1,0 +1,83 @@
+---
+title: "KrateCMS REST API: base URL, auth, and error codes"
+description: "A reference overview of the KrateCMS REST API: base URL, tenant scoping, authentication requirements, pagination, rate limits, and error codes."
+---
+
+The KrateCMS REST API gives you programmatic access to your CMS content over HTTPS. All requests and responses use JSON. The API is versioned — every endpoint lives under `/api/v1` — so future breaking changes will land on a new version without affecting your existing integrations.
+
+## Base URL
+
+Every endpoint is relative to your tenant's domain:
+
+```
+https://acme.yoursite.com/api/v1
+```
+
+The API is tenant-scoped. A request to `acme.yoursite.com/api/v1/posts` returns only that tenant's posts. Records from other tenants are never visible, regardless of the token you supply.
+
+## Authentication
+
+Read endpoints (`GET`) are public and require no credentials. Write endpoints (`POST`, `PATCH`, `DELETE`) require a Bearer token in the `Authorization` header. See [Authenticate with the KrateCMS API](/api/authentication) for how to obtain and use tokens.
+
+## Rate limiting
+
+All API routes run under the `throttle:api` middleware: **60 requests per minute per token or IP**. When you exceed the limit, the API responds with `429 Too Many Requests` and a `Retry-After` header telling you how many seconds to wait before retrying.
+
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 30
+```
+
+## Pagination
+
+List endpoints return a paginated envelope. Results are in the `data` array; pagination state is in `meta` and cursor links are in `links`.
+
+<CodeGroup>
+
+```bash curl
+curl https://acme.yoursite.com/api/v1/posts \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+```json
+{
+  "data": [...],
+  "meta": {
+    "current_page": 1,
+    "last_page": 3,
+    "per_page": 15,
+    "total": 42
+  },
+  "links": {
+    "first": "https://acme.yoursite.com/api/v1/posts?page=1",
+    "last": "https://acme.yoursite.com/api/v1/posts?page=3",
+    "prev": null,
+    "next": "https://acme.yoursite.com/api/v1/posts?page=2"
+  }
+}
+```
+
+Use the `next` link directly to fetch the following page, or pass a `page` query parameter manually.
+
+## Error responses
+
+All error responses return a JSON body. Validation errors include a per-field `errors` object.
+
+| Status | Meaning |
+|--------|---------|
+| `401` | Unauthenticated — token missing or invalid |
+| `403` | Forbidden — token lacks permission or was issued for a different tenant |
+| `404` | Not found |
+| `422` | Validation error — inspect the `errors` field for per-field messages |
+| `429` | Rate limit exceeded — wait `Retry-After` seconds before retrying |
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "title": ["A post title is required."]
+  }
+}
+```

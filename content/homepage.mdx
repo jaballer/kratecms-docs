@@ -1,0 +1,83 @@
+---
+title: "Choose what visitors see on your KrateCMS homepage"
+description: "Choose what visitors see at your root URL — a posts feed, a custom page you've built, or a pre-built marketing template — without any code changes."
+---
+
+Your homepage is the first thing visitors see when they arrive at your site's root URL (`/`). KrateCMS gives you three distinct homepage modes, and you can switch between them at any time from the admin panel. No code changes, no deploy — the update takes effect the moment you save.
+
+## Open homepage settings
+
+Go to **Admin → Settings → Content** (`/admin/settings/content`). The **Homepage Settings** card is at the top of the page.
+
+## Choose a homepage mode
+
+<Tabs>
+  <Tab title="Posts feed">
+    The default mode. Your homepage shows a live feed of your most recently published posts, with category filter tabs (Text, Audio, Video, Uncategorized) so visitors can browse by type. New posts appear automatically as you publish them — there's nothing to update.
+
+    Select **Posts feed** from the Homepage dropdown and click **Save**.
+
+    <Note>
+      The posts feed is the safest fallback. If you switch to a different mode and something goes wrong — for example, you select a Page that's still in draft — KrateCMS automatically falls back to the posts feed so your homepage is never broken for visitors.
+    </Note>
+  </Tab>
+  <Tab title="Page">
+    Use any page you've built with the [block editor](/content/pages) as your homepage. This works similarly to WordPress's "page as homepage" setting — visitors at `/` see the full content of the selected page, rendered with all its blocks.
+
+    <Steps>
+      <Step title="Build your page first">
+        If you haven't created the page yet, go to **Admin → Pages → New Page** and build it with the block editor. Save it when you're ready.
+      </Step>
+      <Step title="Select Page mode">
+        In Homepage Settings, choose **Page** from the Homepage dropdown. A second dropdown appears listing all your pages.
+      </Step>
+      <Step title="Pick your page">
+        Select the page you want to use as your homepage from the list, then click **Save**.
+      </Step>
+      <Step title="Verify the result">
+        Visit your site's root URL to confirm the page renders as expected.
+      </Step>
+    </Steps>
+
+    **What happens with drafts:** if the page you've selected is still in draft status, logged-in editors can preview it at `/`, but visitors who aren't logged in will see the posts feed instead. Publish the page when you're ready to make it live for everyone.
+
+    <Tip>
+      Use the **Hide title** toggle on your page to suppress the `<h1>` heading when it renders as the homepage. A hero block with its own visual headline rarely needs a generic "Home" heading above it. See [Building pages](/content/pages) for details on the hide title option.
+    </Tip>
+  </Tab>
+  <Tab title="Marketing">
+    A pre-built marketing landing page template included with KrateCMS. Select **Marketing page** from the Homepage dropdown and click **Save**. The template renders at `/` automatically.
+
+    <Note>
+      The Marketing template is a fixed layout. To customize your homepage layout with full control over the content and blocks, use the **Page** mode with a page you've built in the block editor instead.
+    </Note>
+  </Tab>
+</Tabs>
+
+## The posts archive at `/posts`
+
+Regardless of which homepage mode you choose, the posts archive is always available at `/posts`. This URL shows your full published posts feed with category filters — it never changes based on your homepage setting.
+
+Link to `/posts` in your navigation if you switch to a Page or Marketing homepage, so visitors can still find your content feed.
+
+<Tip>
+  Add `/posts` to your site navigation when your homepage isn't the posts feed. Visitors expect a direct route to your content, and `/posts` is always reliable.
+</Tip>
+
+## Switching modes
+
+Switching between homepage modes takes effect immediately after you save — there's no cache to clear and no deploy required. You can switch modes as many times as you need while iterating on your site's design.
+
+<Warning>
+  If you switch away from a Page homepage and later switch back, make sure the page you had selected is still published. If it has been set back to draft, visitors will see the posts feed until you publish it again.
+</Warning>
+
+## Homepage settings reference
+
+| Setting | Description |
+|---|---|
+| **Posts feed** | Shows the latest published posts with category filters. The default. |
+| **Page** | Renders a specific page from your block editor at `/`. Requires selecting a page from the picker. |
+| **Marketing** | Renders a pre-built marketing landing template at `/`. |
+
+The posts archive at `/posts` is always available regardless of which mode you choose.

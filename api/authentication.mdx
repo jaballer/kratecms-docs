@@ -1,0 +1,67 @@
+---
+title: "Authenticating requests to the KrateCMS API"
+description: "How to obtain a Bearer token from the KrateCMS admin, use it on write requests, and understand tenant scoping and token revocation."
+---
+
+KrateCMS uses Laravel Sanctum personal access tokens for API authentication. Read endpoints (`GET`) are public and work without any credentials. Write endpoints (`POST`, `PATCH`, `DELETE`) require you to pass a valid Bearer token with every request.
+
+## Obtain a token
+
+### Admin UI (recommended)
+
+Navigate to `/admin/api-tokens` on your tenant domain. This path requires super-admin access. From there you can:
+
+- Issue new tokens with a descriptive label
+- See all active tokens and their last-used timestamps
+- Revoke individual tokens
+
+When you create a token, the plaintext value is displayed **once** in a confirmation banner. Copy it immediately — KrateCMS stores only a hashed version and cannot show it again.
+
+## Use the token
+
+Pass the token as a Bearer credential in the `Authorization` header on every write request.
+
+```http
+Authorization: Bearer <your-token>
+Accept: application/json
+```
+
+<CodeGroup>
+
+```bash curl — create a post
+curl -X POST https://acme.yoursite.com/api/v1/posts \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"My New Post","content":"<p>Hello world</p>","status":"draft"}'
+```
+
+</CodeGroup>
+
+<Warning>
+Tokens grant full write access to your tenant's content. Treat them like passwords. Never expose a token in client-side JavaScript, commit it to source control, or include it in public URLs.
+</Warning>
+
+## Tenant scoping
+
+Tokens are issued in the context of a specific tenant. A token issued on `acme.yoursite.com` **cannot** be used against `beta.yoursite.com`. Attempting to use a token across tenants returns a `403` response immediately.
+
+If you need API access across multiple tenants, issue a separate token from each tenant's `/admin/api-tokens` page.
+
+## Error responses
+
+```json
+// 401 — no token supplied, or the token is invalid
+{ "message": "Unauthenticated." }
+```
+
+```json
+// 403 — token is valid but used against the wrong tenant
+{ "message": "This action is unauthorized." }
+```
+
+## Revoke a token
+
+Go to `/admin/api-tokens` and click **Revoke** on the token row. The action is recorded in the audit log with the actor's identity and timestamp.
+
+Revocation takes effect immediately — there is no grace period.

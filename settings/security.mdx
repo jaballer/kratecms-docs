@@ -1,0 +1,91 @@
+---
+title: "Security settings, roles, and access controls"
+description: "Configure login attempt limits, lockout duration, password requirements, and session timeout, and understand how roles control access in KrateCMS."
+---
+
+The Security settings page lets you tune how KrateCMS protects user accounts on your site. You can control how many failed login attempts trigger a lockout, how long that lockout lasts, what your minimum password length is, and how long inactive sessions remain valid. This page also explains the built-in password protection features and the role hierarchy that governs what each user can do.
+
+## Getting there
+
+Navigate to **Settings → Security** in your admin sidebar, or go directly to `/admin/settings/security`.
+
+## Login and lockout settings
+
+| Setting | What it does |
+|---|---|
+| **Max login attempts** | The number of consecutive failed login attempts allowed before a user's account is temporarily locked out. Keeping this low reduces the risk of brute-force attacks. |
+| **Lockout duration** | How long (in minutes) a locked-out user must wait before they can attempt to log in again. |
+| **Minimum password length** | The shortest password you allow users to set. The valid range is 8–50 characters; you cannot set this below 8. |
+| **Session timeout** | How long an inactive session remains valid before the user is automatically signed out. Specified in minutes. |
+
+<Steps>
+  <Step title="Open Security settings">
+    In the admin sidebar, click **Settings**, then click **Security**.
+  </Step>
+  <Step title="Adjust your values">
+    Update **Max login attempts**, **Lockout duration**, **Minimum password length**, and **Session timeout** to match your security requirements.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The new settings apply to all subsequent login attempts and sessions.
+  </Step>
+</Steps>
+
+<Warning>
+Setting a very high max login attempts value (for example, 100) significantly weakens protection against brute-force attacks. Most sites benefit from a value between 3 and 10.
+</Warning>
+
+## Password security
+
+KrateCMS automatically checks every new password against the [Have I Been Pwned](https://haveibeenpwned.com) database. This check runs whenever a user registers, resets their password, or changes their password from within the app.
+
+The check uses **k-anonymity**: only the first five characters of a hashed version of the password are sent to the external service. The full password — and even the full hash — never leaves your server. If the password appears in any known data breach, it is rejected and the user is asked to choose a different one.
+
+<Note>
+This check happens silently in the background. Users are only notified if their chosen password is found in a breach — they are not shown any information about the breach itself, just a prompt to pick a different password.
+</Note>
+
+## Roles and permissions
+
+KrateCMS uses a role-based access control system. Every user on your site is assigned one role, and that role determines what they can see and do in the admin.
+
+| Role | What they can do |
+|---|---|
+| **Super-admin** | Full platform control: manage tenants, roles, permissions, and API tokens |
+| **Admin** | Full site control: manage users, posts, pages, and all settings |
+| **Manager** | Manage users at or below their own role level, and manage all content |
+| **Editor** | Create, edit, and publish any post or page |
+| **Author** | Create and edit their own posts only |
+| **Contributor** | Create posts, but cannot publish — posts require editor review before going live |
+| **Viewer** | Read-only access to members-only content |
+
+<Note>
+Role and permission management is restricted to super-admins. Admins can manage users on their own site but cannot change the role definitions themselves.
+</Note>
+
+### Assigning roles
+
+Roles are assigned when you invite a user or from the user's profile in the admin. Go to **Users**, open the user record, and select their role from the **Role** dropdown.
+
+<Tip>
+Follow the principle of least privilege: give users the lowest role that still lets them do their job. For example, a regular writer who doesn't need to publish immediately should be a Contributor, not an Editor.
+</Tip>
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="What happens when a user is locked out?">
+    They see an error message on the login page telling them their account is temporarily locked. After the lockout duration passes, they can attempt to log in again. As an admin, you can also unlock accounts manually from the user management area.
+  </Accordion>
+  <Accordion title="Can I disable the Have I Been Pwned check?">
+    No — the breached-password check is always active and cannot be turned off from the settings UI. It is a baseline security control applied at every password-set surface.
+  </Accordion>
+  <Accordion title="What is the minimum password length I can set?">
+    The absolute minimum is 8 characters. You can increase this up to 50 characters, but you cannot go below 8.
+  </Accordion>
+  <Accordion title="Does session timeout apply to admin sessions too?">
+    Yes. The session timeout applies to all sessions on your site, including admin sessions. A user who leaves their browser idle for longer than the configured timeout will be signed out and need to log in again.
+  </Accordion>
+  <Accordion title="Can a Contributor ever publish their own posts?">
+    Not directly. A Contributor can create and edit posts, but publishing requires an Editor, Manager, Admin, or Super-admin to review and publish the post on their behalf.
+  </Accordion>
+</AccordionGroup>

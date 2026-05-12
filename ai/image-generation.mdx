@@ -1,0 +1,103 @@
+---
+title: "Generate AI featured images directly in the post editor"
+description: "Generate featured images for your posts directly from the post editor using KrateCMS's built-in AI image generation — no design tools required."
+---
+
+KrateCMS lets you generate a featured image for any post without leaving the editor. Powered by OpenAI's image generation models, the tool turns a plain-text prompt into a ready-to-use image that is automatically attached to your post and stored in your site's cloud storage.
+
+## Opening the image generator
+
+You can generate a featured image when creating a new post or editing an existing one.
+
+<Steps>
+  <Step title="Open the post editor">
+    Go to **Posts** in the admin sidebar, then click **New Post** to create one, or click the title of an existing post to open it for editing.
+
+    The editor is available at `/admin/posts/create` for new posts and `/admin/posts/{slug}/edit` for existing ones.
+  </Step>
+  <Step title="Find the Featured Image section">
+    Scroll down past the main content area to the **Featured Image** section in the post editor sidebar.
+  </Step>
+  <Step title="Click the AI generate button">
+    Click the **Generate with AI** button (or similar label) to open the image generation interface. A prompt field appears where you can describe the image you want.
+  </Step>
+  <Step title="Enter your prompt">
+    Type a description of the image. Be as specific as possible — include the subject, visual style, color palette, and mood for best results.
+
+    ```text
+    A minimalist flat-design illustration of a rocket launching, blue and purple gradient background, clean vector style
+    ```
+  </Step>
+  <Step title="Generate and review">
+    Click **Generate**. The AI produces an image based on your prompt, which previews immediately in the Featured Image section. If you are not satisfied with the result, click **Regenerate** to try again with the same prompt or update your description first.
+  </Step>
+  <Step title="Save the post">
+    Once you are happy with the image, save or publish your post. The generated image is automatically set as the featured image and stored in your tenant's cloud storage.
+  </Step>
+</Steps>
+
+## Writing effective prompts
+
+The quality of the generated image depends heavily on how clearly you describe what you want. Vague prompts produce generic results; specific prompts produce images that fit your content.
+
+<Tip>
+  Include three key elements in every prompt: the **subject** (what the image shows), the **style** (illustration, photograph, flat design, etc.), and the **mood or color palette** (warm tones, dark and moody, bright and minimal). For example: "A cozy home office desk with a laptop and coffee mug, warm afternoon light, photorealistic style."
+</Tip>
+
+### Prompt examples by content type
+
+<Tabs>
+  <Tab title="Blog posts">
+    ```text
+    A person reading a book in a sunny library, soft natural lighting, warm color tones, editorial photography style
+    ```
+
+    ```text
+    Abstract representation of a brain connected to a network of glowing nodes, dark background, blue and white, digital art style
+    ```
+  </Tab>
+  <Tab title="Product announcements">
+    ```text
+    A sleek smartphone displaying a dashboard UI, floating on a gradient purple background, product photography style, minimal shadows
+    ```
+
+    ```text
+    Flat-design illustration of a team collaborating around a table with laptops, colorful, isometric perspective
+    ```
+  </Tab>
+  <Tab title="Technical topics">
+    ```text
+    A server rack in a data center, dramatic lighting, deep blue and gray tones, professional editorial photo
+    ```
+
+    ```text
+    Abstract visualization of data flowing through connected nodes, neon green on black, digital art
+    ```
+  </Tab>
+</Tabs>
+
+### What to avoid
+
+<AccordionGroup>
+  <Accordion title="Overly abstract prompts">
+    Prompts like "success" or "technology" give the AI too little to work with and produce generic stock-photo results. Add concrete visual details — objects, settings, styles — to guide the output.
+  </Accordion>
+  <Accordion title="Conflicting style instructions">
+    Mixing incompatible styles (e.g., "photorealistic watercolor illustration") can produce inconsistent results. Pick one primary style and stick to it.
+  </Accordion>
+  <Accordion title="Text or logos in the image">
+    AI image models do not reliably render readable text or accurate logos. If you need text in your featured image, add it in a separate image editor after generating the base image.
+  </Accordion>
+</AccordionGroup>
+
+## Uploading your own image instead
+
+If you prefer to use a custom image rather than generating one, you can upload directly from the same **Featured Image** section. Click the upload option, select a file from your computer, and it will be stored in your tenant's cloud storage and set as the featured image — the same as a generated image.
+
+## Storage and reuse
+
+Generated images are stored in your tenant's cloud storage automatically. You do not need to download and re-upload them. Each generated image is tied to the post it was created for — if you need the same image on another post, generate a new one using the same prompt or upload the downloaded file manually.
+
+<Note>
+  AI image generation availability depends on your plan and site configuration. If the **Generate with AI** button does not appear in the Featured Image section, contact your site administrator to check whether the feature is enabled for your account.
+</Note>

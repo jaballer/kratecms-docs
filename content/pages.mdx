@@ -1,0 +1,91 @@
+---
+title: "Building landing pages with the KrateCMS block editor"
+description: "Create structured landing pages, about pages, and custom layouts in KrateCMS using the visual block editor — no coding required."
+---
+
+Pages in KrateCMS are for structured layouts built from reusable content blocks. Where posts are best for time-based content like articles and news, pages are better suited to evergreen content — landing pages, about pages, contact pages, or any layout that calls for more than a single column of text. You assemble pages by adding and arranging blocks, each of which handles a specific type of content.
+
+## Create a page
+
+Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/create`) to open the page editor.
+
+<Steps>
+  <Step title="Enter a title">
+    Type your page title in the **Title** field. KrateCMS generates a URL slug from the title automatically — for example, "About Us" becomes `/about-us`. You can edit the slug before saving if you need a specific URL.
+
+    If you're building a hero-first layout and don't want the title to appear as a large heading above your first block, enable the **Hide title on rendered page** toggle directly beneath the Title field. This suppresses the on-page `<h1>` heading while still using the title in the browser tab and SEO metadata.
+  </Step>
+  <Step title="Add your first block">
+    Click **Add block** to insert the first content block. A menu of available block types appears — choose the one that fits your content.
+  </Step>
+  <Step title="Fill in the block">
+    Each block type has its own fields. Complete the fields for your block, then add more blocks as needed to build out the full page.
+  </Step>
+  <Step title="Reorder blocks">
+    Drag and drop blocks to rearrange them. Use the drag handle on the left side of each block to pick it up and move it to a new position.
+  </Step>
+  <Step title="Collapse blocks for easier editing">
+    When your page has many blocks, use the collapse toggle on each block to fold it down to a single header row. Collapsed blocks stay in place — they're just easier to scroll past while you work on another section.
+  </Step>
+  <Step title="Save the page">
+    Click **Save** to publish your page. The page becomes accessible at its slug-based URL immediately after saving.
+  </Step>
+</Steps>
+
+## Available block types
+
+<CardGroup cols={2}>
+  <Card title="Rich text">
+    A full-featured text editor for formatted content. Add headings, bold and italic text, links, bullet lists, and numbered lists. Use this block for body copy, descriptions, or any section that needs structured text.
+  </Card>
+  <Card title="Image">
+    Upload an image from your device or link to one by URL. Use image blocks to break up text-heavy pages or showcase visual content inline.
+  </Card>
+  <Card title="CTA (Call to Action)">
+    A focused block with a headline, supporting text, and a button. Use CTA blocks to drive readers toward a specific action — signing up, contacting you, or visiting another page.
+  </Card>
+  <Card title="Two-column layout">
+    Places two content areas side by side. Useful for feature comparisons, text-plus-image layouts, or any design that benefits from a split view.
+  </Card>
+  <Card title="Video">
+    Embed a YouTube video by pasting the video URL. The embedded player appears inline within the page layout.
+  </Card>
+  <Card title="Quote">
+    A pull quote with an attribution line. Use quote blocks to highlight a testimonial, a key statement, or a notable excerpt.
+  </Card>
+  <Card title="Accordion">
+    A set of collapsible question-and-answer sections. Accordion blocks are ideal for FAQ pages or any content where you want to show summaries and let readers expand individual items for details.
+  </Card>
+</CardGroup>
+
+## The "Hide title" toggle
+
+By default, KrateCMS renders the page title as a prominent `<h1>` heading at the top of the page. If your page opens with a hero block or a CTA that already carries a strong visual headline, that auto-generated `<h1>` may look redundant.
+
+Enable **Hide title on rendered page** to suppress the heading on the public-facing page. The title still appears in:
+
+- The browser tab
+- Search engine results (the SEO `<title>` tag)
+- The admin pages list
+
+Only the visible on-page heading is hidden. This toggle is especially useful when you're using a page as your homepage — see [Configuring your homepage](/content/homepage) for more on that.
+
+<Note>
+  If "Hide title" is on and the page also has no featured image, the entire header area at the top of the page is removed, so there's no blank white space above your first block.
+</Note>
+
+## Slug-based URLs
+
+Every page gets a clean URL based on its title slug. A page titled "Our Story" is available at `/our-story`. You can customize the slug in the page editor before saving. Once a page is live and linked from other places, avoid changing its slug — doing so will break existing links.
+
+## Using a page as your homepage
+
+Any published page can become the homepage of your site. Once you've built and saved a page, go to **Admin → Settings → Content** to select it as your homepage. See [Configuring your homepage](/content/homepage) for the full walkthrough.
+
+<Tip>
+  Build your homepage as a Page with blocks first, then assign it in Content Settings. This gives you the full block editor for your homepage design without any restrictions.
+</Tip>
+
+## Manage existing pages
+
+Go to **Admin → Pages** to see all your pages. Click any page in the list to edit it. You can add, remove, and reorder blocks at any time — changes take effect immediately when you save.

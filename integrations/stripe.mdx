@@ -1,0 +1,84 @@
+---
+title: "Setting up Stripe subscription billing in KrateCMS"
+description: "Set up Stripe subscription billing in KrateCMS to manage plans, process payments, handle renewals, and give members access to gated content."
+---
+
+KrateCMS uses Stripe to handle subscription billing, including plan creation, payment processing, renewals, and cancellations. Stripe processes all card data on its own secure infrastructure — KrateCMS never stores or handles raw payment information. Once the integration is configured, your members can subscribe to your Pro plan directly from your site and manage their billing through the Stripe customer portal.
+
+<Note>
+Billing settings may be gated depending on your KrateCMS plan or tenant configuration. If you do not see a billing section in your admin settings, contact your platform administrator to enable it.
+</Note>
+
+## What Stripe handles
+
+Once the integration is active, Stripe manages the full subscription lifecycle on your behalf:
+
+- **Subscription creation** — when a member completes checkout, Stripe creates the subscription and KrateCMS upgrades their account automatically
+- **Renewals** — Stripe charges the saved payment method at the end of each billing period; no manual action is required
+- **Failed payment retries** — Stripe retries failed charges according to your configured retry schedule before marking a subscription as past due
+- **Cancellations** — members can cancel through the customer portal; KrateCMS downgrades access when the subscription ends
+- **Invoice generation** — Stripe generates and emails invoices to your members automatically
+
+## Webhook events
+
+KrateCMS listens for Stripe webhook events at `POST /api/stripe/webhook`. Stripe sends subscription and invoice events to this endpoint to keep your members' access in sync with their billing status.
+
+<Note>
+Every incoming webhook is verified using Stripe's webhook signature. This ensures KrateCMS only processes legitimate events sent by Stripe, not spoofed requests.
+</Note>
+
+The following events are handled:
+
+| Stripe event | What KrateCMS does |
+|---|---|
+| `customer.subscription.deleted` | Removes Pro access from the member's account |
+| `invoice.payment_failed` | Flags the subscription as past due |
+| `invoice.payment_succeeded` | Confirms the subscription is active |
+| `customer.subscription.updated` | Syncs plan changes (e.g. monthly → annual) |
+
+## Configure the Stripe integration
+
+<Steps>
+  <Step title="Create your subscription products in Stripe">
+    Log in to your [Stripe Dashboard](https://dashboard.stripe.com) and go to **Products → Add product**. Create a product for your Pro Plan and add two prices — one for monthly billing and one for annual billing. Note the `price_...` ID for each price; you will need to provide these to your administrator.
+  </Step>
+  <Step title="Register the webhook endpoint">
+    In the Stripe Dashboard, go to **Developers → Webhooks → Add endpoint**. Enter your webhook URL:
+
+    ```
+    https://<your-domain>/api/stripe/webhook
+    ```
+
+    Select at minimum these events to listen for:
+
+    - `customer.subscription.deleted`
+    - `invoice.payment_failed`
+    - `invoice.payment_succeeded`
+    - `customer.subscription.updated`
+
+    After saving, copy the **Signing secret** that Stripe generates (it starts with `whsec_`). Provide this to your administrator alongside your Stripe publishable and secret keys.
+  </Step>
+  <Step title="Configure the Stripe customer portal">
+    In the Stripe Dashboard, go to **Settings → Billing → Customer portal**. Enable the portal and configure the options you want to offer your members — such as cancellation, payment method updates, and plan switching between monthly and annual. No code changes are required; KrateCMS redirects members to the portal automatically.
+  </Step>
+  <Step title="Verify your billing settings in KrateCMS">
+    In your KrateCMS admin panel, navigate to `/admin/settings/billing` and confirm the integration is active. From here you can also link to the customer portal for testing.
+  </Step>
+</Steps>
+
+## Member billing experience
+
+Once configured, members interact with Stripe entirely through KrateCMS:
+
+- **Checkout** — members subscribe by clicking upgrade prompts on your site; KrateCMS redirects them to a Stripe-hosted checkout page
+- **Payment method updates** — members can update their card from the billing section of their profile
+- **Invoice history** — past invoices are accessible through the Stripe customer portal
+- **Cancellation** — members can cancel their subscription at any time through the portal; access remains active until the end of the paid period
+
+## Test the integration
+
+Before going live, use Stripe's test mode and test card number `4242 4242 4242 4242` (any future expiry, any CVC) to complete a test checkout. Confirm that the member's account upgrades to Pro and that a success page renders. You can also trigger test webhook events from the Stripe Dashboard under **Developers → Webhooks → your endpoint → Send test event** to verify KrateCMS processes them correctly.
+
+<Warning>
+Make sure to switch from test mode to live mode keys in your configuration before accepting real payments. Test and live keys are not interchangeable.
+</Warning>

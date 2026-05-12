@@ -1,0 +1,87 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "willow",
+  "name": "KrateCMS",
+  "colors": {
+    "primary": "#4c44e4",
+    "light": "#a49cf4"
+  },
+  "logo": {
+    "light": "https://media.brand.dev/c33ca468-9db7-44b3-803c-c1eccd4704c3.svg",
+    "dark": "https://media.brand.dev/c33ca468-9db7-44b3-803c-c1eccd4704c3.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/jaballer/kratecms"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "configuration"
+            ]
+          },
+          {
+            "group": "Content",
+            "pages": [
+              "content/posts",
+              "content/pages",
+              "content/homepage",
+              "content/media"
+            ]
+          },
+          {
+            "group": "AI Features",
+            "pages": [
+              "ai/chat",
+              "ai/image-generation"
+            ]
+          },
+          {
+            "group": "Settings & Branding",
+            "pages": [
+              "settings/general",
+              "settings/brand",
+              "settings/security",
+              "settings/billing"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/n8n",
+              "integrations/stripe",
+              "integrations/email"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api/posts"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,447 @@
+---
+title: "Posts API: list, create, update, and delete endpoints"
+description: "Full reference for the six KrateCMS post endpoints: list, get by ID, get by slug, create, update, and delete, with request and response details."
+---
+
+The Posts API exposes six endpoints for reading and managing post content. The three read endpoints are public; the three write endpoints require a Bearer token. All paths are prefixed with `/api/v1` and are scoped to the tenant domain you send the request to.
+
+---
+
+## GET /api/v1/posts
+
+Returns a paginated list of posts for the current tenant context. No authentication required.
+
+<ParamField query="page" type="integer">
+  Page number to retrieve. Defaults to `1`.
+</ParamField>
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl https://acme.yoursite.com/api/v1/posts \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Hello World",
+      "slug": "hello-world",
+      "content": "<p>Hello world</p>",
+      "excerpt": "A short intro.",
+      "category": "news",
+      "featured_image": "https://acme.yoursite.com/storage/posts/hero.jpg",
+      "featured_image_alt": "A hero image",
+      "youtube_link": null,
+      "embed_url": null,
+      "embed_provider": null,
+      "status": "published",
+      "published_at": "2025-01-15T09:00:00.000000Z",
+      "created_at": "2025-01-14T18:32:00.000000Z",
+      "updated_at": "2025-01-15T09:00:00.000000Z",
+      "author": {
+        "id": 3,
+        "name": "Jane Smith",
+        "email": null
+      },
+      "links": {
+        "self": "https://acme.yoursite.com/api/v1/posts/1"
+      }
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 3,
+    "per_page": 15,
+    "total": 42
+  },
+  "links": {
+    "first": "https://acme.yoursite.com/api/v1/posts?page=1",
+    "last": "https://acme.yoursite.com/api/v1/posts?page=3",
+    "prev": null,
+    "next": "https://acme.yoursite.com/api/v1/posts?page=2"
+  }
+}
+```
+
+### Response fields
+
+<ResponseField name="data" type="array">
+  Array of post objects. See field descriptions under [GET /api/v1/posts/\{id\}](#get-apiv1postsid) for the shape of each item.
+</ResponseField>
+
+<ResponseField name="meta.current_page" type="integer">
+  The page number returned in this response.
+</ResponseField>
+
+<ResponseField name="meta.last_page" type="integer">
+  The total number of pages available.
+</ResponseField>
+
+<ResponseField name="meta.per_page" type="integer">
+  Number of records per page.
+</ResponseField>
+
+<ResponseField name="meta.total" type="integer">
+  Total number of posts across all pages.
+</ResponseField>
+
+<ResponseField name="links.next" type="string | null">
+  URL of the next page, or `null` if you are on the last page.
+</ResponseField>
+
+---
+
+## GET /api/v1/posts/\{id\}
+
+Returns a single post by its numeric ID. No authentication required.
+
+<ParamField path="id" type="integer" required>
+  The numeric ID of the post. Only digits are accepted — the route rejects non-numeric values with `404`.
+</ParamField>
+
+Returns `404` if no post with that ID exists in the current tenant context.
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl https://acme.yoursite.com/api/v1/posts/42 \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+```json
+{
+  "data": {
+    "id": 42,
+    "title": "Hello World",
+    "slug": "hello-world",
+    "content": "<p>Hello world</p>",
+    "excerpt": "A short intro.",
+    "category": "news",
+    "featured_image": "https://acme.yoursite.com/storage/posts/hero.jpg",
+    "featured_image_alt": "A hero image",
+    "youtube_link": null,
+    "embed_url": null,
+    "embed_provider": null,
+    "status": "published",
+    "published_at": "2025-01-15T09:00:00.000000Z",
+    "created_at": "2025-01-14T18:32:00.000000Z",
+    "updated_at": "2025-01-15T09:00:00.000000Z",
+    "author": {
+      "id": 3,
+      "name": "Jane Smith",
+      "email": null
+    },
+    "links": {
+      "self": "https://acme.yoursite.com/api/v1/posts/42"
+    }
+  }
+}
+```
+
+### Response fields
+
+<ResponseField name="data.id" type="integer">
+  Unique numeric identifier for the post.
+</ResponseField>
+
+<ResponseField name="data.title" type="string">
+  The post title.
+</ResponseField>
+
+<ResponseField name="data.slug" type="string">
+  URL-friendly identifier composed of lowercase letters, numbers, and dashes.
+</ResponseField>
+
+<ResponseField name="data.content" type="string">
+  Full post body as sanitized HTML.
+</ResponseField>
+
+<ResponseField name="data.excerpt" type="string | null">
+  Optional short summary of the post. `null` if not set.
+</ResponseField>
+
+<ResponseField name="data.category" type="string">
+  Post category label. Defaults to `"uncategorized"` if none is assigned.
+</ResponseField>
+
+<ResponseField name="data.featured_image" type="string | null">
+  Absolute URL to the featured image, or `null` if no image is set.
+</ResponseField>
+
+<ResponseField name="data.featured_image_alt" type="string | null">
+  Alt text for the featured image.
+</ResponseField>
+
+<ResponseField name="data.youtube_link" type="string | null">
+  The original YouTube URL associated with this post, if any.
+</ResponseField>
+
+<ResponseField name="data.embed_url" type="string | null">
+  Processed embed URL derived from `youtube_link`.
+</ResponseField>
+
+<ResponseField name="data.embed_provider" type="string | null">
+  Name of the embed provider (e.g. `"youtube"`).
+</ResponseField>
+
+<ResponseField name="data.status" type="string">
+  Publication status. One of `"draft"` or `"published"`.
+</ResponseField>
+
+<ResponseField name="data.published_at" type="string | null">
+  ISO 8601 timestamp of when the post was published. `null` for drafts.
+</ResponseField>
+
+<ResponseField name="data.created_at" type="string">
+  ISO 8601 timestamp of record creation.
+</ResponseField>
+
+<ResponseField name="data.updated_at" type="string">
+  ISO 8601 timestamp of the last update.
+</ResponseField>
+
+<ResponseField name="data.author.id" type="integer">
+  Numeric ID of the post author.
+</ResponseField>
+
+<ResponseField name="data.author.name" type="string">
+  Display name of the post author.
+</ResponseField>
+
+<ResponseField name="data.author.email" type="string | null">
+  Email address of the author. Only present when the requesting token belongs to a user with the `posts.edit` permission; otherwise `null`.
+</ResponseField>
+
+<ResponseField name="data.links.self" type="string">
+  Canonical API URL for this post.
+</ResponseField>
+
+---
+
+## GET /api/v1/posts/by-slug/\{slug\}
+
+Returns a single post looked up by its slug. No authentication required.
+
+<ParamField path="slug" type="string" required>
+  The post slug. Must contain only lowercase letters (`a–z`), digits (`0–9`), and hyphens (`-`). The route returns `404` for slugs containing other characters.
+</ParamField>
+
+Returns `404` if no post with that slug exists in the current tenant context.
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl https://acme.yoursite.com/api/v1/posts/by-slug/hello-world \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+The response shape is identical to [GET /api/v1/posts/\{id\}](#get-apiv1postsid).
+
+---
+
+## POST /api/v1/posts
+
+Creates a new post. Requires a Bearer token. The authenticated user must have the `posts.create` permission.
+
+### Request fields
+
+<ParamField body="title" type="string" required>
+  Post title. Maximum 255 characters.
+</ParamField>
+
+<ParamField body="content" type="string" required>
+  Full post body. HTML is accepted.
+</ParamField>
+
+<ParamField body="status" type="string" required>
+  Publication status. Must be `"draft"` or `"published"`.
+</ParamField>
+
+<ParamField body="excerpt" type="string">
+  Optional short summary. Maximum 500 characters.
+</ParamField>
+
+<ParamField body="featured_image" type="file">
+  Optional featured image. Accepted formats: `jpeg`, `png`, `jpg`, `webp`. Maximum file size: 2 MB. Send as `multipart/form-data` when including this field.
+</ParamField>
+
+<ParamField body="youtube_link" type="string">
+  Optional YouTube URL. Accepts standard `youtube.com/watch?v=` and `youtu.be/` formats. Maximum 255 characters.
+</ParamField>
+
+<Note>
+When uploading a `featured_image`, send the entire request as `multipart/form-data` instead of JSON. All other fields work with either `application/json` or `multipart/form-data`.
+</Note>
+
+### Example
+
+<CodeGroup>
+
+```bash curl — JSON body (no image)
+curl -X POST https://acme.yoursite.com/api/v1/posts \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "My New Post",
+    "content": "<p>Hello world</p>",
+    "status": "draft",
+    "excerpt": "A short intro."
+  }'
+```
+
+```bash curl — multipart (with image)
+curl -X POST https://acme.yoursite.com/api/v1/posts \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json" \
+  -F "title=My New Post" \
+  -F "content=<p>Hello world</p>" \
+  -F "status=draft" \
+  -F "featured_image=@/path/to/image.jpg"
+```
+
+</CodeGroup>
+
+```json
+{
+  "data": {
+    "id": 43,
+    "title": "My New Post",
+    "slug": "my-new-post",
+    "content": "<p>Hello world</p>",
+    "excerpt": "A short intro.",
+    "category": "uncategorized",
+    "featured_image": null,
+    "featured_image_alt": null,
+    "youtube_link": null,
+    "embed_url": null,
+    "embed_provider": null,
+    "status": "draft",
+    "published_at": null,
+    "created_at": "2025-05-12T10:00:00.000000Z",
+    "updated_at": "2025-05-12T10:00:00.000000Z",
+    "author": {
+      "id": 3,
+      "name": "Jane Smith",
+      "email": "jane@acme.com"
+    },
+    "links": {
+      "self": "https://acme.yoursite.com/api/v1/posts/43"
+    }
+  }
+}
+```
+
+---
+
+## PATCH /api/v1/posts/\{id\}
+
+Updates an existing post. Requires a Bearer token. The authenticated user must have update permission for the post.
+
+All fields are optional — send only the fields you want to change.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the post to update.
+</ParamField>
+
+<ParamField body="title" type="string">
+  New post title. Maximum 255 characters.
+</ParamField>
+
+<ParamField body="content" type="string">
+  Replacement post body. HTML is accepted.
+</ParamField>
+
+<ParamField body="status" type="string">
+  New publication status. Must be `"draft"` or `"published"`.
+</ParamField>
+
+<ParamField body="excerpt" type="string">
+  Replacement short summary. Maximum 500 characters. Pass `null` to clear.
+</ParamField>
+
+<ParamField body="featured_image" type="file">
+  Replacement featured image. Accepted formats: `jpeg`, `png`, `jpg`, `webp`. Maximum file size: 2 MB. Cannot be combined with `remove_featured_image: true` in the same request.
+</ParamField>
+
+<ParamField body="remove_featured_image" type="boolean">
+  Set to `true` to remove the current featured image without uploading a replacement. Cannot be combined with a `featured_image` upload in the same request.
+</ParamField>
+
+<ParamField body="youtube_link" type="string">
+  Replacement YouTube URL. Accepts standard `youtube.com/watch?v=` and `youtu.be/` formats. Pass `null` to clear. Maximum 255 characters.
+</ParamField>
+
+### Multipart uploads
+
+Most HTTP clients do not send the `PATCH` verb with `multipart/form-data` bodies cleanly. When you need to upload or replace a `featured_image`, use a `POST` request with a `_method=PATCH` field to override the HTTP method:
+
+<CodeGroup>
+
+```bash curl — multipart with method override
+curl -X POST https://acme.yoursite.com/api/v1/posts/42 \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json" \
+  -F "_method=PATCH" \
+  -F "title=Updated title" \
+  -F "featured_image=@/path/to/image.jpg"
+```
+
+```bash curl — JSON PATCH (no image)
+curl -X PATCH https://acme.yoursite.com/api/v1/posts/42 \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Updated title", "status": "published"}'
+```
+
+</CodeGroup>
+
+<Tip>
+JSON `PATCH` requests work directly without the `_method` override. The method override is only needed when sending `multipart/form-data`.
+</Tip>
+
+The response shape is identical to [GET /api/v1/posts/\{id\}](#get-apiv1postsid), reflecting the updated values.
+
+---
+
+## DELETE /api/v1/posts/\{id\}
+
+Permanently deletes a post. Requires a Bearer token.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the post to delete.
+</ParamField>
+
+Returns `204 No Content` on success with an empty body.
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl -X DELETE https://acme.yoursite.com/api/v1/posts/42 \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+```http
+HTTP/1.1 204 No Content
+```

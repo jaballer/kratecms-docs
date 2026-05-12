@@ -1,0 +1,122 @@
+---
+title: "Customize colors, fonts, logo, and CSS in KrateCMS"
+description: "Customize every visual aspect of your site — colors, fonts, theme mode, logo, favicon, and custom CSS — from the Brand settings page."
+---
+
+KrateCMS gives you full white-label control over how your site looks. From the Brand settings page you can change your color scheme, upload your logo and favicon, select your fonts, toggle dark mode, and even inject your own CSS rules. Every change applies instantly to both your public site and your admin panel — no deploy or rebuild required.
+
+## Getting there
+
+Navigate to **Settings → Brand** in your admin sidebar, or go directly to `/admin/settings/brand`.
+
+## Settings overview
+
+<CardGroup cols={2}>
+  <Card title="Colors" icon="palette">
+    Set your primary and accent colors. These are applied site-wide to buttons, links, highlights, and interactive elements.
+  </Card>
+  <Card title="Typography" icon="font">
+    Choose separate fonts for your headings and body text from the available font library.
+  </Card>
+  <Card title="Theme mode" icon="moon">
+    Switch your site between light mode and dark mode.
+  </Card>
+  <Card title="Logo" icon="image">
+    Upload your site logo. It appears in the navigation bar and header across all pages.
+  </Card>
+  <Card title="Favicon" icon="globe">
+    Upload your browser tab icon. Shown in the tab bar and when visitors bookmark your site.
+  </Card>
+  <Card title="Custom CSS" icon="code">
+    Add your own CSS rules for fine-grained visual customization beyond the built-in settings.
+  </Card>
+</CardGroup>
+
+## Colors
+
+The **Primary color** and **Accent color** fields accept any valid hex color value (for example, `#4c44e4`). The primary color is used for the most prominent interactive elements — main buttons, active navigation links, and focus states. The accent color is used for secondary highlights and decorative elements throughout the UI.
+
+<Steps>
+  <Step title="Open Brand settings">
+    Go to **Settings → Brand**.
+  </Step>
+  <Step title="Enter your colors">
+    Click the color swatch next to **Primary color** or **Accent color** to open the color picker, or type a hex value directly into the input field.
+  </Step>
+  <Step title="Save">
+    Click **Save**. Your new colors apply immediately across your public site and the admin.
+  </Step>
+</Steps>
+
+## Typography
+
+Select a **Heading font** and a **Body font** independently. Your heading font applies to all `h1`–`h6` elements across the site, while your body font applies to paragraphs, navigation labels, and general UI text.
+
+<Note>
+Font choices are applied globally. If you need per-block or per-page typography overrides, use the Custom CSS field described below.
+</Note>
+
+## Theme mode
+
+Use the **Theme mode** toggle to switch your site between **Light** and **Dark** mode. The selected mode applies to both the public-facing site and the admin interface.
+
+<Tabs>
+  <Tab title="Light mode">
+    The default. White and light-grey backgrounds with dark text. Suitable for most general-purpose sites.
+  </Tab>
+  <Tab title="Dark mode">
+    Dark backgrounds with light text. Well-suited for media-heavy sites, tech publications, or audiences who prefer lower-contrast interfaces.
+  </Tab>
+</Tabs>
+
+## Logo
+
+Upload your site logo to have it displayed in the navigation bar and header on every page. KrateCMS accepts common image formats including PNG, SVG, JPG, and WebP.
+
+Once uploaded, your logo is stored in cloud storage and served from there. You do not need to re-upload it if you change other settings.
+
+<Note>
+For the sharpest results on all screen sizes and resolutions, use an SVG or a PNG with a transparent background. Aim for a height of around 40–60 px at 2× resolution.
+</Note>
+
+## Favicon
+
+Your favicon is the small icon that appears in the browser tab and in bookmarks. Upload a square image — ideally a 32×32 or 64×64 PNG, or an `.ico` file. Like the logo, your favicon is served from cloud storage after upload.
+
+## Custom CSS
+
+The Custom CSS field lets you write arbitrary CSS rules that are injected into every page of your site. This is the escape hatch for any visual customization that the standard settings do not cover — adjusting spacing, overriding component styles, or adding brand-specific flourishes.
+
+<Tip>
+Custom CSS is powerful, but it runs on every single page of your site — the public frontend and the admin. Test your rules carefully in a staging environment or with a narrow selector before saving. Broad selectors like `* { ... }` can have unintended side effects.
+</Tip>
+
+```css
+/* Example: increase the default body font size */
+body {
+  font-size: 17px;
+}
+
+/* Example: add a custom border to post cards */
+.post-card {
+  border: 2px solid var(--color-primary);
+  border-radius: 8px;
+}
+```
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="Do brand changes affect the admin as well as the public site?">
+    Yes. Color, typography, theme mode, and custom CSS changes apply to both the public-facing site and the admin panel simultaneously.
+  </Accordion>
+  <Accordion title="Can I revert to the default logo or favicon?">
+    Yes. Open Brand settings and use the remove or replace control next to the logo or favicon upload. Saving with no image uploaded returns to the default placeholder.
+  </Accordion>
+  <Accordion title="How do I use a different color for a specific section?">
+    Use the Custom CSS field to target the section with a CSS selector and apply your color there. For example: `.hero-section { background-color: #f0f0f0; }`.
+  </Accordion>
+  <Accordion title="My Custom CSS is breaking the layout — how do I fix it?">
+    Open Brand settings, clear the Custom CSS field, and click **Save**. This removes all custom CSS immediately. Then re-add your rules incrementally to isolate the problematic rule.
+  </Accordion>
+</AccordionGroup>

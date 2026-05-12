@@ -1,0 +1,94 @@
+---
+title: "Upload and manage images and media in KrateCMS"
+description: "Upload featured images for posts and pages, manage your profile avatar, and generate AI images — all stored securely with tenant-isolated cloud storage."
+---
+
+KrateCMS handles media uploads in several places across the admin: featured images on posts and pages, inline images within page blocks, and avatar photos on user profiles. Every file you upload is stored in isolated cloud storage — your uploads are kept completely separate from those of other sites on the platform.
+
+## Featured images on posts
+
+A featured image is the primary visual for a post. It appears at the top of the published post and may be used as a thumbnail in post listings.
+
+To add or change a post's featured image:
+
+<Steps>
+  <Step title="Open the post editor">
+    Go to **Admin → Posts** and click the post you want to edit, or go to **Admin → Posts → New Post** to start a new one.
+  </Step>
+  <Step title="Upload an image">
+    Click the **Featured Image** field and select an image from your device. Supported formats are JPEG, PNG, and WebP. The maximum file size is 2 MB.
+  </Step>
+  <Step title="Save the post">
+    Click **Save**. The image is uploaded and attached to the post. It appears at the top of the post when visitors view it.
+  </Step>
+</Steps>
+
+### Generate a featured image with AI
+
+If you don't have an image ready, KrateCMS can generate one for you using AI. From the post editor, look for the **Generate image** option near the Featured Image field. Describe what you want, and KrateCMS will produce an image you can use as the featured image without leaving the editor.
+
+See [AI image generation](/ai/image-generation) for more about generating images from prompts.
+
+## Featured images on pages
+
+Pages also support a featured image, which appears in the page header area above the first block.
+
+<Note>
+  If you enable **Hide title** on a page that has a featured image, the title heading is hidden but the featured image still shows. If **Hide title** is on and there is no featured image, the entire header area is removed so there's no blank space at the top of the page.
+</Note>
+
+To add a featured image to a page, open the page in **Admin → Pages**, upload an image in the **Featured Image** field, and save.
+
+## Avatar uploads
+
+Each user account has a profile with an optional avatar photo.
+
+To update your avatar:
+
+<Steps>
+  <Step title="Go to your profile settings">
+    Navigate to your profile settings page (accessible from the account menu in the top-right corner of the admin).
+  </Step>
+  <Step title="Upload a photo">
+    Click the avatar upload area and select an image from your device. Supported formats are JPEG, PNG, and WebP (maximum 2 MB).
+  </Step>
+  <Step title="Save">
+    Save your profile. Your avatar is updated immediately and visible on your public profile.
+  </Step>
+</Steps>
+
+## Supported file types
+
+KrateCMS accepts standard web image formats for all upload fields:
+
+| Format | Extension |
+|---|---|
+| JPEG | `.jpg`, `.jpeg` |
+| PNG | `.png` |
+| WebP | `.webp` |
+
+The maximum file size for any single upload is **2 MB**.
+
+<Tip>
+  Compress your images before uploading to keep page load times fast. Tools like [Squoosh](https://squoosh.app) can reduce file size significantly without visible quality loss.
+</Tip>
+
+## How your files are stored
+
+All uploads are stored in cloud object storage (Cloudflare R2 or S3, depending on your platform configuration). Files are served via CDN, so they load quickly for visitors regardless of where they are in the world.
+
+**Tenant isolation:** every site on KrateCMS has its own isolated storage namespace. Your uploads are stored under a unique identifier for your site and are never mixed with files from another site on the platform. Even if two sites share the same filename, the files are stored completely separately.
+
+<Note>
+  You don't need to configure or manage storage yourself. Uploads go through the KrateCMS admin, and the platform handles storage, isolation, and delivery automatically.
+</Note>
+
+## Where each file type is stored
+
+| Upload type | Where it appears |
+|---|---|
+| Post featured image | Top of the published post |
+| Page featured image | Page header area, above the first block |
+| Page block image | Inline within the block, in position on the page |
+| User avatar | Profile page and admin account display |
+| AI-generated image | Saved as a post featured image when you accept it |

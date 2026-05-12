@@ -1,0 +1,88 @@
+---
+title: "Managing your billing and subscription in KrateCMS"
+description: "View your current plan, update your payment method, and download invoices from KrateCMS Billing settings — all payment processing is handled by Stripe."
+---
+
+The Billing settings page is where you manage your KrateCMS subscription. From here you can check your current plan and billing period, update your payment method, and access your invoice history. All payment processing is handled by Stripe — KrateCMS never stores your card details.
+
+<Note>
+Billing settings are currently gated and may not be visible on your account. During the alpha period, the billing section is disabled by default. If you need access to billing settings, contact support.
+</Note>
+
+## Getting there
+
+Navigate to **Settings → Billing** in your admin sidebar, or go directly to `/admin/settings/billing`.
+
+If you do not see a **Billing** entry in your Settings sidebar, the billing feature has not been enabled for your account. Reach out to support to request access.
+
+## What you can do
+
+<CardGroup cols={2}>
+  <Card title="View your plan" icon="receipt">
+    See which plan you are currently on, your billing period (monthly or annual), and when your next renewal date is.
+  </Card>
+  <Card title="Update payment method" icon="credit-card">
+    Add or replace the card on file for your subscription. You are redirected to a secure Stripe-hosted page to enter your details.
+  </Card>
+  <Card title="Billing history" icon="clock-rotate-left">
+    View a list of all past invoices, including the amount charged, the date, and the status (paid, pending, or failed).
+  </Card>
+  <Card title="Download invoices" icon="download">
+    Download a PDF copy of any past invoice for your records or expense reporting.
+  </Card>
+</CardGroup>
+
+## Updating your payment method
+
+<Steps>
+  <Step title="Open Billing settings">
+    Go to **Settings → Billing**.
+  </Step>
+  <Step title="Click Update payment method">
+    Click the **Update payment method** button. You will be redirected to a secure Stripe-hosted page.
+  </Step>
+  <Step title="Enter your new card details">
+    Fill in your new card number, expiry date, and CVC on the Stripe page and confirm.
+  </Step>
+  <Step title="Return to KrateCMS">
+    Once Stripe confirms the update, you are redirected back to your Billing settings. Your new card is now on file for future charges.
+  </Step>
+</Steps>
+
+<Note>
+KrateCMS never sees or stores your card number. All payment details are entered directly on Stripe's servers, which are PCI-compliant.
+</Note>
+
+## Viewing and downloading invoices
+
+<Steps>
+  <Step title="Open Billing settings">
+    Go to **Settings → Billing** and scroll to the **Billing history** section.
+  </Step>
+  <Step title="Find the invoice">
+    Locate the invoice you need from the list. Each row shows the date, amount, and payment status.
+  </Step>
+  <Step title="Download the PDF">
+    Click **Download** on the invoice row to save a PDF copy to your device.
+  </Step>
+</Steps>
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="I don't see a Billing option in my Settings sidebar. Why?">
+    The billing section is gated and is not visible by default during the KrateCMS alpha period. Contact support to request access. Once enabled for your account, the **Billing** entry will appear in the Settings sidebar.
+  </Accordion>
+  <Accordion title="Does KrateCMS store my credit card number?">
+    No. All card details are handled entirely by Stripe. KrateCMS only stores a reference token that Stripe provides — your actual card number, expiry, and CVC are never written to KrateCMS systems.
+  </Accordion>
+  <Accordion title="What happens if my payment fails?">
+    Stripe will automatically retry a failed payment a number of times over several days. You will receive an email notification if a charge fails. Update your payment method as soon as possible to avoid service interruption.
+  </Accordion>
+  <Accordion title="Can I switch between monthly and annual billing?">
+    Plan and billing period changes are managed through your subscription. Contact support if you want to switch billing frequency or change your plan tier.
+  </Accordion>
+  <Accordion title="How do I cancel my subscription?">
+    Contact support to request a cancellation. Your access continues until the end of your current paid billing period.
+  </Accordion>
+</AccordionGroup>

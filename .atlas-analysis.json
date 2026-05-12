@@ -1,0 +1,98 @@
+{
+  "projectType": "saas",
+  "projectName": "KrateCMS",
+  "projectDescription": "A modern, multi-tenant content management system built on Laravel with AI writing tools, a visual page builder, a RESTful API, and built-in billing.",
+  "theme": "willow",
+  "primaryColor": "#4c44e4",
+  "lightColor": "#a49cf4",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "configuration"
+            ]
+          },
+          {
+            "group": "Content",
+            "pages": [
+              "content/posts",
+              "content/pages",
+              "content/homepage",
+              "content/media"
+            ]
+          },
+          {
+            "group": "AI Features",
+            "pages": [
+              "ai/chat",
+              "ai/image-generation"
+            ]
+          },
+          {
+            "group": "Settings & Branding",
+            "pages": [
+              "settings/general",
+              "settings/brand",
+              "settings/security",
+              "settings/billing"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/n8n",
+              "integrations/stripe",
+              "integrations/email"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api/posts"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Multi-tenant subdomain architecture — each tenant gets an isolated site on their own subdomain",
+    "Visual block-based page editor with drag-and-drop reordering (rich text, images, CTAs, video, accordion, and more)",
+    "AI chat and agent mode powered by OpenAI — draft posts, search content, and generate featured images from the admin",
+    "RESTful API v1 with Laravel Sanctum authentication for programmatic access to posts",
+    "Role-based access control with seven roles (super-admin → viewer) and granular permissions",
+    "Configurable homepage — choose between a posts feed, a custom Page, or a marketing landing template",
+    "Outbound webhook automation via n8n triggered on post publish and update events",
+    "Stripe billing integration via Laravel Cashier",
+    "Transactional email via Postmark with bounce/complaint handling and deliverability dashboard",
+    "Brand customization — colors, typography, logo, favicon, and custom CSS per tenant"
+  ],
+  "publicApiSurface": [
+    "GET /api/v1/posts — list published posts (paginated, tenant-scoped, no auth required)",
+    "GET /api/v1/posts/{id} — fetch a single post by numeric ID",
+    "GET /api/v1/posts/by-slug/{slug} — fetch a single post by URL slug",
+    "POST /api/v1/posts — create a post (requires Sanctum Bearer token)",
+    "PATCH /api/v1/posts/{id} — update a post (requires Sanctum Bearer token)",
+    "DELETE /api/v1/posts/{id} — delete a post (requires Sanctum Bearer token)",
+    "POST /api/integrations/n8n/ingest — receive callback payloads from n8n (shared-secret protected)"
+  ]
+}

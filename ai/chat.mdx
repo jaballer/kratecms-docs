@@ -1,0 +1,118 @@
+---
+title: "Use AI chat to draft content and manage posts"
+description: "Use KrateCMS's built-in AI assistant to draft content, ask writing questions, and take direct actions on your posts — all from the admin."
+---
+
+KrateCMS includes a built-in AI chat powered by OpenAI, accessible directly from your admin panel. You can use it to brainstorm ideas, draft and refine content, or switch into agent mode and let the AI take real actions on your posts — creating, searching, fetching, and updating content on your behalf.
+
+## Opening AI chat
+
+Navigate to **AI Chat** in the admin sidebar. The chat interface loads immediately — no additional configuration is required on your end. If you do not see the AI Chat option in your sidebar, the feature may not be enabled on your plan. Contact your site administrator for access.
+
+## Chat modes
+
+KrateCMS AI chat offers two modes. You can switch between them within the same session.
+
+<Tabs>
+  <Tab title="Chat mode">
+    Chat mode is a conversational interface. Use it to ask questions, get writing feedback, brainstorm topics, or generate draft text you can copy into your posts.
+
+    **What you can do in chat mode:**
+
+    - Ask the AI to write or rewrite a passage
+    - Request outlines, introductions, or conclusions for a given topic
+    - Get suggestions for post titles, meta descriptions, or calls to action
+    - Ask open-ended questions to research or clarify ideas
+
+    **Example prompts:**
+
+    ```text
+    Write me a 150-word introduction for a blog post about remote team culture.
+    ```
+
+    ```text
+    Give me five title ideas for a post announcing our new pricing plans.
+    ```
+
+    ```text
+    Rewrite this paragraph in a friendlier, more conversational tone: [paste text]
+    ```
+  </Tab>
+  <Tab title="Agent mode">
+    Agent mode gives the AI the ability to take actions inside your KrateCMS site. Instead of just generating text, the AI can interact with your posts directly.
+
+    **Actions available in agent mode:**
+
+    - **Create a new post** — the AI drafts and saves a post to your site
+    - **List your posts** — retrieve a summary of your existing posts
+    - **Search posts** — find posts by keyword or topic
+    - **Fetch a specific post** — pull up the full content of a post by slug
+    - **Update a post** — modify the content of an existing post
+
+    **Example prompts:**
+
+    ```text
+    List my last 5 published posts.
+    ```
+
+    ```text
+    Search for posts about product launches.
+    ```
+
+    ```text
+    Update my "hello-world" post with this new conclusion: [paste text]
+    ```
+
+    ```text
+    Create a new draft post titled "Year in Review" with an introduction about our team's highlights.
+    ```
+
+    <Note>
+      Agent mode actions are real — they create and update actual posts in your CMS. Review the AI's proposed action before confirming it, and check the resulting post before publishing.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Conversation history and token usage
+
+Your conversation history is maintained for the duration of your session. You can scroll back through the full exchange to review earlier messages or copy generated content.
+
+Each message displays its token usage so you can track how much of your AI quota a given exchange consumed. Token counts appear beneath each assistant response.
+
+## Tenant scope
+
+The AI agent operates entirely within your tenant's content. It can only see and act on the posts that belong to your site — it cannot access other tenants' data or take actions outside your account.
+
+## Tips for better results
+
+<AccordionGroup>
+  <Accordion title="Be specific with your prompts">
+    The more context you give, the more useful the response. Instead of "write a blog post," try "write a 300-word blog post introduction about the benefits of async communication for remote engineering teams, written for a non-technical audience."
+  </Accordion>
+  <Accordion title="Use chat mode to draft, then copy into the editor">
+    AI chat is a great place to generate raw content. Once you have something you like, copy it into the post editor and refine it with TinyMCE before publishing.
+  </Accordion>
+  <Accordion title="In agent mode, confirm before publishing">
+    When the AI creates or updates a post, it saves as a draft by default. Open the post editor to review, adjust, and set a publish date before making it live.
+  </Accordion>
+  <Accordion title="Iterate on responses">
+    If the first response isn't quite right, follow up with a refinement. For example: "Make that shorter" or "Change the tone to be more formal" — the AI retains the conversation context.
+  </Accordion>
+</AccordionGroup>
+
+## Common use cases
+
+<CardGroup cols={2}>
+  <Card title="Content drafting" icon="pen-line">
+    Generate introductions, conclusions, or full draft sections for your posts. Use chat mode as a writing partner when you're starting from a blank page.
+  </Card>
+  <Card title="Post management" icon="list-check">
+    Switch to agent mode to list, search, or fetch posts without leaving the chat. Useful for quickly finding a specific post to reference or update.
+  </Card>
+  <Card title="Bulk updates" icon="pencil">
+    Ask the agent to update a post's content in one step — paste the new text and let the AI handle saving it, so you skip navigating to the editor.
+  </Card>
+  <Card title="Brainstorming" icon="lightbulb">
+    Use chat mode to explore angles for a topic, generate SEO-friendly title variants, or workshop a call-to-action before writing the full post.
+  </Card>
+</CardGroup>

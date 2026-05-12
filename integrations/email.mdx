@@ -1,0 +1,89 @@
+---
+title: "Email delivery, contact forms, and bounce handling"
+description: "KrateCMS sends all transactional and notification emails through Postmark for reliable delivery, bounce handling, and deliverability protection."
+---
+
+KrateCMS sends transactional and notification emails through Postmark, a delivery service built for high reliability. Every email KrateCMS sends on your behalf — from password resets to contact form submissions — goes through Postmark's infrastructure to maximize the chance it reaches your recipients' inboxes rather than their spam folders. Bounce and complaint handling is automatic, and KrateCMS uses separate sending streams to keep your deliverability reputation clean across different email categories.
+
+## Types of emails KrateCMS sends
+
+<AccordionGroup>
+  <Accordion title="Welcome and invitation emails">
+    When you create a new user account from the admin panel, KrateCMS sends the new user an invitation email with a one-time link. The user follows the link to set their own password and activate their account — you never need to send credentials manually.
+  </Accordion>
+  <Accordion title="Password reset emails">
+    When a user clicks "Forgot password" on the login page, KrateCMS sends a standard reset link to their registered email address. The link expires after a short window for security.
+  </Accordion>
+  <Accordion title="Email verification">
+    After a user registers, KrateCMS sends a verification email to confirm their address. The user must click the link to complete registration and gain access.
+  </Accordion>
+  <Accordion title="Security alerts">
+    KrateCMS sends security notification emails when suspicious activity is detected on an account — for example, unusual login patterns. These notifications go out promptly so users can take action if needed.
+  </Accordion>
+  <Accordion title="Contact form submissions">
+    When a visitor submits your site's contact form, KrateCMS emails the submission to the recipient address you configure. You can set this up at `/admin/settings/contact`.
+  </Accordion>
+</AccordionGroup>
+
+## Set up the contact form
+
+To enable the contact form on your site and receive submissions by email:
+
+<Steps>
+  <Step title="Open contact settings">
+    In your admin panel, navigate to `/admin/settings/contact`.
+  </Step>
+  <Step title="Enable the contact form">
+    Toggle the contact form on. This makes the form visible to visitors on your public site.
+  </Step>
+  <Step title="Set the recipient email">
+    Enter the email address where you want to receive contact form submissions. This can be any address you have access to — it does not need to match your KrateCMS admin account email.
+  </Step>
+  <Step title="Configure a subject prefix">
+    Add a subject prefix so you can identify contact form emails at a glance in your inbox (for example, `[Contact]` or `[Your Site Name]`).
+
+    <Tip>
+      Use a descriptive subject prefix — like `[YourSite Contact]` — to create a simple inbox filter rule. This keeps contact form submissions organized in their own folder without any manual sorting.
+    </Tip>
+  </Step>
+</Steps>
+
+## Bounce and complaint handling
+
+KrateCMS automatically receives bounce and complaint notifications from Postmark and maintains an internal suppression list. If an email address hard-bounces or a recipient marks a message as spam, that address is added to the suppression list and future emails to it are skipped automatically.
+
+This protects your sending reputation — repeatedly sending to addresses that bounce or complain signals to email providers that you are sending spam, which can affect deliverability for all your users.
+
+<Note>
+You can monitor your email deliverability health, view bounces, and inspect the suppression list from `/admin/email-health` in your admin panel.
+</Note>
+
+## Message streams and deliverability
+
+KrateCMS sends email through three separate Postmark message streams:
+
+| Stream | What it carries |
+|---|---|
+| Transactional | Login-related emails, password resets, email verification, invitation links |
+| Notifications | Security alerts and account activity notifications |
+| Contact-admin | Contact form submissions and support messages |
+
+Keeping these streams separate means that a spike in contact form traffic — or a deliverability issue in one category — does not affect the other streams. Your password reset emails, for example, will continue arriving reliably even if your contact form experiences issues.
+
+<Note>
+Postmark stream separation is managed at the platform level. No configuration is required on your part — emails are automatically routed to the correct stream based on their type.
+</Note>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="A user says they didn't receive their invitation email">
+    Ask them to check their spam or junk folder first. If the email is not there, the address may be on the suppression list due to a previous bounce. Check `/admin/email-health` for the address. If it is suppressed, you can remove it from the list and resend the invitation from the user's admin profile page.
+  </Accordion>
+  <Accordion title="Contact form submissions are not arriving">
+    Confirm the contact form is enabled and the recipient email is saved correctly at `/admin/settings/contact`. Also check `/admin/email-health` to see if there have been any recent delivery failures. If the recipient address has bounced before, it may be on the suppression list.
+  </Accordion>
+  <Accordion title="Password reset emails are going to spam">
+    This is usually a deliverability issue at the recipient's email provider, not a configuration problem. KrateCMS sends reset emails through the transactional stream which is designed for high inbox placement. If the problem is consistent, contact your platform administrator — they can inspect Postmark's delivery logs for more detail.
+  </Accordion>
+</AccordionGroup>

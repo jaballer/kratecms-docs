@@ -1,0 +1,112 @@
+---
+title: "Quickstart: Publish a Post and Call the API"
+description: "Go from zero to publishing your first KrateCMS post and making a live API call in five steps — just your browser and a terminal."
+---
+
+This guide walks you through logging into KrateCMS for the first time, orienting yourself in the admin dashboard, creating and publishing a post, generating an API token, and making your first API call. By the end you will have live content and a working integration point for any external tool.
+
+<Steps>
+  <Step title="Log in at your subdomain">
+    Your KrateCMS site lives at a subdomain provided in your welcome email — for example, `https://yoursite.kratecms.com/admin`. Open that URL in your browser.
+
+    Enter the email address and temporary password from your welcome email, then click **Log in**. On first login you may be prompted to set a permanent password. Choose a strong password; KrateCMS checks it against the Have I Been Pwned database and will reject known-compromised passwords.
+
+    <Tip>
+      If you cannot find your welcome email, ask your administrator to resend your invitation from **Users → (your name) → Resend Invite**.
+    </Tip>
+
+    After logging in you will land on the admin dashboard at `/admin`.
+  </Step>
+
+  <Step title="Explore the admin dashboard">
+    The dashboard gives you an at-a-glance view of your site's activity. From the left sidebar you can navigate to every section of the admin:
+
+    - **Posts** — create, edit, and publish written content
+    - **Pages** — build structured pages with the block editor
+    - **Users** — manage team members and their roles (admin and above)
+    - **Settings** — configure your site's branding, content rules, and security
+
+    A **setup checklist** appears at the top of the dashboard on new sites. Work through it to complete your initial configuration: set your site name, upload a logo, and configure your contact form.
+
+    <Note>
+      Your sidebar may show fewer items depending on your role. Contributors and authors see Posts and their Profile; editors and managers also see Pages; admins see the full sidebar including Settings and Users.
+    </Note>
+  </Step>
+
+  <Step title="Create and publish your first post">
+    Navigate to **Posts → New Post**, or go directly to `/admin/posts/create`.
+
+    Fill in the following fields:
+
+    - **Title** — the headline for your post
+    - **Body** — write and format your content using the TinyMCE rich-text editor; use the toolbar to add headings, links, lists, and inline images
+    - **Featured Image** — upload an image or use the AI image generator (click the sparkle icon in the featured image panel) to create one from a prompt
+    - **Category** — choose from Text, Audio, Video, or Uncategorized
+    - **Visibility** — set to **Public** so anyone can read it, or **Members Only** to restrict it to logged-in users
+    - **Publish Date** — defaults to now; set a future date to schedule the post
+
+    When you are ready, click **Publish**. Your post is immediately live at its slug-based URL (for example, `https://yoursite.kratecms.com/posts/your-post-title`).
+
+    <Tip>
+      Save a draft first by clicking **Save Draft** if you want to review your post before it goes live. You can return to it any time from the Posts index.
+    </Tip>
+  </Step>
+
+  <Step title="Get an API token">
+    To authenticate write operations against the API, you need a personal access token.
+
+    Navigate to `/admin/api-tokens`. Click **Create Token**, give it a descriptive name (for example, `My Integration`), and click **Generate**.
+
+    Copy the token immediately — it is only displayed once. Store it in a secure location such as a password manager or your application's secrets store.
+
+    <Warning>
+      Treat your API token like a password. Anyone who holds it can create, update, and delete posts on your behalf. Revoke it from `/admin/api-tokens` if it is ever exposed.
+    </Warning>
+  </Step>
+
+  <Step title="Make your first API call">
+    The KrateCMS API is available at `/api/v1/` on your subdomain. Reading published posts does not require authentication, so you can test immediately with curl:
+
+    ```bash
+    curl https://yoursite.kratecms.com/api/v1/posts
+    ```
+
+    You will receive a JSON array of your published posts. To create a post programmatically, include your token in the `Authorization` header:
+
+    ```bash
+    curl -X POST https://yoursite.kratecms.com/api/v1/posts \
+      -H "Authorization: Bearer YOUR_API_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "title": "My First API Post",
+        "content": "<p>Created via the KrateCMS API.</p>",
+        "status": "published"
+      }'
+    ```
+
+    A successful response returns the created post object with its `id`, `slug`, and `published_at` timestamp.
+
+    <Tip>
+      A Postman collection covering all available endpoints is available in the API documentation. Import it to explore every route without writing curl commands by hand.
+    </Tip>
+  </Step>
+</Steps>
+
+## What's next
+
+Now that your first post is live and you have a working API token, explore the rest of KrateCMS:
+
+<CardGroup cols={2}>
+  <Card title="Build a page" icon="layout-panel-top" href="/content/pages">
+    Use the block editor to create landing pages, about pages, and more.
+  </Card>
+  <Card title="Customize your brand" icon="paintbrush" href="/configuration">
+    Set your colors, logo, and typography from the Brand settings panel.
+  </Card>
+  <Card title="Manage roles" icon="users" href="/settings/security">
+    Add editors, authors, and contributors and assign them the right roles.
+  </Card>
+  <Card title="Explore the API" icon="brackets-curly" href="/api/overview">
+    Read the full API reference and download the Postman collection.
+  </Card>
+</CardGroup>

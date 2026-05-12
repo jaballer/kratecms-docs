@@ -1,0 +1,130 @@
+---
+title: "Trigger n8n workflows from KrateCMS post events"
+description: "Connect KrateCMS post publish and update events to n8n workflows using outbound webhooks, with an optional callback endpoint for audit trails."
+---
+
+KrateCMS can send webhook events to n8n whenever you publish a new post or update a post that is already live. From there, n8n can trigger any downstream automation — sending Slack notifications, syncing content to a third-party platform, updating a spreadsheet, or anything else your workflow requires. You can also configure n8n to send data back into KrateCMS so you can see the results directly in your admin panel.
+
+## Events KrateCMS sends
+
+KrateCMS fires outbound events only for **published** content. Drafts are never broadcast.
+
+| Event | When it fires |
+|---|---|
+| `kratecms.post.published` | A draft transitions to published status |
+| `kratecms.post.updated` | A published post's title, slug, content, category, featured image, visibility, or publish date changes |
+
+<Note>
+Saving a post as a draft — including re-saving an existing draft — does not trigger any webhook event. Only actions that affect a published post are broadcast.
+</Note>
+
+## Webhook payload
+
+Every outbound event uses the same envelope shape:
+
+```json
+{
+  "event": "kratecms.post.published",
+  "occurred_at": "2026-02-13T18:04:40-08:00",
+  "meta": {
+    "action": "published",
+    "post_id": 14,
+    "actor_user_id": 1,
+    "source": "admin.posts.update"
+  },
+  "payload": {
+    "post": {
+      "id": 14,
+      "title": "My Post Title",
+      "slug": "my-post-title",
+      "status": "published",
+      "visibility": "public",
+      "published_at": "2026-02-13T17:57:00-08:00",
+      "updated_at": "2026-02-13T18:01:59-08:00"
+    }
+  }
+}
+```
+
+- `event` — the event name, used to route logic in your n8n workflow
+- `occurred_at` — ISO 8601 timestamp of when the event was triggered
+- `meta` — context about the action: which post, which user, which source
+- `payload.post` — the current state of the post at the time of the event
+
+## How delivery works
+
+Outbound webhook calls are queued in the background, so publishing or editing a post in your admin panel is never slowed down waiting for n8n to respond. KrateCMS includes built-in retry logic to handle transient failures. Certain error responses — such as `404 Not Found` or `422 Unprocessable Entity` — are treated as non-retryable and will not be retried automatically.
+
+## Sending data back to KrateCMS (optional)
+
+n8n can call back into KrateCMS to record the result of an automation. This is useful for audit trails and debugging — the ingest appears in your admin panel so you can confirm events were processed end-to-end.
+
+**Endpoint:** `POST /api/integrations/n8n/ingest`
+
+**Required header:**
+```
+X-KrateCMS-Integration-Secret: <your-secret>
+```
+
+**Recommended payload shape:**
+
+```json
+{
+  "event": "kratecms.some.event",
+  "occurred_at": "2026-02-13T18:04:40-08:00",
+  "meta": {},
+  "payload": {}
+}
+```
+
+KrateCMS accepts flexible payloads, but following this structure makes ingests easier to read in the admin UI. If the JSON is malformed, KrateCMS logs a warning instead of returning an error so your workflow is not blocked.
+
+## Set up the n8n integration
+
+<Steps>
+  <Step title="Create a webhook trigger in n8n">
+    In your n8n instance, create a new workflow and add a **Webhook** trigger node. Set the method to **POST**. Save the node to generate a webhook URL.
+  </Step>
+  <Step title="Copy the webhook URL">
+    Copy the webhook URL that n8n displays (it will look like `https://your-n8n-instance.com/webhook/...`). You will paste this into KrateCMS in the next step.
+  </Step>
+  <Step title="Configure KrateCMS to send events">
+    Contact your administrator or platform operator and provide them with the webhook URL and a shared secret of your choosing. They will configure KrateCMS to send events to that URL, authenticating each request with the secret via the `X-KrateCMS-Integration-Secret` header.
+  </Step>
+  <Step title="Add a callback node in n8n (optional)">
+    To record automation results back in KrateCMS, add an **HTTP Request** node after your trigger and configure it as follows:
+
+    - **Method:** POST
+    - **URL:** `https://<your-kratecms-domain>/api/integrations/n8n/ingest`
+    - **Headers:**
+      - `X-KrateCMS-Integration-Secret: <your-secret>`
+      - `Content-Type: application/json`
+    - **Body (JSON, using n8n expressions):**
+
+    ```json
+    {
+      "event": "{{ $json.body.event || 'kratecms.roundtrip' }}",
+      "occurred_at": "{{ $json.body.occurred_at || $now.toISO() }}",
+      "meta": "{{ $json.body.meta || {} }}",
+      "payload": "{{ $json.body.payload || $json.body }}"
+    }
+    ```
+  </Step>
+  <Step title="Test by publishing a post">
+    Publish a post (or update a post that is already published) in your KrateCMS admin panel. In n8n, open the **Executions** log for your workflow and confirm a new execution appears with the expected payload. If you configured the callback, check your admin panel to confirm the ingest was recorded.
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="No executions appear in n8n after publishing">
+    Confirm with your administrator that the n8n webhook URL and shared secret are saved in your KrateCMS configuration. Also verify that a queue worker is running on your server — without one, queued webhook jobs will accumulate but never be sent.
+  </Accordion>
+  <Accordion title="The callback ingest is not appearing in my admin panel">
+    Check that the `X-KrateCMS-Integration-Secret` header in your HTTP Request node matches the secret configured in KrateCMS exactly — the value is case-sensitive. Also confirm you are posting to the correct domain and path: `POST /api/integrations/n8n/ingest`.
+  </Accordion>
+  <Accordion title="n8n is receiving events for some post saves but not others">
+    Events only fire for published posts. Saving a draft, unpublishing, or making changes to a post while it is in draft status will not trigger a webhook. For `kratecms.post.updated`, only meaningful field changes — title, slug, content, category, featured image, visibility, or publish date — cause an event to fire.
+  </Accordion>
+</AccordionGroup>

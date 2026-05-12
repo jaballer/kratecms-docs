@@ -1,0 +1,67 @@
+---
+title: "KrateCMS: multi-tenant CMS with AI and built-in API"
+description: "KrateCMS is a multi-tenant CMS with posts, pages, AI writing tools, a REST API, and role-based access control — all managed from a clean admin dashboard."
+---
+
+KrateCMS gives your team a fully featured content management system accessible from any browser. From the moment you log in, you can publish posts, build pages from modular blocks, chat with an AI assistant, query your content through an API, and customize every visual detail of your site — no command line required.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Log in, publish your first post, and make your first API call in minutes.
+  </Card>
+  <Card title="API Overview" icon="code" href="/api/overview">
+    Explore the REST API for reading and managing content programmatically.
+  </Card>
+  <Card title="Creating Posts" icon="pen-to-square" href="/content/posts">
+    Write and publish posts with the TinyMCE editor, featured images, and categories.
+  </Card>
+  <Card title="AI Chat & Agent" icon="robot" href="/ai/chat">
+    Use the built-in AI assistant to draft content, generate images, and manage posts by conversation.
+  </Card>
+</CardGroup>
+
+## What you get
+
+### Posts and pages
+
+Create posts with the TinyMCE rich-text editor. Add a featured image, assign a category (text, audio, video, or uncategorized), embed YouTube videos or SoundCloud tracks, and control whether each post is public or members-only. A draft/published workflow lets you stage content before it goes live, and every post gets a clean slug-based URL.
+
+Pages work differently — they are built from a modular block library. Drag and drop rich text, images, calls to action, two-column layouts, video embeds, quote blocks, and accordions. You can reorder blocks at any time, collapse them while editing, and toggle the page title off for hero-first designs.
+
+### Configurable homepage
+
+Choose what visitors see when they land on your site: a scrolling posts feed (the default), a legacy marketing template, or any Page you have built — just like WordPress's "page as homepage" option. Switch between them any time from **Settings → Content**.
+
+### AI tools
+
+KrateCMS includes a real-time AI chat interface powered by OpenAI. You can hold conversations, generate featured images for posts directly inside the editor, and enable agent mode — where the AI can create, search, update, and list posts on your behalf through tool-calling. Token usage is tracked per message.
+
+### REST API
+
+Every tenant gets a versioned REST API at `/api/v1/`. Public endpoints (like listing posts) require no authentication. Write operations use Sanctum tokens that you generate from the admin. Full CRUD is available for posts, and a Postman collection is included.
+
+### Brand and settings
+
+Customize your site's colors, typography, logo, favicon, theme mode, and inject custom CSS — all from **Settings → Brand**. General settings let you set the site name, description, footer text, and timezone. Security settings control login attempt limits, session timeouts, and password policies.
+
+## Roles and what they can do
+
+KrateCMS uses seven roles. Your role is set when your account is created and can only be changed by an admin.
+
+| Role | What they can do |
+|---|---|
+| **super-admin** | Full platform access; bypasses all permission checks |
+| **admin** | All permissions across content, users, and settings |
+| **manager** | Content and page management; can view users |
+| **editor** | Full control over posts and pages |
+| **author** | Same as editor, but limited to their own content |
+| **contributor** | Can create and edit their own posts; cannot publish |
+| **viewer** | Read-only access to published posts |
+
+<Note>
+  Contributors can draft posts but cannot publish them. An editor, manager, or admin must publish a contributor's work.
+</Note>
+
+## Feature availability
+
+Some features — including Analytics, AI Chat configuration, and Billing — are gated by plan-level feature flags. If you do not see a settings category in your sidebar, it may not be enabled on your current plan. Contact your platform administrator for access.
