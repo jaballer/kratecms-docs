@@ -20,9 +20,14 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     | **Site Name** | The name displayed in the browser tab, emails, and the admin header |
     | **Site Description** | A short summary used in meta tags and the public homepage |
     | **Footer Text** | Custom text or HTML shown in the site footer |
-    | **Timezone** | The default timezone for publish dates and timestamps shown in the admin |
+    | **Company Name** | Your organization's legal or operating name (used in invoices and formal email footers) |
+    | **Company Address** | Mailing address used in invoices and email footers where required |
 
     Set your site name and description first — they appear in every outbound email your site sends and in search engine previews.
+
+    <Note>
+      Timezone is platform-managed via the `APP_TIMEZONE` environment variable and is not exposed as a UI field. Contact your platform administrator if you need it changed.
+    </Note>
   </Accordion>
 
   <Accordion title="Brand — /admin/settings/brand">
@@ -30,9 +35,11 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
 
     | Setting | What it does |
     |---|---|
-    | **Primary Color** | The main accent color used for buttons, links, and highlights |
-    | **Typography** | Font family and scale for headings and body text |
-    | **Theme Mode** | Light, dark, or system-default |
+    | **Primary Color** | The main color used for primary buttons, links, and active states |
+    | **Secondary Color** | A complementary tone for surfaces and supporting UI |
+    | **Accent Color** | A highlight color for decorative elements and emphasis |
+    | **Typography** | Separate heading and body fonts |
+    | **Theme Mode** | Light or dark |
     | **Logo** | Uploaded image displayed in the header and emails |
     | **Favicon** | Small icon shown in browser tabs and bookmarks |
     | **Custom CSS** | Freeform CSS injected into every public page for fine-grained overrides |
@@ -67,16 +74,11 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     </Note>
   </Accordion>
 
-  <Accordion title="Analytics — /admin/settings/analytics">
-    Analytics settings let you connect your site to Google Tag Manager so you can track visits, conversions, and user behavior using your existing GTM container.
-
-    | Setting | What it does |
-    |---|---|
-    | **GTM Container ID** | Your Google Tag Manager container ID (format: `GTM-XXXXXXX`) |
-    | **Enable GTM** | Toggle to activate or deactivate the GTM snippet site-wide |
+  <Accordion title="Analytics — platform-managed during alpha">
+    Tracking and analytics tags (Google Tag Manager, etc.) are configured at the **platform** level during the KrateCMS alpha period and are not available as a tenant-facing settings panel. Platform tags render across the central marketing site and every tenant subdomain.
 
     <Warning>
-      The Analytics settings panel is gated by a feature flag and may not be visible on all plans. During early access, analytics is managed at the platform level. If you do not see this panel, contact your platform administrator.
+      The tenant `/admin/settings/analytics` route is blocked by middleware during alpha — tenants do not see this entry in the sidebar. Per-tenant analytics configuration will be exposed in a future release. For now, ask your platform administrator if you need a tag added.
     </Warning>
   </Accordion>
 
@@ -110,13 +112,22 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
   </Accordion>
 
   <Accordion title="Chat — /admin/settings/chat">
-    Chat settings configure the AI assistant that powers the chat interface and post-editing tools.
+    Chat settings configure the AI assistant that powers the chat interface, the image generator, and the API Q&A mode.
 
     | Setting | What it does |
     |---|---|
-    | **AI Model** | The OpenAI model used for chat responses (for example, `gpt-4o`, `gpt-4o-mini`) |
+    | **AI Chat Model** | The OpenAI model used for chat responses (for example, `gpt-4o`, `gpt-4o-mini`) |
+    | **Model Fallbacks** | Ordered list of fallback models if the primary model is unavailable |
     | **Temperature** | Controls response creativity; range 0–2, where 0 is deterministic and 2 is most creative |
     | **Max Tokens** | The maximum length of each AI response |
+    | **HTTP Timeout** | Seconds to wait for an OpenAI response before failing |
+    | **HTTP Retries** | Number of automatic retries on transient API failures |
+    | **HTTP Retry Delay (ms)** | Milliseconds to wait between retries |
+    | **Verify SSL** | Whether to validate SSL certificates on outbound API calls |
+    | **AI Image Model** | The OpenAI model used for image generation (for example, `dall-e-3`) |
+    | **AI Image Quality** | Standard or HD output quality |
+    | **AI Image HTTP Timeout** | Seconds to wait for an image generation response |
+    | **API Read Allowed Hosts** | Allowlist of external hostnames the API Q&A mode is permitted to read |
 
     <Note>
       The Chat settings panel is gated by a feature flag. If you do not see it in your sidebar, the AI chat feature has not been enabled on your plan.
@@ -155,6 +166,6 @@ When a setting can be configured both through the admin UI and through a platfor
 | Content | `/admin/settings/content` | admin | Always on |
 | Security | `/admin/settings/security` | admin | Always on |
 | Contact | `/admin/settings/contact` | admin | On by default |
-| Analytics | `/admin/settings/analytics` | admin | Off by default |
+| Analytics | (platform-managed during alpha) | — | Not exposed to tenants |
 | Chat | `/admin/settings/chat` | admin | Off by default |
 | Billing | `/admin/settings/billing` | admin | Off by default |
