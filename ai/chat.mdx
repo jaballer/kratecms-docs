@@ -11,18 +11,11 @@ Navigate to **AI Chat** in the admin sidebar. The chat interface loads immediate
 
 ## Chat modes
 
-KrateCMS AI chat offers two modes. You can switch between them within the same session.
+KrateCMS AI chat offers six modes. Pick a mode from the selector at the top of the chat panel — each one tunes the assistant for a different task. You can switch between modes within the same session.
 
 <Tabs>
-  <Tab title="Chat mode">
-    Chat mode is a conversational interface. Use it to ask questions, get writing feedback, brainstorm topics, or generate draft text you can copy into your posts.
-
-    **What you can do in chat mode:**
-
-    - Ask the AI to write or rewrite a passage
-    - Request outlines, introductions, or conclusions for a given topic
-    - Get suggestions for post titles, meta descriptions, or calls to action
-    - Ask open-ended questions to research or clarify ideas
+  <Tab title="Chat">
+    The default conversational interface. Use it to ask questions, get writing feedback, brainstorm topics, or generate draft text you can copy into your posts.
 
     **Example prompts:**
 
@@ -33,21 +26,37 @@ KrateCMS AI chat offers two modes. You can switch between them within the same s
     ```text
     Give me five title ideas for a post announcing our new pricing plans.
     ```
+  </Tab>
+  <Tab title="Email Copy">
+    Drafts marketing or transactional email copy with a structure tuned for subject lines, preheaders, and body sections. Useful when you want output you can paste straight into an email tool.
 
     ```text
-    Rewrite this paragraph in a friendlier, more conversational tone: [paste text]
+    Write a 3-paragraph re-engagement email for customers who haven't logged in for 60 days.
     ```
   </Tab>
-  <Tab title="Agent mode">
-    Agent mode gives the AI the ability to take actions inside your KrateCMS site. Instead of just generating text, the AI can interact with your posts directly.
+  <Tab title="Image">
+    A prompt interface for generating images from text descriptions. The output appears directly in the chat and can be saved as a post featured image. See [AI image generation](/ai/image-generation) for the in-editor flow.
+  </Tab>
+  <Tab title="Code">
+    Returns answers tuned for code: snippets, refactors, regex, and short technical explanations.
+
+    ```text
+    Write a Laravel scope that returns only published posts from the last 7 days.
+    ```
+  </Tab>
+  <Tab title="API Q&A">
+    Lets you ask questions about JSON data read from approved external URLs (configured by the platform operator under **Settings → Chat → Allowed API hosts**). Useful for quick lookups against your own JSON endpoints without writing a script.
+  </Tab>
+  <Tab title="Agent">
+    Agent mode gives the AI the ability to take actions inside your KrateCMS site. Instead of just generating text, the AI can interact with your posts directly through tool-calling.
 
     **Actions available in agent mode:**
 
-    - **Create a new post** — the AI drafts and saves a post to your site
-    - **List your posts** — retrieve a summary of your existing posts
+    - **List posts** — retrieve a summary of your existing posts
     - **Search posts** — find posts by keyword or topic
-    - **Fetch a specific post** — pull up the full content of a post by slug
-    - **Update a post** — modify the content of an existing post
+    - **Get a post** — pull up the full content of a post by id or slug
+    - **Create a post** — the AI drafts and saves a post (requires `posts.create` permission)
+    - **Update a post** — modify the content of an existing post (requires `posts.edit` permission)
 
     **Example prompts:**
 
@@ -60,15 +69,11 @@ KrateCMS AI chat offers two modes. You can switch between them within the same s
     ```
 
     ```text
-    Update my "hello-world" post with this new conclusion: [paste text]
-    ```
-
-    ```text
     Create a new draft post titled "Year in Review" with an introduction about our team's highlights.
     ```
 
     <Note>
-      Agent mode actions are real — they create and update actual posts in your CMS. Review the AI's proposed action before confirming it, and check the resulting post before publishing.
+      Agent mode actions are real — they create and update actual posts in your CMS. Review the AI's proposed action before confirming it, and check the resulting post before publishing. Tool availability depends on your role: contributors and authors see only the read-only tools (list, search, get).
     </Note>
   </Tab>
 </Tabs>
@@ -77,7 +82,7 @@ KrateCMS AI chat offers two modes. You can switch between them within the same s
 
 Your conversation history is maintained for the duration of your session. You can scroll back through the full exchange to review earlier messages or copy generated content.
 
-Each message displays its token usage so you can track how much of your AI quota a given exchange consumed. Token counts appear beneath each assistant response.
+Token usage for every message is recorded behind the scenes. Inline counts are not shown in the chat panel itself — to review per-message token usage and model costs, super-admins can open **Admin → Conversations** and inspect any conversation.
 
 ## Tenant scope
 
