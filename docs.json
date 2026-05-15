@@ -35,6 +35,7 @@
               "content/posts",
               "content/pages",
               "content/homepage",
+              "content/krate-page",
               "content/media"
             ]
           },
@@ -50,7 +51,10 @@
             "pages": [
               "settings/general",
               "settings/brand",
+              "settings/users",
               "settings/security",
+              "settings/contact",
+              "settings/domains",
               "settings/billing"
             ]
           },

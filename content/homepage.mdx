@@ -1,9 +1,9 @@
 ---
 title: "Choose what visitors see on your KrateCMS homepage"
-description: "Choose what visitors see at your root URL — a posts feed, a custom page you've built, or a pre-built marketing template — without any code changes."
+description: "Choose what visitors see at your root URL — a posts feed, a Krate link-in-bio page, a custom page you've built, or a marketing template — without any code changes."
 ---
 
-Your homepage is the first thing visitors see when they arrive at your site's root URL (`/`). KrateCMS gives you three distinct homepage modes, and you can switch between them at any time from the admin panel. No code changes, no deploy — the update takes effect the moment you save.
+Your homepage is the first thing visitors see when they arrive at your site's root URL (`/`). KrateCMS gives you four distinct homepage modes, and you can switch between them at any time from the admin panel. No code changes, no deploy — the update takes effect the moment you save.
 
 ## Open homepage settings
 
@@ -19,6 +19,24 @@ Go to **Admin → Settings → Content** (`/admin/settings/content`). The **Home
 
     <Note>
       The posts feed is the safest fallback. If you switch to a different mode and something goes wrong — for example, you select a Page that's still in draft — KrateCMS automatically falls back to the posts feed so your homepage is never broken for visitors.
+    </Note>
+  </Tab>
+  <Tab title="Krate page">
+    A link-in-bio style landing surface — your avatar, bio, social links, content links, and most recent posts on a single centered, mobile-first page. Ideal for personal brands, creators, and consultants who share one URL across social profiles.
+
+    <Steps>
+      <Step title="Switch homepage mode">
+        In Homepage Settings, choose **Krate page** from the Homepage dropdown and click **Save**.
+      </Step>
+      <Step title="Customize your Krate page">
+        Go to **Admin → Settings → Krate page** to fill in your display name, bio, avatar, social handles, and content links. See [Build a Krate page](/content/krate-page) for the full walkthrough.
+      </Step>
+    </Steps>
+
+    The Krate page stays publicly viewable even on members-only sites — it's the recruitment surface for your content. Members-only posts still stay hidden from guests inside the pinned-recent-posts block.
+
+    <Note>
+      Krate page is a tenant-only feature gated by a platform feature flag. If the option doesn't appear in your Homepage dropdown, contact your platform administrator to enable it.
     </Note>
   </Tab>
   <Tab title="Page">
@@ -77,6 +95,7 @@ Switching between homepage modes takes effect immediately after you save — the
 | Setting | Description |
 |---|---|
 | **Posts feed** | Shows the latest published posts with category filters. The default. |
+| **Krate page** | Renders a link-in-bio landing surface with bio, social links, and your latest posts. Tenant-only and platform feature-flag-gated. See [Build a Krate page](/content/krate-page). |
 | **Page** | Renders a specific page from your block editor at `/`. Requires selecting a page from the picker. |
 | **Marketing** | Renders a pre-built marketing landing template at `/`. |
 

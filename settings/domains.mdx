@@ -1,0 +1,90 @@
+---
+title: "Serve your KrateCMS site from your own domain"
+description: "Attach a custom domain (like your-brand.com) to your KrateCMS tenant with automatic SSL via Cloudflare — no DNS expertise required."
+---
+
+By default, your KrateCMS site lives at a subdomain on the platform (for example, `yoursite.kratecms.com`). When you're ready to launch under your own brand, attach a custom domain — visitors will see your URL in the address bar, and you'll get a Cloudflare-issued SSL certificate automatically.
+
+<Note>
+Custom domains are a tenant-only feature, gated by a platform feature flag. If you don't see **Domains** under **Settings**, contact your platform administrator to enable it on your site.
+</Note>
+
+## Getting there
+
+Navigate to **Admin → Settings → Domains** (`/admin/settings/domains`). The page requires admin or super-admin access.
+
+## How it works
+
+KrateCMS uses Cloudflare for SaaS to handle custom domains. The flow is:
+
+1. You enter your domain (for example, `your-brand.com` or `www.your-brand.com`).
+2. KrateCMS registers the domain with Cloudflare and returns DNS records you must add at your registrar.
+3. You copy those records into your DNS provider (GoDaddy, Namecheap, Cloudflare, Route 53, etc.).
+4. KrateCMS polls Cloudflare for the verification status; once the records propagate, your domain is active and serving traffic over HTTPS.
+
+You do not need to install certificates or configure a reverse proxy — Cloudflare handles SSL termination and routes verified traffic to the platform.
+
+## Attach a domain
+
+<Steps>
+  <Step title="Open Domains settings">
+    Go to **Admin → Settings → Domains**.
+  </Step>
+  <Step title="Enter your hostname">
+    Type the full hostname you want to serve from this tenant — for example, `your-brand.com` or `blog.your-brand.com`. Click **Attach**.
+  </Step>
+  <Step title="Add the DNS records">
+    KrateCMS displays the verification records returned by Cloudflare (a TXT or CNAME record, depending on your setup). Copy them into your DNS provider's control panel exactly as shown.
+  </Step>
+  <Step title="Wait for verification">
+    DNS propagation usually takes minutes, but can take up to 24 hours. The Domains page shows the current verification status — refresh periodically until it reads **Active**.
+  </Step>
+  <Step title="Make it primary (optional)">
+    Once active, you can mark a domain as **Primary**. The primary domain is used for canonical URLs in emails and SEO meta tags. Non-primary active domains still serve traffic — useful for handling both apex and `www.` variants.
+  </Step>
+</Steps>
+
+## Domain statuses
+
+| Status | What it means |
+|---|---|
+| **Pending** | The domain has been registered with Cloudflare; KrateCMS is waiting for DNS records to propagate and Cloudflare to confirm. |
+| **Active** | DNS is verified and SSL is issued. The domain is serving traffic. |
+| **Expired** | A previously active domain has had its DNS records removed or its Cloudflare hostname invalidated. Re-add the DNS records to restore. |
+| **Failed** | Cloudflare could not verify ownership. Confirm your DNS records match what's shown in the Domains page and try again. |
+
+KrateCMS polls Cloudflare in the background to keep these statuses up to date. You don't need to refresh manually — the page updates as transitions happen.
+
+## Manage attached domains
+
+The Domains page lists every domain attached to your tenant. For each row you can:
+
+- **Set Primary** — make this domain the canonical one for emails, OG meta tags, and links inside the admin.
+- **Remove** — detach the domain from your tenant. Cloudflare's hostname record is cleaned up automatically.
+
+<Warning>
+Removing your primary domain takes effect immediately. Visitors who bookmarked the removed URL will get a 404 until they switch back to the platform subdomain or another active domain.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="My domain has been pending for hours">
+    DNS propagation can take up to 24 hours in some cases, especially if you previously had a different `CNAME` or `A` record on the same hostname. Use a tool like [dnschecker.org](https://dnschecker.org) to see whether your new records are visible to public resolvers. If they are visible but the status hasn't flipped, contact your platform administrator — they can ask Cloudflare to re-verify.
+  </Accordion>
+  <Accordion title="I got a failed status — what went wrong?">
+    The most common causes are:
+
+    - The TXT or CNAME record was copied with extra whitespace, a missing dot, or a typo.
+    - The record points at a different host than what KrateCMS displays.
+    - Your registrar adds a domain suffix automatically (e.g., entering `your-brand.com` becomes `your-brand.com.your-brand.com`).
+
+    Double-check the records in your DNS provider against what's shown in **Settings → Domains**. Many providers offer a "raw" or "advanced" record editor that avoids these auto-suffix problems.
+  </Accordion>
+  <Accordion title="Can I use both my apex and www.?">
+    Yes. Attach both `your-brand.com` and `www.your-brand.com` as separate domain rows. Set one as primary; KrateCMS will serve traffic from both. Use a 301 redirect at your DNS or web layer if you want one to canonicalize to the other.
+  </Accordion>
+  <Accordion title="Does my SSL certificate auto-renew?">
+    Yes. Cloudflare issues and renews the SSL certificate automatically for the life of the attached domain. There's no expiry to monitor as long as the domain is in Active status.
+  </Accordion>
+</AccordionGroup>

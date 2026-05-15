@@ -27,36 +27,44 @@ KrateCMS sends transactional and notification emails through Postmark, a deliver
 
 ## Set up the contact form
 
-To enable the contact form on your site and receive submissions by email:
+See [Configuring the contact form](/settings/contact) for the full walkthrough — enabling the public `/contact-us` form, setting the recipient address, and customizing the subject prefix.
 
-<Steps>
-  <Step title="Open contact settings">
-    In your admin panel, navigate to `/admin/settings/contact`.
-  </Step>
-  <Step title="Enable the contact form">
-    Toggle the contact form on. This makes the form visible to visitors on your public site.
-  </Step>
-  <Step title="Set the recipient email">
-    Enter the email address where you want to receive contact form submissions. This can be any address you have access to — it does not need to match your KrateCMS admin account email.
-  </Step>
-  <Step title="Configure a subject prefix">
-    Add a subject prefix so you can identify contact form emails at a glance in your inbox (for example, `[Contact]` or `[Your Site Name]`).
+Submissions are also logged to a per-tenant audit table at **Admin → Contact Submissions** (`/admin/contact-submissions`), so you can review every message even if an email is missed or filtered.
 
-    <Tip>
-      Use a descriptive subject prefix — like `[YourSite Contact]` — to create a simple inbox filter rule. This keeps contact form submissions organized in their own folder without any manual sorting.
-    </Tip>
-  </Step>
-</Steps>
+## Dashboard "Contact Support" widget
+
+Signed-in admins also see a **Contact Support** widget on the dashboard. It opens a small form with subject buckets — **Sales**, **Support**, and free-form — and routes each submission to the platform-side inbox configured for that bucket:
+
+| Subject | Routed to |
+|---|---|
+| Sales | `contact_sales_emails` |
+| Support | `contact_support_emails` |
+| Other | `contact_owners_emails` (fallback) |
+
+Platform staff see incoming requests in the central admin inbox at `/admin/support-requests`, where each row also captures which tenant the submission came from.
 
 ## Bounce and complaint handling
 
-KrateCMS automatically receives bounce and complaint notifications from Postmark and maintains an internal suppression list. If an email address hard-bounces or a recipient marks a message as spam, that address is added to the suppression list and future emails to it are skipped automatically.
+KrateCMS automatically receives bounce and complaint notifications from Postmark and maintains a platform-level suppression list. If an email address hard-bounces or a recipient marks a message as spam, that address is added to the suppression list and future emails to it are skipped automatically.
 
 This protects your sending reputation — repeatedly sending to addresses that bounce or complain signals to email providers that you are sending spam, which can affect deliverability for all your users.
 
 <Note>
-You can monitor your email deliverability health, view bounces, and inspect the suppression list from `/admin/integrations/email-health` in your admin panel.
+The suppression list is platform-wide. A bounce on one tenant suppresses the same address across every tenant on the platform — this is the correct behavior for shared infrastructure, where the same address bouncing twice would otherwise damage every site's reputation.
 </Note>
+
+## Email health dashboard
+
+Platform admins can monitor delivery health from **Admin → Integrations → Email Health** (`/admin/integrations/email-health`). The dashboard surfaces:
+
+- **Recent delivery counts** — sent, delivered, bounced, complained, and opened, broken down by Postmark stream
+- **Bounce details** — every recent bounce with the recipient address, reason, and Postmark event ID
+- **Suppression list** — every email address currently suppressed, with the reason it was added (hard bounce or complaint) and the date
+- **Manual suppression management** — remove an address from the suppression list when you know the bounce was a one-off (e.g., a typo in a former teammate's address)
+
+<Warning>
+The Email Health dashboard is central-only. Tenant admins can't see it directly — escalate to your platform administrator if you need a deliverability check or a suppression removed.
+</Warning>
 
 ## Message streams and deliverability
 

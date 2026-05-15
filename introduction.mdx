@@ -15,8 +15,14 @@ KrateCMS gives your team a fully featured content management system accessible f
   <Card title="Creating Posts" icon="pen-to-square" href="/content/posts">
     Write and publish posts with the TinyMCE editor, featured images, and categories.
   </Card>
+  <Card title="Krate Page" icon="link" href="/content/krate-page">
+    Turn your homepage into a link-in-bio landing page — perfect for Instagram bios and DMs.
+  </Card>
   <Card title="AI Chat & Agent" icon="robot" href="/ai/chat">
     Use the built-in AI assistant to draft content, generate images, and manage posts by conversation.
+  </Card>
+  <Card title="Custom Domains" icon="globe" href="/settings/domains">
+    Serve your site from your own domain with automatic SSL via Cloudflare.
   </Card>
 </CardGroup>
 
@@ -30,7 +36,9 @@ Pages work differently — they are built from a modular block library. Drag and
 
 ### Configurable homepage
 
-Choose what visitors see when they land on your site: a scrolling posts feed (the default), a legacy marketing template, or any Page you have built — just like WordPress's "page as homepage" option. Switch between them any time from **Settings → Content**.
+Choose what visitors see when they land on your site: a scrolling posts feed (the default), a Krate link-in-bio page, any Page you have built (WordPress-style "page as homepage"), or a pre-built marketing template. Switch between them any time from **Settings → Content**.
+
+The **Krate page** is the lowest-friction option — a centered, mobile-first landing surface with your avatar, bio, social links, content links, and latest posts. Ideal for personal brands and creators sharing a single URL from Instagram or DMs. See [Build a Krate page](/content/krate-page) for the full feature.
 
 ### AI tools
 
@@ -43,6 +51,10 @@ Every tenant gets a versioned REST API at `/api/v1/`. Public endpoints (like lis
 ### Brand and settings
 
 Customize your site's colors, typography, logo, favicon, theme mode, and inject custom CSS — all from **Settings → Brand**. General settings let you set the site name, description, footer text, and timezone. Security settings control login attempt limits, session timeouts, and password policies.
+
+### Multi-tenancy and custom domains
+
+Every KrateCMS site is a fully isolated tenant on a shared platform. You get your own subdomain (`yoursite.kratecms.com`), your own users, your own content, and your own brand — invisible to other tenants on the platform. When you're ready to launch under your own brand, attach a custom domain like `your-brand.com` with automatic SSL via Cloudflare. See [Custom domains](/settings/domains).
 
 ## Roles and what they can do
 

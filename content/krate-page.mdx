@@ -1,0 +1,127 @@
+---
+title: "Build a Krate page — link-in-bio homepage"
+description: "Turn your homepage into a link-in-bio landing page with a bio, avatar, social links, content links, and your latest posts — perfect for Instagram bio links."
+---
+
+A **Krate page** is a link-in-bio style homepage — a single, centered, mobile-first landing surface for your bio, avatar, social handles, content links, and your most recent published posts. Think Linktree or Beacons, but with a real CMS attached: your latest posts render inline, so visitors can read your content instead of just clicking out.
+
+The Krate page is the lowest-friction way to put your KrateCMS site to work. Share `https://yoursite.kratecms.com` from your Instagram bio, your DMs, or a QR code — visitors land on the Krate page and can move into your full posts or pages whenever you decide to publish them.
+
+<Note>
+The Krate page is a tenant-only feature, gated by a platform feature flag. If you don't see **Krate page** under **Settings**, contact your platform administrator to enable it on your site.
+</Note>
+
+## Enable the Krate page
+
+<Steps>
+  <Step title="Open Content settings">
+    Go to **Admin → Settings → Content** (`/admin/settings/content`).
+  </Step>
+  <Step title="Set Homepage to Krate page">
+    From the **Homepage type** dropdown, choose **Krate page** and click **Save**. Your homepage at `/` now renders the Krate page layout.
+  </Step>
+  <Step title="Customize your profile">
+    Go to **Admin → Settings → Krate page** (`/admin/settings/krate-page`) to fill in your display name, bio, avatar, links, and pinned-post options.
+  </Step>
+</Steps>
+
+<Tip>
+A banner on the Krate page settings screen tells you whether your homepage is currently set to **Krate page**. If you're customizing the page before switching, the banner reminds you to flip the **Homepage type** when you're ready.
+</Tip>
+
+## Editing your Krate page
+
+Open **Admin → Settings → Krate page** to access the editor. The page is divided into sections you can fill in independently — nothing is required to save.
+
+### Identity
+
+| Field | What it does |
+|---|---|
+| **Display name** | The headline shown above your bio. Defaults to your tenant name. |
+| **Tagline** | A short one-liner under your name (for example, "Audio essays + workshops"). |
+| **Bio** | A longer paragraph up to 500 characters. |
+| **Accent color** | A hex color used for link borders, the avatar ring, and other visual accents. Pick a color that matches your brand. |
+
+### Avatar
+
+Upload a square image (JPEG, PNG, or WebP, up to 2 MB) to display at the top of the page. If no avatar is set, your display name's initials render in a gradient circle as a fallback.
+
+<Note>
+Replace your avatar by uploading a new one — the previous file is removed automatically. To remove the avatar entirely, tick the **Remove avatar** checkbox and save.
+</Note>
+
+### Recent posts
+
+| Field | What it does |
+|---|---|
+| **Show recent posts** | Toggle the pinned-posts block on or off. |
+| **Number of posts** | How many recent posts to display (1 to 10; default 3). |
+| **Category filter** | Limit pinned posts to one category (text, audio, video), or leave blank for all. |
+| **Show excerpts** | Display each post's excerpt below the title. |
+
+Only **published** posts are shown. Members-only posts are filtered out for guests automatically — the Krate page is public-facing, so private posts stay private.
+
+### Social links
+
+Add up to 20 social handles. For each row:
+
+- **Platform** — choose from Instagram, Facebook, LinkedIn, X (Twitter), YouTube, TikTok, GitHub, or Website.
+- **URL** — the full `https://` link to your profile.
+
+Each platform renders its own icon in a row beneath your bio. Unknown platforms fall back to a globe icon.
+
+<Note>
+The platform key for X / Twitter is `x`. If you save `twitter`, it's normalized to `x` automatically — both names render the X icon.
+</Note>
+
+### Content links
+
+Add up to 50 content links — the cards that make up the body of your Krate page. Each link has:
+
+- **Label** — the text shown on the button.
+- **URL** — where the link points (must be `http://` or `https://`).
+- **Description** — optional supporting text shown below the label.
+
+Use the up/down arrows on each row to reorder the links — they render in the same order on your public Krate page.
+
+## What visitors see
+
+When someone visits your site's root URL:
+
+1. **Avatar + display name + tagline + bio** — centered at the top.
+2. **Social icon row** — horizontally aligned icons under your bio.
+3. **Content links** — each rendered as a tappable card with your chosen accent color as a border.
+4. **Latest posts** — your most recent published posts, with title, optional excerpt, and publish date.
+5. **Made with KrateCMS** — a small footer credit.
+
+The layout is centered, single-column, and tuned for mobile — most visitors arrive from Instagram or DMs.
+
+<Note>
+The Krate page is fully indexable by search engines. It emits JSON-LD `Person` schema (with `sameAs` for your social links), Open Graph tags, and a Twitter card so it previews well when shared.
+</Note>
+
+## Members-only sites
+
+If your site is set to **Members only** under [Content settings](/configuration), the Krate page is **still publicly viewable**. The Krate page is your recruitment surface — locking it behind a login would defeat the point.
+
+The pinned-recent-posts block still respects each post's individual visibility setting: members-only posts stay hidden from guests, while public posts continue to appear.
+
+## When to use a Krate page vs. a Page or Posts feed
+
+<CardGroup cols={3}>
+  <Card title="Krate page" icon="link">
+    Best for personal brands, creators, and consultants who share a single URL across social profiles and want a clean, mobile-first landing.
+  </Card>
+  <Card title="Page (block editor)" icon="layout-panel-top">
+    Best when you need a full, custom landing page with hero sections, two-column layouts, CTAs, and other blocks. See [Building pages](/content/pages).
+  </Card>
+  <Card title="Posts feed" icon="newspaper">
+    Best for publications and editorial sites where readers should see your latest content at the door. See [Configuring your homepage](/content/homepage).
+  </Card>
+</CardGroup>
+
+## Security and trust
+
+- **Outbound links** open in a new tab with `rel="noopener noreferrer"` set automatically — visitors clicking your social or content links can't be redirected against your site's session.
+- **URL fields** accept only `http://` and `https://` schemes. Attempts to save `javascript:` or `data:` URLs are rejected at validation time.
+- **Avatar uploads** are validated server-side — the file's actual MIME type is checked, not the filename you uploaded under.

@@ -1,0 +1,109 @@
+---
+title: "Invite and manage users in KrateCMS"
+description: "Invite teammates, assign roles, reset passwords, and recover access — manage every user on your KrateCMS site from a single admin screen."
+---
+
+KrateCMS uses an invitation-based account model: there is no public sign-up page. You invite teammates from the admin, they set their own password via a one-time link, and you assign roles to control what each person can see and do. Admins also have built-in recovery tools — you can resend an invitation, reset a stuck password, or sign someone out of every device without ever asking for their credentials.
+
+## Getting there
+
+Navigate to **Users** in the admin sidebar (`/admin/users`) to see your team. Admin or higher is required to invite or modify accounts; managers can view but not change them.
+
+## Invite a new user
+
+<Steps>
+  <Step title="Open the invite form">
+    Go to **Admin → Users → New User**, or click **+ New → User** from the quick-create menu in the admin bar.
+  </Step>
+  <Step title="Fill in the basics">
+    Enter the new user's:
+
+    - **Name** — display name shown across the admin and on their public profile
+    - **Email** — used for sign-in and for the welcome email
+    - **Username** — auto-generated from the name if you leave it blank; used in profile URLs and as a backup login identifier
+    - **Role** — see [Roles and permissions](/settings/security#roles-and-permissions) for the full hierarchy
+  </Step>
+  <Step title="Send the invitation">
+    Click **Save**. KrateCMS sends a welcome email with a one-time **Set password** link. The new user clicks the link to choose their own password and complete account setup — you never see or set their password.
+  </Step>
+</Steps>
+
+<Note>
+The welcome email is sent through your platform's Postmark stack. The link expires after a limited window. If the user doesn't see the email, check the [email health dashboard](/integrations/email) for delivery issues.
+</Note>
+
+## Manage existing users
+
+Click any row in the user list to open that user's detail page. From there you can edit basic fields, change role assignments, or use the admin recovery tools described below.
+
+### Edit profile details
+
+Update the user's **Name**, **Email**, **Username**, or **Role** and click **Save**. Changes take effect immediately.
+
+<Warning>
+Changing a user's email address requires them to re-verify the new address before they can sign in again. They'll receive a verification email automatically.
+</Warning>
+
+### Recovery tools
+
+When a user can't get into their account on their own — they lost the welcome email, forgot their password, or you suspect a session needs to be killed — use these admin actions on the user detail page.
+
+<AccordionGroup>
+  <Accordion title="Resend invite">
+    Sends the welcome / set-password email again. Use this when a brand-new user never received their original invitation, or when the one-time link in the original email has expired.
+  </Accordion>
+  <Accordion title="Send password reset">
+    Sends a password-reset email to the user's current address. They can choose a new password via the standard reset flow. Use this when an active user is locked out and can't trigger the "Forgot password" flow themselves (for example, if they're not receiving emails to the address on file).
+  </Accordion>
+  <Accordion title="Force logout">
+    Immediately invalidates every active session for the user across every device. Use this when you suspect their account is compromised, after a role change, or when you want to be sure they sign back in with the latest permissions.
+  </Accordion>
+  <Accordion title="Enable / disable account">
+    Toggle the user's `is_enabled` flag. A disabled user can't log in, and any active sessions are terminated on the next request. Use this for soft-deactivating accounts without removing their content.
+  </Accordion>
+  <Accordion title="Delete user">
+    Permanently removes the user account and detaches them from their content. This is irreversible — prefer **Disable** unless you're sure.
+  </Accordion>
+</AccordionGroup>
+
+## Login activity
+
+Open `/admin/activity/login` (Manager and above) to see a live list of recent login attempts across your site. Each row shows the user, the IP address, whether the attempt succeeded or failed, and a timestamp.
+
+<Note>
+Login activity is gated by a platform feature flag. If you don't see the **Login Activity** entry in your sidebar, ask your platform administrator whether it's enabled on your plan.
+</Note>
+
+Use this view to:
+
+- Spot brute-force attempts against a specific account
+- Confirm a user actually signed in after you reset their password
+- Audit who has been signing in from where over the last few days
+
+## Per-tenant identity
+
+KrateCMS runs as a multi-tenant platform. Each tenant has its own user table — the same email address can legitimately exist on multiple tenants as independent accounts, each with its own password, sessions, and content.
+
+In practice, this means:
+
+- Inviting `alex@example.com` to your site creates an account that is **only valid on your subdomain**. The same email registered on another KrateCMS site is a separate account.
+- A user has to set their password separately for each tenant they belong to.
+- Force-logging out a user on your tenant doesn't affect their sessions on other tenants.
+
+<Tip>
+Use the platform-managed token-based invitation flow rather than sharing passwords. The one-time **Set password** link in the welcome email is the safest way to get a new user signed in — you never need to know or transmit their password.
+</Tip>
+
+## Tips for managing your team
+
+<AccordionGroup>
+  <Accordion title="Apply the principle of least privilege">
+    Give users the lowest role that lets them do their job. A regular writer who doesn't need to publish immediately should be a **Contributor**, not an Editor. See [Security settings](/settings/security#roles-and-permissions) for the full role reference.
+  </Accordion>
+  <Accordion title="Reuse roles instead of customizing per-user">
+    KrateCMS does not support per-user permission overrides — role names are the single source of truth. If you need a permission combination that doesn't fit one of the seven built-in roles, contact your platform administrator. Role definitions themselves are super-admin-only.
+  </Accordion>
+  <Accordion title="Confirm a force-logout actually killed every session">
+    After a force logout, ask the user to confirm they were signed out on every device they use. Sessions on tabs that are still loading at the moment of force-logout may take one more request before they are blocked.
+  </Accordion>
+</AccordionGroup>

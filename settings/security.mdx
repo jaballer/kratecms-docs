@@ -70,6 +70,25 @@ Roles are assigned when you invite a user or from the user's profile in the admi
 Follow the principle of least privilege: give users the lowest role that still lets them do their job. For example, a regular writer who doesn't need to publish immediately should be a Contributor, not an Editor.
 </Tip>
 
+## Admin recovery tools
+
+When a user can't get into their account, you have several recovery actions available from the user detail page in **Admin → Users**:
+
+- **Send password reset** — emails the user a reset link without requiring them to use the public "Forgot password" flow
+- **Resend invite** — re-sends the welcome / set-password email if the original was lost or expired
+- **Force logout** — immediately terminates every active session for the user across every device
+- **Enable / disable account** — toggle whether the user can sign in at all; disabling kills active sessions on the next request
+
+See [Inviting and managing users](/settings/users) for the full workflow.
+
+## Login activity
+
+Open **Admin → Activity → Login** (`/admin/activity/login`) — available to manager-and-above when the platform feature flag is enabled — to review every login attempt against your site. Each row shows the user, IP address, success or failure, and timestamp. Use it to:
+
+- Spot brute-force attempts targeting a specific account
+- Confirm a user successfully signed in after a password reset
+- Audit who has accessed the admin from where over the recent past
+
 ## Frequently asked questions
 
 <AccordionGroup>
