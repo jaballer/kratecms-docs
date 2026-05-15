@@ -1,0 +1,102 @@
+---
+title: "Configure the public contact form on your KrateCMS site"
+description: "Enable the public contact form, set the recipient email and subject prefix, and review every submission from the admin — with Postmark delivery and rate limiting built in."
+---
+
+Every KrateCMS tenant ships with a public contact form at `/contact-us`. Visitors submit a message; you receive it as an email and as a row in an admin audit log. The form is enabled by default — turn it off if you don't want a contact entrypoint, or customize the recipient and subject prefix to fit your inbox routing.
+
+The platform handles email delivery through Postmark — you don't need your own SMTP credentials, API keys, or sender signatures. The form is rate-limited per IP and per tenant to protect deliverability, and a honeypot field rejects bot submissions before any audit row is written.
+
+## Getting there
+
+Navigate to **Admin → Settings → Contact** (`/admin/settings/contact`). Admin or super-admin access is required.
+
+## Settings overview
+
+| Setting | What it does |
+|---|---|
+| **Enable contact form** | Toggle the public `/contact-us` page on or off. When off, the page returns 404 — indistinguishable from never existing. |
+| **Recipient email** | Where submissions are emailed. Leave blank to default to the first admin user's address. |
+| **Subject prefix** | A short label wrapped in square brackets and prepended to every submission subject in your inbox. |
+
+<Steps>
+  <Step title="Open Contact settings">
+    Go to **Admin → Settings → Contact**.
+  </Step>
+  <Step title="Toggle the form on">
+    Check **Enable contact form** to make `/contact-us` visible to your visitors. Uncheck it to hide the page entirely.
+  </Step>
+  <Step title="Set the recipient">
+    Enter the email address where you want submissions to land. Leave blank if you want submissions to go to the first admin user on your tenant — the setting is self-healing, so changing that admin's email also changes where future submissions arrive.
+  </Step>
+  <Step title="Set a subject prefix (optional)">
+    Add a short prefix (up to 60 characters). Leave blank to use your tenant name automatically. For example, a prefix of `Acme Inbox` produces subjects like `[Acme Inbox] Pricing question`.
+  </Step>
+  <Step title="Save">
+    Click **Save**. Changes take effect immediately for new submissions.
+  </Step>
+</Steps>
+
+<Tip>
+Use a distinctive subject prefix — like `[YourSite Contact]` — to set up a one-rule inbox filter that files every submission into its own folder. This keeps customer messages organized without manual sorting.
+</Tip>
+
+## How submissions are delivered
+
+When a visitor submits the form:
+
+1. KrateCMS validates the input and records a `ContactSubmission` row in your tenant's audit log.
+2. An email is queued to your configured recipient using Postmark's `notifications` stream.
+3. The email's **Reply-To** header is set to the submitter's address — replying from your inbox routes directly back to the visitor.
+4. A "View submission" CTA in the email deep-links to the admin detail view at `/admin/contact-submissions/{id}`, so you can see the full context (including IP and timestamp) without leaving your inbox.
+
+If the recipient address is on the Postmark suppression list (because it previously bounced or complained), KrateCMS skips the email and still records the submission so you can recover it from the admin.
+
+## Reviewing submissions in the admin
+
+Open **Admin → Contact Submissions** (`/admin/contact-submissions`) to see every submission for your tenant, newest first.
+
+Each row shows:
+
+| Column | What it shows |
+|---|---|
+| **Received** | When the submission was posted |
+| **From** | Submitter's name and email |
+| **Subject** | The submitter's subject line (or "(no subject)") |
+| **Status** | Pending / Delivered / Failed — based on the Postmark dispatch result |
+
+Click a row to open the full detail view, including the message body and the Reply-To address.
+
+<Note>
+Submissions are tenant-scoped — you see only the messages for your own site. The platform never mixes contact submissions across tenants.
+</Note>
+
+## Protection against abuse
+
+KrateCMS applies several layers of bot and spam protection automatically — no configuration needed:
+
+- **Honeypot field** — a hidden field that bots tend to fill in. Submissions with a non-empty honeypot are rejected before any audit row is written.
+- **Per-IP rate limit** — repeated submissions from the same IP within a short window are throttled.
+- **Per-tenant rate limit** — a global cap protects you (and the platform) from a flood of submissions targeting your site.
+- **Suppression list integration** — bouncing addresses are auto-suppressed at the platform level, so a single typo in a recipient address doesn't pollute your sending reputation.
+
+If a legitimate submitter is being throttled (for example, multiple people sharing a corporate IP), ask them to try again after a few minutes — the throttle window resets automatically.
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="What happens if I disable the form after submissions have arrived?">
+    The form's public page returns 404 immediately, but every submission already in your audit log stays intact. Re-enabling the form makes `/contact-us` visible again with no further configuration.
+  </Accordion>
+  <Accordion title="Can I have multiple recipients?">
+    Not directly from this settings page. Set the recipient to a distribution list address (for example, `team@yoursite.com`) at your email provider and have that list forward to the people who should see submissions.
+  </Accordion>
+  <Accordion title="Why don't I see the form on my Krate page?">
+    The Krate page is a [link-in-bio homepage](/content/krate-page). The contact form lives at `/contact-us` — link to it from your Krate page content links, or from any page in your navigation.
+  </Accordion>
+  <Accordion title="The email is in spam — what can I do?">
+    Once-off spam classification is common when a recipient address has never received a Postmark-sent message before. Add `notifications@kratecms.com` (or your platform's send-from address) to your address book and reply to the test submission you sent yourself.
+
+    If submissions are consistently going to spam at scale, check the [email health dashboard](/integrations/email) — your platform administrator can inspect Postmark delivery logs to confirm there's no broader deliverability issue.
+  </Accordion>
+</AccordionGroup>

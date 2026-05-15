@@ -64,14 +64,35 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     | Value | Behavior |
     |---|---|
     | **Posts** | A scrolling feed of published posts with category filters (default) |
+    | **Krate page** | A link-in-bio landing surface with bio, social links, and your latest posts ([details](/content/krate-page)) — tenant-only, feature-flag-gated |
     | **Page** | A specific Page you select from the page picker — useful for custom landing pages |
-    | **Marketing** | A legacy marketing template |
+    | **Marketing** | A pre-built marketing template |
 
-    **Posts in Nav** toggles whether a "Posts" link appears in the public navigation bar. Disable it if your site uses a Page as its homepage and you want to keep the nav focused on your custom page structure.
+    **Posts in Nav** toggles whether a "Posts" link appears in the public navigation bar. Disable it if your site uses a Page or Krate page as its homepage and you want to keep the nav focused on your custom structure.
 
     <Note>
-      Site visibility is a site-wide gate. Individual posts also have their own visibility setting (public or members-only), which combines with the site-wide setting — a members-only post is always private regardless of site visibility.
+      Site visibility is a site-wide gate. Individual posts also have their own visibility setting (public or members-only), which combines with the site-wide setting — a members-only post is always private regardless of site visibility. The Krate page intentionally bypasses the site-wide gate so it can serve as your public recruitment surface.
     </Note>
+  </Accordion>
+
+  <Accordion title="Krate page — /admin/settings/krate-page">
+    Configure your link-in-bio homepage: display name, bio, avatar, accent color, social links, content links, and pinned recent posts. See [Build a Krate page](/content/krate-page) for the full walkthrough.
+
+    <Warning>
+      Krate page is a tenant-only feature gated by a platform feature flag. If the **Krate page** entry is not in your Settings sidebar, contact your platform administrator to enable it.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Contact — /admin/settings/contact">
+    Configure the public contact form at `/contact-us`: enable or disable, set the recipient email, and customize the subject prefix. Submissions are also logged to a per-tenant audit table at `/admin/contact-submissions`. See [Configuring the contact form](/settings/contact) for the full walkthrough.
+  </Accordion>
+
+  <Accordion title="Domains — /admin/settings/domains">
+    Attach a custom domain (like `your-brand.com`) to your tenant with automatic SSL via Cloudflare. See [Custom domains](/settings/domains) for the full walkthrough.
+
+    <Warning>
+      Domains is a tenant-only feature gated by a platform feature flag. If the **Domains** entry is not in your Settings sidebar, contact your platform administrator to enable it.
+    </Warning>
   </Accordion>
 
   <Accordion title="Analytics — platform-managed during alpha">
@@ -80,18 +101,6 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     <Warning>
       The tenant `/admin/settings/analytics` route is blocked by middleware during alpha — tenants do not see this entry in the sidebar. Per-tenant analytics configuration will be exposed in a future release. For now, ask your platform administrator if you need a tag added.
     </Warning>
-  </Accordion>
-
-  <Accordion title="Contact — /admin/settings/contact">
-    Contact settings configure the public contact form that appears on your site. Use these to control whether the form is active, where submissions are sent, and how emails are labeled.
-
-    | Setting | What it does |
-    |---|---|
-    | **Enable Contact Form** | Show or hide the public contact form |
-    | **Recipient Email** | The address where contact form submissions are delivered |
-    | **Subject Prefix** | A short label prepended to every contact email subject line (for example, `[My Site]`) |
-
-    Submissions are also logged in the admin at `/admin/contact-submissions` so you can review them even if an email is missed.
   </Accordion>
 
   <Accordion title="Security — /admin/settings/security">
@@ -164,8 +173,10 @@ When a setting can be configured both through the admin UI and through a platfor
 | General | `/admin/settings/general` | admin | Always on |
 | Brand | `/admin/settings/brand` | admin | Always on |
 | Content | `/admin/settings/content` | admin | Always on |
+| Krate page | `/admin/settings/krate-page` | admin | Tenant-only, default on |
 | Security | `/admin/settings/security` | admin | Always on |
 | Contact | `/admin/settings/contact` | admin | On by default |
+| Domains | `/admin/settings/domains` | admin / super-admin | Tenant-only, default on |
 | Analytics | (platform-managed during alpha) | — | Not exposed to tenants |
 | Chat | `/admin/settings/chat` | admin | Off by default |
 | Billing | `/admin/settings/billing` | admin | Off by default |
