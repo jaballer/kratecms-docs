@@ -1,0 +1,119 @@
+---
+title: "Create a link-in-bio Krate page"
+description: "Turn your homepage into a link-in-bio landing page — avatar, bio, social links, content buttons, and your latest posts — with the KrateCMS Krate page."
+---
+
+A Krate page is a link-in-bio style homepage, similar to Linktree. Instead of a posts feed or a full landing page, your root URL (`/`) shows a compact, mobile-friendly profile: your avatar, a short bio, a row of social icons, a stack of link buttons, and — the part a plain link-in-bio tool can't do — your latest posts, rendered right on the page.
+
+It's the lowest-effort way to put a shareable presence online. Drop the link in your Instagram bio or a DM, and visitors can read your content without being sent elsewhere.
+
+## What visitors see
+
+<CardGroup cols={2}>
+  <Card title="Avatar and bio" icon="user">
+    Your profile photo (or your initials), display name, tagline, and a short bio.
+  </Card>
+  <Card title="Social icons" icon="share-nodes">
+    A row of icons linking to your profiles on Instagram, X, YouTube, and more.
+  </Card>
+  <Card title="Content links" icon="link">
+    A vertical stack of labeled buttons pointing anywhere you choose, each with an optional one-line description.
+  </Card>
+  <Card title="Latest posts" icon="newspaper">
+    Your most recent published posts, shown inline with title, date, and an optional excerpt.
+  </Card>
+</CardGroup>
+
+The page is search-engine friendly and shareable out of the box — it renders structured data and social-card metadata, so links to it preview nicely on other platforms.
+
+## Turn on the Krate page
+
+The Krate page is one of your [homepage modes](/content/homepage). Switching to it takes two steps: select it as your homepage, then fill in your profile.
+
+<Steps>
+  <Step title="Select Krate page as your homepage">
+    Go to **Admin → Settings → Content** (`/admin/settings/content`). In **Homepage Settings**, choose **Krate page (link-in-bio)** from the Homepage dropdown and click **Save**.
+  </Step>
+  <Step title="Open Krate page settings">
+    Go to **Admin → Settings → Krate page** (`/admin/settings/krate-page`) to fill in your profile.
+  </Step>
+  <Step title="Fill in your profile">
+    Add your identity details, avatar, social links, content links, and choose how your latest posts appear (see [Configure your Krate page](#configure-your-krate-page) below).
+  </Step>
+  <Step title="View it live">
+    Use the **View live** button on the settings page (or just visit `/`) to see your Krate page as visitors will.
+  </Step>
+</Steps>
+
+<Note>
+  The Krate page is available to **admins** and **super-admins** and is enabled by default. If you don't see **Krate page (link-in-bio)** in the Homepage dropdown or a **Krate page** entry under Settings, the feature may have been turned off for your site — contact your platform administrator.
+</Note>
+
+## Configure your Krate page
+
+All Krate page content is edited at **Settings → Krate page** (`/admin/settings/krate-page`), organized into the sections below.
+
+### Identity
+
+| Field | Description |
+|---|---|
+| **Display name** | The name shown under your avatar. Up to 120 characters. Defaults to your site name if left blank. |
+| **Tagline** | A short line under your name. Up to 160 characters. |
+| **Bio** | A longer description. Up to 500 characters. |
+| **Accent color** | The color used for your link buttons and avatar ring. Pick any hex color; the default is indigo. |
+
+### Avatar
+
+Upload a profile photo (JPEG, PNG, or WebP, up to 2 MB). The settings page shows a live preview of the image you select before you save. If you don't upload one, the page shows your initials on a colored background instead.
+
+<Tip>
+  To remove your current avatar, tick the **remove** checkbox and save. If you select a new file, it always takes priority over the remove option — so you can swap your photo in a single save.
+</Tip>
+
+### Social links
+
+Add up to 20 social profiles. For each one, pick a **platform** and paste your profile **URL** (must start with `http` or `https`). Supported platforms:
+
+- Instagram, Facebook, LinkedIn
+- X (formerly Twitter)
+- YouTube, TikTok, GitHub
+- Website (a generic link for anything else)
+
+Each platform renders its own icon in the social row.
+
+### Content links
+
+Add up to 50 link buttons — these are the heart of a link-in-bio page. For each one, set:
+
+- **Label** — the button text (up to 120 characters)
+- **URL** — where it points (must start with `http` or `https`)
+- **Description** — an optional one-line subtitle (up to 200 characters)
+
+Use the up and down arrows to reorder your buttons. They appear on the page in the order you set.
+
+### Latest posts
+
+Show your most recent published posts inline, beneath your links.
+
+| Setting | Description |
+|---|---|
+| **Show recent posts** | Toggle the posts block on or off. |
+| **Number of posts** | How many to show, from 1 to 10 (default 3). |
+| **Category** | Optionally limit the block to one category (text, audio, or video). |
+| **Show excerpts** | Whether each post shows its excerpt under the title. |
+
+The posts block respects each post's own visibility — drafts and members-only posts never appear to logged-out visitors.
+
+## Edit your Krate page in one click
+
+When you're logged in with permission to edit settings and you visit your Krate page at `/`, an **Edit Krate Page** button appears in the admin bar at the top of the screen. It takes you straight to the Krate page settings — the same shortcut the **Edit Post** and **Edit Page** buttons give you elsewhere.
+
+## Visibility on members-only sites
+
+If your site is set to **Members only**, your Krate page is still public — it's designed to be your front door, so locking it behind a login would defeat the purpose. The profile, links, and social icons stay visible to everyone.
+
+Your **posts** remain protected: the Latest posts block still hides members-only posts and drafts from logged-out visitors, so only content you've made public shows there.
+
+<Note>
+  The Krate page is one of four [homepage modes](/content/homepage). You can switch back to a posts feed, a Page, or the marketing template at any time from **Settings → Content** — your Krate page profile is kept, so switching back later restores it.
+</Note>

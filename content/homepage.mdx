@@ -1,9 +1,9 @@
 ---
 title: "Choose what visitors see on your KrateCMS homepage"
-description: "Choose what visitors see at your root URL — a posts feed, a custom page you've built, or a pre-built marketing template — without any code changes."
+description: "Choose what visitors see at your root URL — a posts feed, a custom page you've built, a pre-built marketing template, or a link-in-bio Krate page — without any code changes."
 ---
 
-Your homepage is the first thing visitors see when they arrive at your site's root URL (`/`). KrateCMS gives you three distinct homepage modes, and you can switch between them at any time from the admin panel. No code changes, no deploy — the update takes effect the moment you save.
+Your homepage is the first thing visitors see when they arrive at your site's root URL (`/`). KrateCMS gives you four distinct homepage modes, and you can switch between them at any time from the admin panel. No code changes, no deploy — the update takes effect the moment you save.
 
 ## Open homepage settings
 
@@ -52,16 +52,25 @@ Go to **Admin → Settings → Content** (`/admin/settings/content`). The **Home
       The Marketing template is a fixed layout. To customize your homepage layout with full control over the content and blocks, use the **Page** mode with a page you've built in the block editor instead.
     </Note>
   </Tab>
+  <Tab title="Krate page">
+    A link-in-bio landing page — your avatar, bio, social icons, link buttons, and latest posts, all at `/`. Select **Krate page (link-in-bio)** from the Homepage dropdown and click **Save**, then build out your profile at **Settings → Krate page**.
+
+    See [Create a link-in-bio Krate page](/content/krate-page) for the full walkthrough.
+
+    <Note>
+      The Krate page is available to admins and is on by default. If it isn't in your Homepage dropdown, it may have been turned off for your site — contact your platform administrator.
+    </Note>
+  </Tab>
 </Tabs>
 
 ## The posts archive at `/posts`
 
 Regardless of which homepage mode you choose, the posts archive is always available at `/posts`. This URL shows your full published posts feed with category filters — it never changes based on your homepage setting.
 
-Link to `/posts` in your navigation if you switch to a Page or Marketing homepage, so visitors can still find your content feed.
+Link to `/posts` from your navigation if you switch to a Page, Marketing, or Krate page homepage, so visitors can still find your content feed.
 
 <Tip>
-  Add `/posts` to your site navigation when your homepage isn't the posts feed. Visitors expect a direct route to your content, and `/posts` is always reliable.
+  When your homepage isn't the posts feed, add a Posts link to your navigation: open the [menu builder](/settings/menus), add an **Internal link** item pointing at the posts archive (`/posts`), and visitors will always have a direct route to your content.
 </Tip>
 
 ## Switching modes
@@ -79,5 +88,6 @@ Switching between homepage modes takes effect immediately after you save — the
 | **Posts feed** | Shows the latest published posts with category filters. The default. |
 | **Page** | Renders a specific page from your block editor at `/`. Requires selecting a page from the picker. |
 | **Marketing** | Renders a pre-built marketing landing template at `/`. |
+| **Krate page** | Renders a link-in-bio profile (bio, social links, content buttons, and latest posts) at `/`. Configured at **Settings → Krate page**. |
 
 The posts archive at `/posts` is always available regardless of which mode you choose.

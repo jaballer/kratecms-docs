@@ -6,7 +6,7 @@ description: "A reference to every settings panel in the KrateCMS admin — from
 KrateCMS gives you control over your site's behavior, appearance, and security entirely through the admin interface. All customer-facing settings live under **Settings** in the left sidebar, organized into categories. This page explains what each category controls and where to find it.
 
 <Note>
-  You need the **admin** role or higher to access Settings. If you do not see the Settings item in your sidebar, contact your platform administrator to adjust your role.
+  Settings require the **`settings.edit`** permission, which the **admin** and **super-admin** roles hold by default. Managers, editors, and other roles can't open Settings unless a super-admin grants them the permission. If you don't see **Settings** in your sidebar, ask a super-admin for access.
 </Note>
 
 ## Settings categories
@@ -49,6 +49,12 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     </Tip>
   </Accordion>
 
+  <Accordion title="Menus — /admin/settings/menus">
+    The menu builder controls your public header and footer navigation. Add links to your pages, built-in site routes, and external URLs; set per-item visibility; and reorder them. This replaces the old "Posts in Nav" toggle.
+
+    See [Navigation menus](/settings/menus) for the full guide. On by default.
+  </Accordion>
+
   <Accordion title="Content — /admin/settings/content">
     Content settings determine how your site presents content to visitors.
 
@@ -66,12 +72,19 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     | **Posts** | A scrolling feed of published posts with category filters (default) |
     | **Page** | A specific Page you select from the page picker — useful for custom landing pages |
     | **Marketing** | A legacy marketing template |
+    | **Krate page** | A link-in-bio landing page (bio, social links, content buttons, and latest posts), configured at **Settings → Krate page**. See [Krate page](/content/krate-page) |
 
-    **Posts in Nav** toggles whether a "Posts" link appears in the public navigation bar. Disable it if your site uses a Page as its homepage and you want to keep the nav focused on your custom page structure.
+    The public header and footer navigation is curated separately in the [menu builder](/settings/menus) at **Settings → Menus** — there is no "Posts in Nav" toggle on this page. To show a Posts link in your navigation, add an **Internal link** menu item pointing at the posts archive (`/posts`).
 
     <Note>
       Site visibility is a site-wide gate. Individual posts also have their own visibility setting (public or members-only), which combines with the site-wide setting — a members-only post is always private regardless of site visibility.
     </Note>
+  </Accordion>
+
+  <Accordion title="Krate page — /admin/settings/krate-page">
+    Configure your link-in-bio [Krate page](/content/krate-page): avatar, bio, social links, content buttons, and which recent posts to feature. It takes effect when your homepage type is set to **Krate page**.
+
+    Tenant sites only. On by default.
   </Accordion>
 
   <Accordion title="Analytics — platform-managed during alpha">
@@ -151,6 +164,12 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
       The Billing panel is gated by a feature flag and is off by default during early access. Contact your platform administrator to enable Stripe billing for your site.
     </Warning>
   </Accordion>
+
+  <Accordion title="Custom Domains — /admin/settings/domains">
+    Connect your own domain to your site, verify it with DNS records, and choose a primary address. See [Custom domains](/settings/custom-domains).
+
+    Tenant sites only. Limited to the **admin** and **super-admin** roles; on by default.
+  </Accordion>
 </AccordionGroup>
 
 ## Settings priority
@@ -159,13 +178,18 @@ When a setting can be configured both through the admin UI and through a platfor
 
 ## Quick reference
 
-| Category | URL | Role Required | Feature Flag |
+| Category | URL | Access | Feature Flag |
 |---|---|---|---|
-| General | `/admin/settings/general` | admin | Always on |
-| Brand | `/admin/settings/brand` | admin | Always on |
-| Content | `/admin/settings/content` | admin | Always on |
-| Security | `/admin/settings/security` | admin | Always on |
-| Contact | `/admin/settings/contact` | admin | On by default |
+| General | `/admin/settings/general` | `settings.edit` | Always on |
+| Brand | `/admin/settings/brand` | `settings.edit` | Always on |
+| Menus | `/admin/settings/menus` | `settings.edit` | On by default |
+| Content | `/admin/settings/content` | `settings.edit` | Always on |
+| Krate page | `/admin/settings/krate-page` | `settings.edit` | On by default (tenant only) |
+| Security | `/admin/settings/security` | `settings.edit` | Always on |
+| Contact | `/admin/settings/contact` | `settings.edit` | On by default |
+| Custom Domains | `/admin/settings/domains` | admin / super-admin | On by default (tenant only) |
 | Analytics | (platform-managed during alpha) | — | Not exposed to tenants |
-| Chat | `/admin/settings/chat` | admin | Off by default |
-| Billing | `/admin/settings/billing` | admin | Off by default |
+| Chat | `/admin/settings/chat` | `settings.edit` | Off by default |
+| Billing | `/admin/settings/billing` | `settings.billing` | Off by default |
+
+By default, the `settings.edit` and `settings.billing` permissions are granted only to the **admin** and **super-admin** roles, so Settings is effectively limited to those roles unless a super-admin grants the permission to another role.

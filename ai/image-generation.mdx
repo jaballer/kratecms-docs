@@ -1,103 +1,75 @@
 ---
 title: "Generate AI featured images directly in the post editor"
-description: "Generate featured images for your posts directly from the post editor using KrateCMS's built-in AI image generation — no design tools required."
+description: "Generate a featured image for any post from its own content, right inside the KrateCMS post editor — no design tools and no prompt-writing required."
 ---
 
-KrateCMS lets you generate a featured image for any post without leaving the editor. Powered by OpenAI's image generation models, the tool turns a plain-text prompt into a ready-to-use image that is automatically attached to your post and stored in your site's cloud storage.
+KrateCMS can generate a featured image for a post directly from the editor. Instead of asking you to write an image prompt, it reads the post's **title and content** and produces a relevant image — so you write your post, click one button, and KrateCMS creates and attaches the image for you. It's powered by OpenAI's image models and stores the result in your site's cloud storage.
 
-## Opening the image generator
+<Note>
+  This is the in-post featured-image generator. It's different from the **Images** mode in [AI chat](/ai/chat), where you generate standalone marketing images from a text prompt.
+</Note>
 
-You can generate a featured image when creating a new post or editing an existing one.
+## Before you start
+
+Two things to know about how this works:
+
+- **Generation is based on your post's content**, not a prompt you type. Write (or paste) your post body first — the button stays disabled until the post has some content.
+- **The post must be saved first.** The generator lives on the post editor for an existing post. If you're writing something new, save it as a draft, then generate the image from the editor.
+
+## Generate an image
 
 <Steps>
-  <Step title="Open the post editor">
-    Go to **Posts** in the admin sidebar, then click **New Post** to create one, or click the title of an existing post to open it for editing.
-
-    The editor is available at `/admin/posts/create` for new posts and `/admin/posts/{slug}/edit` for existing ones.
+  <Step title="Open a saved post in the editor">
+    Go to **Posts** in the admin sidebar and click the post you want to edit. (For a new post, fill in the title and body and save it as a draft first, then continue editing it.)
+  </Step>
+  <Step title="Write your content">
+    Make sure the post has a title and body — the image is generated from them. The richer and clearer your content, the more relevant the result.
   </Step>
   <Step title="Find the Featured Image section">
-    Scroll down past the main content area to the **Featured Image** section in the post editor sidebar.
+    Scroll to the **Featured Image** section in the editor sidebar. Below the upload field you'll see a **Generate with AI** button.
   </Step>
-  <Step title="Click the AI generate button">
-    Click the **Generate with AI** button (or similar label) to open the image generation interface. A prompt field appears where you can describe the image you want.
+  <Step title="Click Generate with AI">
+    Click **Generate with AI** and confirm. If the post already has a featured image, the confirmation warns you that the new image will replace it.
   </Step>
-  <Step title="Enter your prompt">
-    Type a description of the image. Be as specific as possible — include the subject, visual style, color palette, and mood for best results.
+  <Step title="Wait for it to finish">
+    Generation runs in the background and usually takes 30–60 seconds. The button shows a **Generating…** spinner with an elapsed-time counter while it works.
 
-    ```text
-    A minimalist flat-design illustration of a rocket launching, blue and purple gradient background, clean vector style
-    ```
+    <Warning>
+      Keep the editor open while the image generates — don't navigate away until it finishes.
+    </Warning>
   </Step>
-  <Step title="Generate and review">
-    Click **Generate**. The AI produces an image based on your prompt, which previews immediately in the Featured Image section. If you are not satisfied with the result, click **Regenerate** to try again with the same prompt or update your description first.
-  </Step>
-  <Step title="Save the post">
-    Once you are happy with the image, save or publish your post. The generated image is automatically set as the featured image and stored in your tenant's cloud storage.
+  <Step title="Review the result">
+    When it's done, the image appears in the Featured Image section and KrateCMS fills in the alt text for you. It's already attached to the post. Not quite right? Click **Regenerate with AI** to produce a new one from the same content. If generation fails or times out, you'll see an error and your existing image (if any) is left untouched.
   </Step>
 </Steps>
 
-## Writing effective prompts
+## Getting better results
 
-The quality of the generated image depends heavily on how clearly you describe what you want. Vague prompts produce generic results; specific prompts produce images that fit your content.
-
-<Tip>
-  Include three key elements in every prompt: the **subject** (what the image shows), the **style** (illustration, photograph, flat design, etc.), and the **mood or color palette** (warm tones, dark and moody, bright and minimal). For example: "A cozy home office desk with a laptop and coffee mug, warm afternoon light, photorealistic style."
-</Tip>
-
-### Prompt examples by content type
-
-<Tabs>
-  <Tab title="Blog posts">
-    ```text
-    A person reading a book in a sunny library, soft natural lighting, warm color tones, editorial photography style
-    ```
-
-    ```text
-    Abstract representation of a brain connected to a network of glowing nodes, dark background, blue and white, digital art style
-    ```
-  </Tab>
-  <Tab title="Product announcements">
-    ```text
-    A sleek smartphone displaying a dashboard UI, floating on a gradient purple background, product photography style, minimal shadows
-    ```
-
-    ```text
-    Flat-design illustration of a team collaborating around a table with laptops, colorful, isometric perspective
-    ```
-  </Tab>
-  <Tab title="Technical topics">
-    ```text
-    A server rack in a data center, dramatic lighting, deep blue and gray tones, professional editorial photo
-    ```
-
-    ```text
-    Abstract visualization of data flowing through connected nodes, neon green on black, digital art
-    ```
-  </Tab>
-</Tabs>
-
-### What to avoid
+Because the image is derived from your post, the way to improve it is to improve the post — there's no prompt to tune.
 
 <AccordionGroup>
-  <Accordion title="Overly abstract prompts">
-    Prompts like "success" or "technology" give the AI too little to work with and produce generic stock-photo results. Add concrete visual details — objects, settings, styles — to guide the output.
+  <Accordion title="Write the content before generating">
+    The generator reads your title and body, so generate the image after you've written a solid draft rather than on an empty post. A descriptive opening gives the model more to work with than a one-line stub.
   </Accordion>
-  <Accordion title="Conflicting style instructions">
-    Mixing incompatible styles (e.g., "photorealistic watercolor illustration") can produce inconsistent results. Pick one primary style and stick to it.
+  <Accordion title="Use a clear, specific title">
+    The title carries a lot of weight. A concrete title ("Migrating a Laravel app to Postgres") produces a more focused image than a vague one ("An update").
   </Accordion>
-  <Accordion title="Text or logos in the image">
-    AI image models do not reliably render readable text or accurate logos. If you need text in your featured image, add it in a separate image editor after generating the base image.
+  <Accordion title="Regenerate if the first result misses">
+    Generation has natural variation. If the first image isn't right, **Regenerate with AI** runs again from the same content and usually returns something different.
+  </Accordion>
+  <Accordion title="Text and logos won't render reliably">
+    AI image models don't reproduce readable text or accurate logos. Treat the result as a visual backdrop; if you need words or a logo on the image, add them in an image editor afterward and upload the result.
   </Accordion>
 </AccordionGroup>
 
-## Uploading your own image instead
+## Upload your own image instead
 
-If you prefer to use a custom image rather than generating one, you can upload directly from the same **Featured Image** section. Click the upload option, select a file from your computer, and it will be stored in your tenant's cloud storage and set as the featured image — the same as a generated image.
+If you'd rather use a specific image, upload one directly in the same **Featured Image** section instead of generating. Choose a file from your device (JPEG, PNG, or WebP, up to 2 MB) and you'll see a live preview before you save. Your upload is stored in your site's cloud storage, exactly like a generated image.
 
 ## Storage and reuse
 
-Generated images are stored in your tenant's cloud storage automatically. You do not need to download and re-upload them. Each generated image is tied to the post it was created for — if you need the same image on another post, generate a new one using the same prompt or upload the downloaded file manually.
+Generated images are stored in your site's cloud storage automatically — you don't need to download and re-upload them. Each image is attached to the post it was created for. To use a similar image on another post, generate one from that post's content, or upload a file manually.
 
 <Note>
-  AI image generation availability depends on your plan and site configuration. If the **Generate with AI** button does not appear in the Featured Image section, contact your site administrator to check whether the feature is enabled for your account.
+  AI image generation depends on your plan and site configuration. If you don't see the **Generate with AI** button in the Featured Image section, the feature hasn't been enabled for your site — contact your platform administrator.
 </Note>

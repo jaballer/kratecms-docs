@@ -1,0 +1,101 @@
+---
+title: "Connect a custom domain to your site"
+description: "Point your own domain — like blog.acme.com — at your KrateCMS site, verify it with DNS records, and set it as your primary address."
+---
+
+By default, your site lives at a KrateCMS subdomain (for example, `acme.kratecms.com`). Custom domains let you serve it from a domain you own instead — like `blog.acme.com` or `acme.com` — while the original subdomain keeps working as a fallback.
+
+Connecting a domain is a guided process: you add two DNS records at your registrar, KrateCMS verifies ownership and provisions an HTTPS certificate automatically, and your platform operator completes the final routing step.
+
+## Getting there
+
+Navigate to **Settings → Custom Domains** in your admin sidebar, or go directly to `/admin/settings/domains`.
+
+<Note>
+  Connecting a domain is a higher-stakes action than other settings, so it's limited to **admins** and **super-admins**. If you don't see **Custom Domains** in your sidebar, you don't have access — ask an admin on your site or your platform administrator.
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="Attach your domain">
+    In the **Custom Domains** page, enter the full domain you want to use (for example, `blog.acme.com`) and submit. It appears in the list with a **Pending verification** status. You can't attach a `*.kratecms.com` subdomain or a domain already in use by another site.
+  </Step>
+  <Step title="Add the DNS records at your registrar">
+    The page shows the exact DNS records to create at your domain registrar (the company you bought the domain from). There are two:
+
+    - A **verification record** that proves you own the domain, so a certificate can be issued.
+    - A **CNAME record** that points your domain at the KrateCMS platform.
+
+    Copy the **Type**, **Name**, and **Value** for each record exactly as shown, and add them at your registrar. DNS changes typically take 5–30 minutes to take effect.
+  </Step>
+  <Step title="Wait for verification">
+    KrateCMS checks your records and issues an HTTPS certificate automatically. The page refreshes on its own — when everything is in place, the status flips to **Active**. You don't need to do anything during this step.
+  </Step>
+  <Step title="Set it as your primary domain (optional)">
+    Once a domain is **Active**, you can make it your site's primary address — see [Set a primary domain](#set-a-primary-domain) below.
+  </Step>
+</Steps>
+
+<Warning>
+  One final routing step is handled by your platform operator, not from your admin panel. After your domain shows **Active**, your operator is notified to finish connecting it on the hosting platform. If an Active domain still shows an error page (a 403) when you visit it, that last step is pending — reach out to your platform administrator.
+</Warning>
+
+## Domain status reference
+
+The list shows a status badge for each domain. It updates automatically while you watch.
+
+| Status | Meaning |
+|---|---|
+| **Pending verification** | Waiting for your DNS records to take effect and for a certificate to be issued. This usually clears within 5–30 minutes of adding the records. |
+| **Active** | Ownership is verified and HTTPS is live. Traffic to the domain is served (once the platform-operator routing step is complete). |
+| **Verification failed** | The records couldn't be verified — most often they're missing or incorrect at your registrar. Double-check the **Type**, **Name**, and **Value** against what the page shows. |
+| **Expired** | The certificate lapsed or the verification record was removed at your registrar after the domain went live. Re-add the records shown to restore service. |
+| **Primary** | This domain is your site's canonical address (shown alongside its status). |
+
+<Note>
+  KrateCMS rechecks active domains daily, so if a certificate later expires or a record is removed, the status updates on its own and you'll be notified.
+</Note>
+
+## Set a primary domain
+
+Your **primary domain** is the canonical address KrateCMS uses everywhere it generates a link — page URLs, login links, and the links inside outgoing emails.
+
+To set one, click **Set as primary** next to any **Active** domain. Only active domains can become primary.
+
+<Warning>
+  Switching your primary domain changes the address used for login links, outbound emails, and absolute URLs on the next request. People with an open session on the previous primary host may need to log in again. Confirm the change when prompted.
+</Warning>
+
+The KrateCMS subdomain stays reachable as a fallback even after you set a custom primary domain. There's no automatic redirect from the old address to the new one.
+
+## Remove a domain
+
+Click **Detach** next to a domain to disconnect it. KrateCMS stops serving traffic for that hostname.
+
+You can't detach your **primary** domain or your **last remaining** domain — set a different domain as primary first, or keep at least one connected.
+
+## Emails you'll receive
+
+Admins on your site are notified by email as a domain's status changes:
+
+- **Domain active** — when verification succeeds and HTTPS is live.
+- **Verification failed** — when the records can't be verified, with a pointer back to the records to fix.
+- **Certificate expired** — when an active domain's certificate lapses or its verification record is removed.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="My domain has been Pending for a while">
+    DNS changes can take up to 30 minutes (sometimes longer, depending on your registrar) to take effect. Confirm the **Type**, **Name**, and **Value** of both records match exactly what the page shows. The page rechecks automatically — there's no need to refresh it yourself.
+  </Accordion>
+  <Accordion title="The status is Active but the domain shows a 403 error">
+    Verification and HTTPS are complete, but the final routing step on the hosting platform is still pending. That step is done by your platform operator — contact your platform administrator to finish it.
+  </Accordion>
+  <Accordion title="Verification failed — what now?">
+    Recheck both DNS records at your registrar against the values shown on the Custom Domains page. A common mistake is copying only part of the record value, or adding it to the wrong host. Once the records are correct, the status updates automatically.
+  </Accordion>
+  <Accordion title="Will my old kratecms.com subdomain stop working?">
+    No. The platform subdomain remains a working fallback even after you connect and primary a custom domain.
+  </Accordion>
+</AccordionGroup>
