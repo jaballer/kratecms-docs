@@ -19,6 +19,12 @@ The API is tenant-scoped. A request to `acme.yoursite.com/api/v1/posts` returns 
 
 Read endpoints (`GET`) are public and require no credentials. Write endpoints (`POST`, `PATCH`, `DELETE`) require a Bearer token in the `Authorization` header. See [Authenticate with the KrateCMS API](/api/authentication) for how to obtain and use tokens.
 
+## Cross-origin requests (CORS)
+
+The API sends CORS headers, so a browser-based single-page app can call it directly from another origin. Out of the box, requests are allowed from your site's own origin and from the common local dev servers `http://localhost:5173` (Vite) and `http://localhost:3000`. The `X-RateLimit-Limit` and `X-RateLimit-Remaining` headers are exposed to the browser.
+
+To call the API from any other origin — your production front-end domain, for example — ask your platform operator to add it to the allowed origins (`CORS_ALLOWED_ORIGINS`). Because the API permits credentialed requests, each origin must be listed explicitly; a wildcard `*` is not used.
+
 ## Rate limiting
 
 All API routes run under the `throttle:api` middleware: **60 requests per minute per token or IP**. When you exceed the limit, the API responds with `429 Too Many Requests` and a `Retry-After` header telling you how many seconds to wait before retrying.

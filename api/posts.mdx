@@ -1,6 +1,6 @@
 ---
 title: "Posts API: list, create, update, and delete endpoints"
-description: "Full reference for the six KrateCMS post endpoints: list, get by ID, get by slug, create, update, and delete, with request and response details."
+description: "Full reference for the KrateCMS post endpoints: list, get by ID or slug, create, update, and delete, with request and response details."
 ---
 
 The Posts API exposes six endpoints for reading and managing post content. The three read endpoints are public; the three write endpoints require a Bearer token. All paths are prefixed with `/api/v1` and are scoped to the tenant domain you send the request to.
@@ -11,9 +11,25 @@ The Posts API exposes six endpoints for reading and managing post content. The t
 
 Returns a paginated list of posts for the current tenant context. No authentication required.
 
+<ParamField query="category" type="string">
+  Filter the list to a single category. One of `text`, `audio`, `video`, or `uncategorized`.
+</ParamField>
+
+<ParamField query="search" type="string">
+  Filter to posts whose title or content contains the given text.
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Number of posts per page. Defaults to `15`; maximum `100`.
+</ParamField>
+
 <ParamField query="page" type="integer">
   Page number to retrieve. Defaults to `1`.
 </ParamField>
+
+<Note>
+  Unauthenticated requests return only published, publicly visible posts. Drafts and members-only posts are never included unless you send a Bearer token whose user can edit posts.
+</Note>
 
 ### Example
 
@@ -35,10 +51,12 @@ curl https://acme.yoursite.com/api/v1/posts \
       "slug": "hello-world",
       "content": "<p>Hello world</p>",
       "excerpt": "A short intro.",
-      "category": "news",
+      "category": "text",
       "featured_image": "https://acme.yoursite.com/storage/posts/hero.jpg",
       "featured_image_alt": "A hero image",
       "youtube_link": null,
+      "audio_url": null,
+      "audio_filename": null,
       "embed_url": null,
       "embed_provider": null,
       "status": "published",
@@ -51,7 +69,7 @@ curl https://acme.yoursite.com/api/v1/posts \
         "email": null
       },
       "links": {
-        "self": "https://acme.yoursite.com/api/v1/posts/1"
+        "self": "https://acme.yoursite.com/api/v1/posts/hello-world"
       }
     }
   ],
@@ -73,7 +91,7 @@ curl https://acme.yoursite.com/api/v1/posts \
 ### Response fields
 
 <ResponseField name="data" type="array">
-  Array of post objects. See field descriptions under [GET /api/v1/posts/\{id\}](#get-apiv1postsid) for the shape of each item.
+  Array of post objects. See field descriptions under [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug) for the shape of each item.
 </ResponseField>
 
 <ResponseField name="meta.current_page" type="integer">
@@ -98,15 +116,15 @@ curl https://acme.yoursite.com/api/v1/posts \
 
 ---
 
-## GET /api/v1/posts/\{id\}
+## GET /api/v1/posts/\{idOrSlug\}
 
-Returns a single post by its numeric ID. No authentication required.
+Returns a single post by either its numeric ID or its slug. No authentication required.
 
-<ParamField path="id" type="integer" required>
-  The numeric ID of the post. Only digits are accepted — the route rejects non-numeric values with `404`.
+<ParamField path="idOrSlug" type="string" required>
+  The post's numeric ID or its slug. A segment containing only digits is looked up by ID; any other value is treated as a slug.
 </ParamField>
 
-Returns `404` if no post with that ID exists in the current tenant context.
+Returns `404` if no post matching that ID or slug exists in the current tenant context.
 
 ### Example
 
@@ -127,10 +145,12 @@ curl https://acme.yoursite.com/api/v1/posts/42 \
     "slug": "hello-world",
     "content": "<p>Hello world</p>",
     "excerpt": "A short intro.",
-    "category": "news",
+    "category": "text",
     "featured_image": "https://acme.yoursite.com/storage/posts/hero.jpg",
     "featured_image_alt": "A hero image",
     "youtube_link": null,
+    "audio_url": null,
+    "audio_filename": null,
     "embed_url": null,
     "embed_provider": null,
     "status": "published",
@@ -143,7 +163,7 @@ curl https://acme.yoursite.com/api/v1/posts/42 \
       "email": null
     },
     "links": {
-      "self": "https://acme.yoursite.com/api/v1/posts/42"
+      "self": "https://acme.yoursite.com/api/v1/posts/hello-world"
     }
   }
 }
@@ -187,12 +207,20 @@ curl https://acme.yoursite.com/api/v1/posts/42 \
   The original YouTube URL associated with this post, if any.
 </ResponseField>
 
+<ResponseField name="data.audio_url" type="string | null">
+  URL of an audio file (typically MP3) attached to the post, or `null` if none is set.
+</ResponseField>
+
+<ResponseField name="data.audio_filename" type="string | null">
+  Optional display label for the audio file (for example, `"Episode 1 – Introduction"`). `null` if not set.
+</ResponseField>
+
 <ResponseField name="data.embed_url" type="string | null">
-  Processed embed URL derived from `youtube_link`.
+  Embed URL for a supported third-party provider. This is an independent field — it is **not** derived from `youtube_link`. `null` if no embed is set.
 </ResponseField>
 
 <ResponseField name="data.embed_provider" type="string | null">
-  Name of the embed provider (e.g. `"youtube"`).
+  Name of the provider detected from `embed_url`. Currently resolves to `"soundcloud"` for SoundCloud URLs, or `null` for any URL that isn't a recognized, enabled provider. YouTube is carried separately via `youtube_link`, so it never appears here.
 </ResponseField>
 
 <ResponseField name="data.status" type="string">
@@ -231,7 +259,7 @@ curl https://acme.yoursite.com/api/v1/posts/42 \
 
 ## GET /api/v1/posts/by-slug/\{slug\}
 
-Returns a single post looked up by its slug. No authentication required.
+Returns a single post looked up by its slug. No authentication required. This is an explicit slug-only alias: the [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug) endpoint also resolves slugs, but this route enforces the slug character set below.
 
 <ParamField path="slug" type="string" required>
   The post slug. Must contain only lowercase letters (`a–z`), digits (`0–9`), and hyphens (`-`). The route returns `404` for slugs containing other characters.
@@ -250,7 +278,7 @@ curl https://acme.yoursite.com/api/v1/posts/by-slug/hello-world \
 
 </CodeGroup>
 
-The response shape is identical to [GET /api/v1/posts/\{id\}](#get-apiv1postsid).
+The response shape is identical to [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug).
 
 ---
 
@@ -329,6 +357,8 @@ curl -X POST https://acme.yoursite.com/api/v1/posts \
     "featured_image": null,
     "featured_image_alt": null,
     "youtube_link": null,
+    "audio_url": null,
+    "audio_filename": null,
     "embed_url": null,
     "embed_provider": null,
     "status": "draft",
@@ -341,7 +371,7 @@ curl -X POST https://acme.yoursite.com/api/v1/posts \
       "email": "jane@acme.com"
     },
     "links": {
-      "self": "https://acme.yoursite.com/api/v1/posts/43"
+      "self": "https://acme.yoursite.com/api/v1/posts/my-new-post"
     }
   }
 }
@@ -416,7 +446,7 @@ curl -X PATCH https://acme.yoursite.com/api/v1/posts/42 \
 JSON `PATCH` requests work directly without the `_method` override. The method override is only needed when sending `multipart/form-data`.
 </Tip>
 
-The response shape is identical to [GET /api/v1/posts/\{id\}](#get-apiv1postsid), reflecting the updated values.
+The response shape is identical to [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug), reflecting the updated values.
 
 ---
 

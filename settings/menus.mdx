@@ -1,0 +1,125 @@
+---
+title: "Build your site navigation with the menu builder"
+description: "Curate the links in your public header and footer menus from the KrateCMS menu builder — pages, built-in routes, and external URLs, each with its own visibility rules."
+---
+
+The menu builder gives you editorial control over your site's public navigation. You curate an ordered list of links for your **header** menu and a separate list for your **footer** menu — mixing your own pages, built-in site routes, and external URLs — without touching code or redeploying. Changes go live as soon as you save.
+
+This replaces the old "Posts in Nav" toggle. Instead of a single on/off switch for a Posts link, you now build the whole menu link by link.
+
+## Getting there
+
+Navigate to **Settings → Menus** in your admin sidebar, or go directly to `/admin/settings/menus`.
+
+<Note>
+  The menu builder is available to **admins** and **super-admins** (it needs the `settings.edit` permission). It is enabled by default on every site; if it has been turned off for your account, contact your platform administrator.
+</Note>
+
+## Header and footer menus
+
+The builder has a tab for each menu location at the top of the page:
+
+| Location | Where it appears |
+|---|---|
+| **Primary** | Your site's main navigation bar at the top of every page (and inside the mobile menu). |
+| **Footer** | A row of links in your site footer, above the footer text. |
+
+Select a tab to edit that menu. Each location keeps its own independent list of items. A site with an empty footer menu simply renders the footer without a link row.
+
+## Add a menu item
+
+<Steps>
+  <Step title="Pick a location">
+    Select the **Primary** or **Footer** tab depending on which menu you want to add to.
+  </Step>
+  <Step title="Click Add item">
+    Click **+ Add item** to open the item form.
+  </Step>
+  <Step title="Choose an item type">
+    Select **Page**, **Internal link**, or **External URL** (see [Item types](#item-types) below). The form shows the right picker for the type you choose.
+  </Step>
+  <Step title="Set the label and options">
+    Enter the **Label** (the text shown in the menu), choose a **Visibility** rule, and optionally enable **Open in a new tab**.
+  </Step>
+  <Step title="Save the item">
+    Click **Add**. The item appears at the bottom of the list and goes live on your public site immediately.
+  </Step>
+</Steps>
+
+## Item types
+
+<CardGroup cols={3}>
+  <Card title="Page" icon="file-lines">
+    Link to one of the pages you've built in the block editor. Pick the page from a dropdown — the link always points at that page's current URL, even if you rename its slug later.
+  </Card>
+  <Card title="Internal link" icon="signs-post">
+    Link to a built-in site route from a fixed, safe list (see below). These links automatically resolve to the correct address for your site.
+  </Card>
+  <Card title="External URL" icon="arrow-up-right-from-square">
+    Link to any address outside your site. Must be a full URL using `http`, `https`, `mailto`, or `tel`.
+  </Card>
+</CardGroup>
+
+### Built-in routes for Internal link items
+
+The **Internal link** dropdown offers a small, fixed set of safe destinations:
+
+| Option | Goes to |
+|---|---|
+| `welcome` | Your homepage (`/`) |
+| `posts.index` | The posts archive (`/posts`) |
+| `contact.show` | Your contact page (`/contact-us`) |
+| `billing.pricing` | The pricing page (`/pricing`) |
+
+<Tip>
+  To restore the old "Posts" link that used to appear in your navigation, add an **Internal link** item pointing at `posts.index` (the posts archive at `/posts`).
+</Tip>
+
+## Item options
+
+Every item, regardless of type, has these options:
+
+| Option | What it does |
+|---|---|
+| **Label** | The text shown in the menu. Required, up to 80 characters. |
+| **Visibility** | Controls who sees the item: **Always visible**, **Guests only** (hidden once a visitor logs in), or **Authenticated users only** (hidden from logged-out visitors). |
+| **Open in a new tab** | When on, the link opens in a new browser tab. |
+
+The **Visibility** option lets a single menu carry both a "Log in" link (Guests only) and a "Dashboard" link (Authenticated users only) without any conditionals.
+
+## Reorder, edit, and remove items
+
+- **Reorder** — use the up and down arrows on the left of each row to move an item within its menu. The order you set is the order visitors see.
+- **Edit** — click **Edit** on a row to change its label, target, or options.
+- **Remove** — click **Delete** on a row to take the item out of the menu.
+
+## Links that hide themselves
+
+KrateCMS hides menu items that would lead to a dead end, so your navigation never shows a broken link:
+
+- An **Internal link** to the **Pricing** page is hidden automatically when billing is turned off for your site.
+- An **Internal link** to the **Contact** page is hidden automatically when your contact form is disabled.
+- A **Page** item that points at a page still in **draft** is hidden from logged-out visitors (editors can still see it to preview).
+
+These rules apply the moment the underlying setting changes — you don't need to edit the menu.
+
+## The default Home item
+
+Every new site starts with a single **Home** item in the primary menu, pointing at your homepage. You can rename it, reorder it, add more items around it, or remove it entirely once you've built out your menu.
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="Where did the 'Posts in Nav' toggle go?">
+    It was replaced by the menu builder. To show a Posts link, add an **Internal link** item pointing at `posts.index` (`/posts`) in the **Primary** menu.
+  </Accordion>
+  <Accordion title="Can I create dropdown sub-menus?">
+    Not yet. Today each menu is a single flat list of links. Nested sub-menus, custom icons, and drag-and-drop reordering are planned for a future release.
+  </Accordion>
+  <Accordion title="Do I need a separate menu for mobile?">
+    No. The primary menu is reused for the mobile navigation automatically, so you only curate one list.
+  </Accordion>
+  <Accordion title="My footer has no links. Is that a problem?">
+    No. An empty footer menu just renders your footer without a link row. Add items to the **Footer** tab whenever you want them.
+  </Accordion>
+</AccordionGroup>
