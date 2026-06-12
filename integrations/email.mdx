@@ -86,10 +86,10 @@ Postmark stream separation is managed at the platform level. No configuration is
 
 <AccordionGroup>
   <Accordion title="A user says they didn't receive their invitation email">
-    Ask them to check their spam or junk folder first. If the email is not there, the address may be on the suppression list due to a previous bounce. Check `/admin/integrations/email-health` for the address. If it is suppressed, you can remove it from the list and resend the invitation from the user's admin profile page.
+    Ask them to check their spam or junk folder first. If the email is not there, the address may be on the platform suppression list due to a previous bounce. Ask your platform administrator to check the [Email Health dashboard](#email-health-dashboard) and clear the address if it's suppressed. Once it's cleared, resend the invitation from the user's admin profile page.
   </Accordion>
   <Accordion title="Contact form submissions are not arriving">
-    Confirm the contact form is enabled and the recipient email is saved correctly at `/admin/settings/contact`. Also check `/admin/integrations/email-health` to see if there have been any recent delivery failures. If the recipient address has bounced before, it may be on the suppression list.
+    Confirm the contact form is enabled and the recipient email is saved correctly at `/admin/settings/contact`. If the recipient address has bounced before, it may be on the platform suppression list — ask your platform administrator to check the [Email Health dashboard](#email-health-dashboard) for recent delivery failures and clear the address if needed.
   </Accordion>
   <Accordion title="Password reset emails are going to spam">
     This is usually a deliverability issue at the recipient's email provider, not a configuration problem. KrateCMS sends reset emails through the transactional stream which is designed for high inbox placement. If the problem is consistent, contact your platform administrator — they can inspect Postmark's delivery logs for more detail.
