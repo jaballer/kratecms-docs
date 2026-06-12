@@ -11,10 +11,10 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
 
 <Steps>
   <Step title="Add a title">
-    Enter your post title in the **Title** field. KrateCMS automatically generates a URL slug from the title — for example, a title of "Welcome to Our Blog" becomes `/welcome-to-our-blog`. The slug is generated for you and is not editable from the post editor; if you need a different URL, change the title.
+    Enter your post title in the **Title** field. KrateCMS automatically generates a URL slug from the title — for example, a title of "Welcome to Our Blog" becomes `/posts/welcome-to-our-blog`. The slug is generated for you and is not editable from the post editor; if you need a different URL, change the title.
   </Step>
   <Step title="Write your content">
-    The **Content** field uses the TinyMCE rich-text editor. You can format text, add headings, insert links, create lists, and embed images directly within the body of the post. KrateCMS sanitizes post HTML at render time (via HTMLPurifier) before showing it to readers, so unsafe markup from pasted content is stripped from the public-facing page even if it is present in the stored content.
+    The **Content** field uses the TinyMCE rich-text editor. You can format text, add headings, insert links, and create lists. To add images directly in the body, use the editor's image button, drag an image file into the editor, or paste one from your clipboard — the file uploads to your site's storage and is inserted inline. KrateCMS sanitizes post HTML at render time (via HTMLPurifier) before showing it to readers, so unsafe markup from pasted content is stripped from the public-facing page even if it is present in the stored content.
   </Step>
   <Step title="Add an excerpt">
     The **Excerpt** field (optional, up to 500 characters) is a short summary of the post. Excerpts appear in post listings and previews.
@@ -38,13 +38,13 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
     </CardGroup>
   </Step>
   <Step title="Upload a featured image">
-    Click **Featured Image** to upload an image from your device. Supported formats are JPEG, PNG, and WebP (maximum 2 MB). The featured image appears at the top of the published post. You can also generate a featured image using AI directly from the post editor — see [AI image generation](/ai/image-generation) for details.
+    Click **Featured Image** to upload an image from your device. Supported formats are JPEG, PNG, and WebP (maximum 2 MB); a live preview appears as soon as you select a file. Once an image is set, an **Alt text** field appears — fill it in with a short description of the image for screen readers and SEO. The featured image appears at the top of the published post. You can also generate a featured image using AI directly from the post editor — see [AI image generation](/ai/image-generation) for details.
   </Step>
   <Step title="Add media (optional)">
     KrateCMS has three independent media fields. Fill in any combination — they each render their own player on the published post.
 
     - **YouTube Video Link** — paste a standard `youtube.com/watch?v=…` or `youtu.be/…` URL. Converted to an embedded YouTube player.
-    - **Audio URL** — paste the URL of an audio file (MP3 recommended). KrateCMS embeds an audio player pointing at the URL. The optional **Audio File Name** field labels the player (for example, "Episode 1 – Introduction").
+    - **Audio URL** — paste the URL of an audio file. Supported formats are MP3, M4A, WAV, FLAC, and OGG. KrateCMS embeds an audio player pointing at the URL. The optional **Audio File Name** field labels the player (for example, "Episode 1 – Introduction").
     - **Embed URL** — paste a URL from a supported third-party provider (such as SoundCloud) to embed its player. The provider is detected automatically via `EmbedService`.
   </Step>
   <Step title="Set visibility">
@@ -90,7 +90,7 @@ Go to **Admin → Posts** (`/admin/posts`) to see all of your posts in a single 
 
 ## How posts appear to readers
 
-Once published, each post is available at its slug-based URL (for example, `/my-post-title`). KrateCMS automatically adds **previous** and **next** navigation links at the bottom of each post, so readers can move through your content in chronological order without returning to the homepage.
+Once published, each post is available at its slug-based URL (for example, `/posts/my-post-title`). KrateCMS automatically adds **previous** and **next** navigation links at the bottom of each post, so readers can move through your content in chronological order without returning to the homepage.
 
 Category filter tabs appear on the public homepage feed, letting readers browse posts by type (text, audio, video, or uncategorized).
 
@@ -109,7 +109,7 @@ KrateCMS sanitizes post HTML at **render time** before showing it to readers, us
     Required. The headline of the post (up to 255 characters). Used to generate the URL slug and appears as the page heading on the published post.
   </Accordion>
   <Accordion title="Content">
-    Required. The full body of the post, edited in the TinyMCE rich-text editor. Supports formatted text, headings, links, lists, and inline images.
+    Required. The full body of the post, edited in the TinyMCE rich-text editor. Supports formatted text, headings, links, lists, and inline images. Images can be uploaded straight into the body via the toolbar button, drag-and-drop, or paste.
   </Accordion>
   <Accordion title="Excerpt">
     Optional. A short summary up to 500 characters. Shown in post listings and link previews.
@@ -118,13 +118,13 @@ KrateCMS sanitizes post HTML at **render time** before showing it to readers, us
     Required. One of: Text, Audio, Video, or Uncategorized. Controls which filter tab the post appears under on the homepage feed.
   </Accordion>
   <Accordion title="Featured Image">
-    Optional. An image uploaded from your device (JPEG, PNG, or WebP; max 2 MB). Displayed at the top of the published post.
+    Optional. An image uploaded from your device (JPEG, PNG, or WebP; max 2 MB). Displayed at the top of the published post. Once an image is set, an **Alt text** field (`featured_image_alt`) lets you describe it for screen readers and SEO.
   </Accordion>
   <Accordion title="YouTube Video Link">
     Optional. A YouTube video URL (`youtube.com/watch?v=…` or `youtu.be/…`). Stored in the `youtube_link` column; KrateCMS converts the URL to an embedded YouTube player when the post is rendered.
   </Accordion>
   <Accordion title="Audio URL">
-    Optional. The URL of an audio file, typically MP3 (`audio_url` column). KrateCMS embeds an audio player pointing at the URL on the published post.
+    Optional. The URL of an audio file (`audio_url` column). Supported formats are MP3, M4A, WAV, FLAC, and OGG. KrateCMS embeds an audio player pointing at the URL on the published post.
   </Accordion>
   <Accordion title="Audio File Name">
     Optional label for the audio file (`audio_filename` column) — for example, "Episode 1 – Introduction." Shown alongside the audio player.

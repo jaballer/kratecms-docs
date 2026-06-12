@@ -22,6 +22,12 @@ It's the lowest-effort way to put a shareable presence online. Drop the link in 
   <Card title="Latest posts" icon="newspaper">
     Your most recent published posts, shown inline with title, date, and an optional excerpt.
   </Card>
+  <Card title="Contact" icon="envelope">
+    Optional tap-to-email and tap-to-call buttons so visitors can reach you directly.
+  </Card>
+  <Card title="Business hours" icon="clock">
+    An optional opening-hours table — per-day hours, with Closed and By-appointment days.
+  </Card>
 </CardGroup>
 
 The page is search-engine friendly and shareable out of the box — it renders structured data and social-card metadata, so links to it preview nicely on other platforms.
@@ -41,7 +47,7 @@ The Krate page is one of your [homepage modes](/content/homepage). Switching to 
     Add your identity details, avatar, social links, content links, and choose how your latest posts appear (see [Configure your Krate page](#configure-your-krate-page) below).
   </Step>
   <Step title="View it live">
-    Use the **View live** button on the settings page (or just visit `/`) to see your Krate page as visitors will.
+    Use the **View live** button on the settings page (or just visit `/`) to see your Krate page as visitors will. The first time your Krate page goes from empty to having real content — when it's also your homepage — saving shows a brief "You're live!" confirmation with a link straight to your public page.
   </Step>
 </Steps>
 
@@ -59,7 +65,7 @@ All Krate page content is edited at **Settings → Krate page** (`/admin/setting
 |---|---|
 | **Display name** | The name shown under your avatar. Up to 120 characters. Defaults to your site name if left blank. |
 | **Tagline** | A short line under your name. Up to 160 characters. |
-| **Bio** | A longer description. Up to 500 characters. |
+| **Bio** | A longer description. Up to 500 characters. Line breaks you enter are preserved on the page. |
 | **Accent color** | The color used for your link buttons and avatar ring. Pick any hex color; the default is indigo. |
 
 ### Avatar
@@ -70,6 +76,31 @@ Upload a profile photo (JPEG, PNG, or WebP, up to 2 MB). The settings page shows
   To remove your current avatar, tick the **remove** checkbox and save. If you select a new file, it always takes priority over the remove option — so you can swap your photo in a single save.
 </Tip>
 
+### Contact
+
+Add a public contact point that visitors can tap to reach you. Both fields are optional:
+
+| Field | Description |
+|---|---|
+| **Email** | Rendered as a tap-to-email (`mailto:`) link. |
+| **Phone** | Rendered as a tap-to-call (`tel:`) link. |
+
+<Note>
+  This is your public, on-page contact info — separate from the recipient address that receives your site's contact-form submissions. Each field only appears on the page when you fill it in.
+</Note>
+
+### Business hours
+
+Turn on **Business hours** to show a structured opening-hours table on your page. You get one row per day, Monday through Sunday:
+
+- Set an **open** and **close** time for each day you're open.
+- Mark a day **Closed** or **By appointment** instead of setting times.
+- Add an optional **note** (for example, "Holiday hours vary") shown beneath the table.
+
+<Note>
+  Hours support one interval per day — a single open–close range, with no overnight spans (the close time must be later than the open time). Split shifts and an "open now" indicator are planned for a later release.
+</Note>
+
 ### Social links
 
 Add up to 20 social profiles. For each one, pick a **platform** and paste your profile **URL** (must start with `http` or `https`). Supported platforms:
@@ -79,7 +110,7 @@ Add up to 20 social profiles. For each one, pick a **platform** and paste your p
 - YouTube, TikTok, GitHub
 - Website (a generic link for anything else)
 
-Each platform renders its own icon in the social row.
+Each platform renders its own icon in the social row. Use the **Move up** and **Move down** buttons to reorder your links — the order you set is the order the icons appear in.
 
 ### Content links
 

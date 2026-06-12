@@ -3,7 +3,7 @@ title: "Upload and manage images and media in KrateCMS"
 description: "Upload featured images for posts and pages, manage your profile avatar, and generate AI images — all stored securely with tenant-isolated cloud storage."
 ---
 
-KrateCMS handles media uploads in several places across the admin: featured images on posts and pages, inline images within page blocks, and avatar photos on user profiles. Every file you upload is stored in isolated cloud storage — your uploads are kept completely separate from those of other sites on the platform.
+KrateCMS handles media uploads in several places across the admin: featured images on posts and pages, inline images within post content and page blocks, and avatar photos on user profiles. Every file you upload is stored in isolated cloud storage — your uploads are kept completely separate from those of other sites on the platform.
 
 ## Featured images on posts
 
@@ -28,6 +28,14 @@ To add or change a post's featured image:
 If you don't have an image ready, KrateCMS can generate one from the post's own content. Open a saved post in the editor and click **Generate with AI** in the Featured Image section — there's no prompt to write.
 
 See [AI image generation](/ai/image-generation) for the full walkthrough.
+
+## Inline images in post content
+
+Beyond the featured image, you can place images anywhere inside a post's body. In the post editor's rich-text toolbar, use the image button, drag an image file into the editor, or paste one from your clipboard — the file uploads to your site's storage immediately and is inserted at your cursor.
+
+<Note>
+  Inline images use the same image formats as the rest of KrateCMS (see [Supported file types](#supported-file-types) below). SVG files are not accepted as an inline upload.
+</Note>
 
 ## Featured images on pages
 
@@ -88,6 +96,7 @@ All uploads are stored in cloud object storage (Cloudflare R2 or S3, depending o
 | Upload type | Where it appears |
 |---|---|
 | Post featured image | Top of the published post |
+| Post content image | Inline within the post body, where you inserted it |
 | Page featured image | Page header area, above the first block |
 | Page block image | Inline within the block, in position on the page |
 | User avatar | Profile page and admin account display |

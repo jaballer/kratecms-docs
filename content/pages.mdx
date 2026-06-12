@@ -58,6 +58,39 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
   </Card>
 </CardGroup>
 
+## Style blocks with CSS hooks
+
+Each block has an optional **HTML ID** and **CSS Classes** field in its settings panel. Together with a set of automatic hooks, these let you target individual blocks, whole pages, or block types from your site's [Custom CSS](/settings/brand#custom-css) — no code deploy required.
+
+| Field | Use it for |
+|---|---|
+| **HTML ID** | A unique anchor for one specific block on the page (for example, `signup-hero`). Must be unique on the page; the `page-` prefix is reserved. |
+| **CSS Classes** | One or more space-separated classes you can reuse across blocks (for example, `promo-banner`) and target together. |
+
+KrateCMS also adds these hooks automatically, so you can write CSS even without setting your own:
+
+| Hook | Targets |
+|---|---|
+| `#page-{id}` | A specific page (stable — never changes). |
+| `.page--{slug}` | A specific page by slug (changes if you rename the slug). |
+| `.krate-page` | Every page. |
+| `.page-block` | Every block. |
+| `.page-block--{type}` | Every block of one type — for example, `.page-block--cta`. |
+
+Write your rules in **Settings → Brand → Custom CSS**. For example:
+
+```css
+/* Restyle every CTA on the About page only */
+#page-7 .page-block--cta { background: #0b1f3a; color: #fff; border-radius: 1rem; }
+
+/* A reusable promo treatment tagged onto specific blocks */
+.promo-banner { border: 2px solid var(--accent-color); padding: 2rem; }
+```
+
+<Note>
+  Custom CSS is applied to your public pages only — never the admin — so a styling mistake can't break your editor. See [Custom CSS](/settings/brand#custom-css) for the full reference.
+</Note>
+
 ## The "Hide title" toggle
 
 By default, KrateCMS renders the page title as a prominent `<h1>` heading at the top of the page. If your page opens with a hero block or a CTA that already carries a strong visual headline, that auto-generated `<h1>` may look redundant.

@@ -1,19 +1,26 @@
 ---
 title: "Connect a custom domain to your site"
-description: "Point your own domain — like blog.acme.com — at your KrateCMS site, verify it with DNS records, and set it as your primary address."
+description: "Point your own domain — like blog.acme.com — at your KrateCMS site. During alpha, custom domains are set up by your platform operator on request."
 ---
+
+<Info>
+  **During alpha, custom domains are operator-managed.** The self-service Custom Domains panel is turned off for tenant sites while KrateCMS is in alpha, so it won't appear in your admin sidebar. To connect a domain, contact your platform operator — they'll attach and manage it for you using the flow described below. Domains that are already connected keep working. Self-service management returns once the feature is enabled for your plan.
+</Info>
 
 By default, your site lives at a KrateCMS subdomain (for example, `acme.kratecms.com`). Custom domains let you serve it from a domain you own instead — like `blog.acme.com` or `acme.com` — while the original subdomain keeps working as a fallback.
 
-Connecting a domain is a guided process: you add two DNS records at your registrar, KrateCMS verifies ownership and provisions an HTTPS certificate automatically, and your platform operator completes the final routing step.
+Connecting a domain is a guided process: two DNS records are added at your registrar, KrateCMS verifies ownership and provisions an HTTPS certificate automatically, and your platform operator completes the final routing step. The rest of this page explains how that works and what to expect.
 
-## Getting there
+## How to request a custom domain
 
-Navigate to **Settings → Custom Domains** in your admin sidebar, or go directly to `/admin/settings/domains`.
+While the self-service panel is off, your platform operator attaches and manages domains on your behalf:
 
-<Note>
-  Connecting a domain is a higher-stakes action than other settings, so it's limited to **admins** and **super-admins**. If you don't see **Custom Domains** in your sidebar, you don't have access — ask an admin on your site or your platform administrator.
-</Note>
+1. Tell your operator the exact domain you want to use (for example, `blog.acme.com`).
+2. They attach it and send you the two DNS records to add at your registrar.
+3. You add the records at your registrar; ownership verification and the HTTPS certificate complete automatically.
+4. Your operator finishes the routing step on the hosting platform, and your domain goes live.
+
+The sections below describe the full flow — including the self-service admin panel that returns once custom domains are enabled for your site.
 
 ## How it works
 
