@@ -3,7 +3,7 @@ title: "Customize colors, fonts, logo, and CSS in KrateCMS"
 description: "Customize every visual aspect of your site — colors, fonts, theme mode, logo, favicon, and custom CSS — from the Brand settings page."
 ---
 
-KrateCMS gives you full white-label control over how your site looks. From the Brand settings page you can change your color scheme, upload your logo and favicon, select your fonts, toggle dark mode, and even inject your own CSS rules. Every change applies instantly to both your public site and your admin panel — no deploy or rebuild required.
+KrateCMS gives you full white-label control over how your site looks. From the Brand settings page you can change your color scheme, upload your logo and favicon, select your fonts, toggle dark mode, and even inject your own CSS rules. Changes apply instantly — no deploy or rebuild required. Color, font, and theme changes apply to both your public site and your admin panel; Custom CSS applies to your public site only.
 
 ## Getting there
 
@@ -85,10 +85,12 @@ Your favicon is the small icon that appears in the browser tab and in bookmarks.
 
 ## Custom CSS
 
-The Custom CSS field lets you write arbitrary CSS rules that are injected into every page of your site. This is the escape hatch for any visual customization that the standard settings do not cover — adjusting spacing, overriding component styles, or adding brand-specific flourishes.
+The Custom CSS field lets you write arbitrary CSS rules that are injected into every **public** page of your site. This is the escape hatch for any visual customization that the standard settings do not cover — adjusting spacing, overriding component styles, or adding brand-specific flourishes.
+
+To target a specific page or an individual block, use the per-page and per-block **CSS hooks** — automatic selectors like `#page-{id}` and `.page-block--{type}`, plus the **HTML ID** / **CSS Classes** fields on each block. See [Style blocks with CSS hooks](/content/pages#style-blocks-with-css-hooks) for the full list.
 
 <Tip>
-Custom CSS is powerful, but it runs on every single page of your site — the public frontend and the admin. Test your rules carefully in a staging environment or with a narrow selector before saving. Broad selectors like `* { ... }` can have unintended side effects.
+Custom CSS is powerful, but it runs on every public page of your site. (It is no longer injected into the admin panel, so a styling mistake can't lock you out of your own editor.) Test your rules carefully with a narrow selector before saving — broad selectors like `* { ... }` can have unintended side effects.
 </Tip>
 
 ```css
@@ -108,7 +110,7 @@ body {
 
 <AccordionGroup>
   <Accordion title="Do brand changes affect the admin as well as the public site?">
-    Yes. Color, typography, theme mode, and custom CSS changes apply to both the public-facing site and the admin panel simultaneously.
+    Color, typography, and theme-mode changes apply to both the public-facing site and the admin panel simultaneously. Custom CSS is the exception — it is applied to your public pages only, never the admin, so a bad rule can't break your editor.
   </Accordion>
   <Accordion title="Can I revert to the default logo or favicon?">
     Yes. Open Brand settings and use the remove or replace control next to the logo or favicon upload. Saving with no image uploaded returns to the default placeholder.
