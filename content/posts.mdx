@@ -44,7 +44,7 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
     KrateCMS has three independent media fields. Fill in any combination — they each render their own player on the published post.
 
     - **YouTube Video Link** — paste a standard `youtube.com/watch?v=…` or `youtu.be/…` URL. Converted to an embedded YouTube player.
-    - **Audio URL** — paste the URL of an audio file. Supported formats are MP3, M4A, WAV, FLAC, and OGG. KrateCMS embeds an audio player pointing at the URL. The optional **Audio File Name** field labels the player (for example, "Episode 1 – Introduction").
+    - **Audio URL** — paste the URL of an audio file. Supported formats are MP3, M4A, WAV, FLAC, and OGG. KrateCMS embeds an audio player with a visual waveform seek bar. The optional **Audio File Name** field labels the player (for example, "Episode 1 – Introduction").
     - **Embed URL** — paste a URL from a supported third-party provider (such as SoundCloud) to embed its player. The provider is detected automatically via `EmbedService`.
   </Step>
   <Step title="Set visibility">
@@ -54,7 +54,7 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
     - **Members only** — visible only to signed-in members of your site.
   </Step>
   <Step title="Set the publish date">
-    The **Publish Date** field defaults to the current date and time. Change it to schedule a post for future publication — the post will only become visible to readers once that date and time has passed.
+    The **Publish Date** field defaults to the current date and time. Set a future date to schedule a post — the post is treated as scheduled and will not appear in public feeds, the homepage, or search results until that date and time has passed. Scheduled posts return a 404 to visitors, but authors and editors can preview their own scheduled posts from the admin.
   </Step>
   <Step title="Save as draft, publish, or archive">
     Use the **Status** selector to control the post's state before you save.
@@ -76,7 +76,7 @@ A typical workflow looks like this:
 1. Create the post and save it as a **draft**.
 2. Write and revise your content.
 3. Set a **publish date** if you want the post to go live at a specific time.
-4. Change the status to **Published** and save. The post appears in the public feed immediately (or at the scheduled date).
+4. Change the status to **Published** and save. If the publish date is in the past or right now, the post appears in the public feed immediately. If the publish date is in the future, the post is **scheduled** — it stays hidden from readers until that date and time arrives.
 
 You can return a published post to draft at any time by editing the post and changing its status back to **Draft**.
 

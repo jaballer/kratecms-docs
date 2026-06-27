@@ -1,11 +1,13 @@
 ---
-title: "Create a link-in-bio Krate page"
-description: "Turn your homepage into a link-in-bio landing page — avatar, bio, social links, content buttons, and your latest posts — with the KrateCMS Krate page."
+title: "Create a Krate page"
+description: "Turn your homepage into a shareable landing page — avatar, bio, social links, content buttons, business details, and your latest posts — with the KrateCMS Krate page."
 ---
 
-A Krate page is a link-in-bio style homepage, similar to Linktree. Instead of a posts feed or a full landing page, your root URL (`/`) shows a compact, mobile-friendly profile: your avatar, a short bio, a row of social icons, a stack of link buttons, and — the part a plain link-in-bio tool can't do — your latest posts, rendered right on the page.
+A Krate page is a shareable landing page, similar to Linktree. When set as your homepage, your root URL (`/`) shows a compact, mobile-friendly, chromeless profile: your avatar, a short bio, a row of social icons, a stack of link buttons, and — the part a plain link-in-bio tool can't do — your latest posts, rendered right on the page.
 
-It's the lowest-effort way to put a shareable presence online. Drop the link in your Instagram bio or a DM, and visitors can read your content without being sent elsewhere.
+Your Krate page is always available at the permanent URL `/links`, regardless of which homepage mode you're using. When the Krate page is your homepage, `/` and `/links` both serve it (with the canonical URL pointing at `/`). When you switch to a different homepage mode, your Krate page stays live at `/links` — so you can share that URL in your Instagram bio, business card, or a DM and it always works.
+
+It's the lowest-effort way to put a shareable presence online. The page renders without the site header or footer navigation, keeping the focus on your profile and links.
 
 ## What visitors see
 
@@ -28,9 +30,12 @@ It's the lowest-effort way to put a shareable presence online. Drop the link in 
   <Card title="Business hours" icon="clock">
     An optional opening-hours table — per-day hours, with Closed and By-appointment days.
   </Card>
+  <Card title="Business address" icon="location-dot">
+    An optional structured address with a "Get directions" link to Google Maps.
+  </Card>
 </CardGroup>
 
-The page is search-engine friendly and shareable out of the box — it renders structured data and social-card metadata, so links to it preview nicely on other platforms.
+The page is search-engine friendly and shareable out of the box — it renders structured data (Person or LocalBusiness JSON-LD, depending on whether you've set a business address) and social-card metadata, so links to it preview nicely on other platforms.
 
 ## Turn on the Krate page
 
@@ -38,7 +43,7 @@ The Krate page is one of your [homepage modes](/content/homepage). Switching to 
 
 <Steps>
   <Step title="Select Krate page as your homepage">
-    Go to **Admin → Settings → Content** (`/admin/settings/content`). In **Homepage Settings**, choose **Krate page (link-in-bio)** from the Homepage dropdown and click **Save**.
+    Go to **Admin → Settings → Content** (`/admin/settings/content`). In **Homepage Settings**, choose **Krate page** from the Homepage dropdown and click **Save**.
   </Step>
   <Step title="Open Krate page settings">
     Go to **Admin → Settings → Krate page** (`/admin/settings/krate-page`) to fill in your profile.
@@ -47,12 +52,12 @@ The Krate page is one of your [homepage modes](/content/homepage). Switching to 
     Add your identity details, avatar, social links, content links, and choose how your latest posts appear (see [Configure your Krate page](#configure-your-krate-page) below).
   </Step>
   <Step title="View it live">
-    Use the **View live** button on the settings page (or just visit `/`) to see your Krate page as visitors will. The first time your Krate page goes from empty to having real content — when it's also your homepage — saving shows a brief "You're live!" confirmation with a link straight to your public page.
+    Use the **View live** button on the settings page (or just visit `/`) to see your Krate page as visitors will. Your Krate page is also always available at `/links`, even if you later switch to a different homepage mode. The first time your Krate page goes from empty to having real content — when it's also your homepage — saving shows a brief "You're live!" confirmation with a link straight to your public page.
   </Step>
 </Steps>
 
 <Note>
-  The Krate page is available to **admins** and **super-admins** and is enabled by default. If you don't see **Krate page (link-in-bio)** in the Homepage dropdown or a **Krate page** entry under Settings, the feature may have been turned off for your site — contact your platform administrator.
+  The Krate page is available to **admins** and **super-admins** and is enabled by default. If you don't see **Krate page** in the Homepage dropdown or a **Krate page** entry under Settings, the feature may have been turned off for your site — contact your platform administrator.
 </Note>
 
 ## Configure your Krate page
@@ -63,10 +68,11 @@ All Krate page content is edited at **Settings → Krate page** (`/admin/setting
 
 | Field | Description |
 |---|---|
-| **Display name** | The name shown under your avatar. Up to 120 characters. Defaults to your site name if left blank. |
+| **Display name** | An optional override for the name shown under your avatar. Up to 120 characters. When blank, the Krate page uses your business name from [Business Info](/settings/general#business-info). |
 | **Tagline** | A short line under your name. Up to 160 characters. |
 | **Bio** | A longer description. Up to 500 characters. Line breaks you enter are preserved on the page. |
-| **Accent color** | The color used for your link buttons and avatar ring. Pick any hex color; the default is indigo. |
+
+The accent color for link buttons and the avatar ring comes from your site-wide [brand accent color](/settings/brand#colors) — set it once in **Settings → Brand** and it applies everywhere, including the Krate page.
 
 ### Avatar
 
@@ -76,29 +82,24 @@ Upload a profile photo (JPEG, PNG, or WebP, up to 2 MB). The settings page shows
   To remove your current avatar, tick the **remove** checkbox and save. If you select a new file, it always takes priority over the remove option — so you can swap your photo in a single save.
 </Tip>
 
-### Contact
+### Contact, business hours, and address
 
-Add a public contact point that visitors can tap to reach you. Both fields are optional:
+Contact details, business hours, and your business address are managed from a separate **Business Info** page at **Settings → Business Info** (`/admin/settings/business-info`). The Krate page settings include display toggles to control which of these sections appear on your public page:
 
-| Field | Description |
+| Toggle | What it controls |
 |---|---|
-| **Email** | Rendered as a tap-to-email (`mailto:`) link. |
-| **Phone** | Rendered as a tap-to-call (`tel:`) link. |
+| **Show contact** | Tap-to-email and tap-to-call buttons (only appear when an email or phone is set in Business Info). |
+| **Show business hours** | A structured opening-hours table, Monday through Sunday. |
+| **Show address** | Your business address with a "Get directions" link to Google Maps. |
 
 <Note>
-  This is your public, on-page contact info — separate from the recipient address that receives your site's contact-form submissions. Each field only appears on the page when you fill it in.
+  Business Info is always available in the admin — it is not gated behind the Krate page feature flag, because it also feeds your transactional email footers. See [Business Info](/settings/general#business-info) for the full field reference.
 </Note>
 
-### Business hours
-
-Turn on **Business hours** to show a structured opening-hours table on your page. You get one row per day, Monday through Sunday:
-
-- Set an **open** and **close** time for each day you're open.
-- Mark a day **Closed** or **By appointment** instead of setting times.
-- Add an optional **note** (for example, "Holiday hours vary") shown beneath the table.
+When a business address is present, the Krate page's structured data upgrades from `Person` to `LocalBusiness` JSON-LD, including your postal address, phone, email, and opening hours.
 
 <Note>
-  Hours support one interval per day — a single open–close range, with no overnight spans (the close time must be later than the open time). Split shifts and an "open now" indicator are planned for a later release.
+  Business hours support one interval per day — a single open–close range, with no overnight spans (the close time must be later than the open time). Split shifts and an "open now" indicator are planned for a later release.
 </Note>
 
 ### Social links
@@ -107,14 +108,14 @@ Add up to 20 social profiles. For each one, pick a **platform** and paste your p
 
 - Instagram, Facebook, LinkedIn
 - X (formerly Twitter)
-- YouTube, TikTok, GitHub
+- YouTube, TikTok, SoundCloud, GitHub
 - Website (a generic link for anything else)
 
 Each platform renders its own icon in the social row. Use the **Move up** and **Move down** buttons to reorder your links — the order you set is the order the icons appear in.
 
 ### Content links
 
-Add up to 50 link buttons — these are the heart of a link-in-bio page. For each one, set:
+Add up to 50 link buttons — these are the heart of a Krate page. For each one, set:
 
 - **Label** — the button text (up to 120 characters)
 - **URL** — where it points (must start with `http` or `https`)
@@ -137,7 +138,7 @@ The posts block respects each post's own visibility — drafts and members-only 
 
 ## Edit your Krate page in one click
 
-When you're logged in with permission to edit settings and you visit your Krate page at `/`, an **Edit Krate Page** button appears in the admin bar at the top of the screen. It takes you straight to the Krate page settings — the same shortcut the **Edit Post** and **Edit Page** buttons give you elsewhere.
+When you're logged in with permission to edit settings and you visit your Krate page (at `/` or `/links`), an **Edit Krate Page** button appears in the admin bar at the top of the screen. It takes you straight to the Krate page settings — the same shortcut the **Edit Post** and **Edit Page** buttons give you elsewhere.
 
 ## Visibility on members-only sites
 
@@ -146,5 +147,5 @@ If your site is set to **Members only**, your Krate page is still public — it'
 Your **posts** remain protected: the Latest posts block still hides members-only posts and drafts from logged-out visitors, so only content you've made public shows there.
 
 <Note>
-  The Krate page is one of four [homepage modes](/content/homepage). You can switch back to a posts feed, a Page, or the marketing template at any time from **Settings → Content** — your Krate page profile is kept, so switching back later restores it.
+  The Krate page is one of four [homepage modes](/content/homepage). You can switch back to a posts feed, a Page, or the marketing template at any time from **Settings → Content** — your Krate page profile is kept, so switching back later restores it. Even when it's not your homepage, your Krate page stays accessible at `/links`.
 </Note>

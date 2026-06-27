@@ -71,17 +71,29 @@ Use the **Theme mode** toggle to switch your site between **Light** and **Dark**
 
 ## Logo
 
-Upload your site logo to have it displayed in the navigation bar and header on every page. KrateCMS accepts common image formats including PNG, SVG, JPG, and WebP.
+Upload your site logo to have it displayed in the navigation bar and header on every page. Accepted formats are JPEG, PNG, JPG, and GIF (maximum 2 MB).
 
 When you choose a file, a live preview appears so you can confirm it before saving. Once uploaded, your logo is stored in cloud storage and served from there. You do not need to re-upload it if you change other settings.
 
 <Note>
-For the sharpest results on all screen sizes and resolutions, use an SVG or a PNG with a transparent background. Aim for a height of around 40–60 px at 2× resolution.
+For the sharpest results on all screen sizes and resolutions, use a PNG with a transparent background. Aim for a height of around 40–60 px at 2× resolution.
 </Note>
 
 ## Favicon
 
-Your favicon is the small icon that appears in the browser tab and in bookmarks. Upload a square image — ideally a 32×32 or 64×64 PNG, or an `.ico` file. It previews live when you select a file. Like the logo, your favicon is served from cloud storage after upload.
+Your favicon is the small icon that appears in the browser tab and in bookmarks. Upload a square image — accepted formats are ICO, PNG, JPG, and JPEG (maximum 512 KB). It previews live when you select a file. Like the logo, your favicon is served from cloud storage after upload.
+
+## Brand color helpers
+
+KrateCMS includes nine built-in CSS utility classes that resolve to your brand palette. You can apply them to individual page blocks via the **CSS Classes** field in the [page block editor](/content/pages#style-blocks-with-css-hooks):
+
+| Class | What it does |
+|---|---|
+| `kr8-bg-primary`, `kr8-bg-secondary`, `kr8-bg-accent` | Sets the background to your primary, secondary, or accent color |
+| `kr8-text-primary`, `kr8-text-secondary`, `kr8-text-accent` | Sets the text color |
+| `kr8-border-primary`, `kr8-border-secondary`, `kr8-border-accent` | Sets the border color |
+
+These helpers reference your live brand colors — change your palette in the color settings above and every block using these classes updates automatically.
 
 ## Custom CSS
 
