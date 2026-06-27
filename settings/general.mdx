@@ -16,8 +16,6 @@ Navigate to **Settings → General** in your admin sidebar, or go directly to `/
 | **Site name** | The name of your site. Appears in the browser tab title, in outgoing notification emails, and in various places across the admin UI. |
 | **Site description** | A short summary of your site. Used in meta tags and wherever a brief site summary is needed. |
 | **Footer text** | The text that appears at the bottom of every page on your public site. Commonly used for copyright notices or short taglines. |
-| **Company name** | The legal or operating name of your organization. Used in invoices and other formal communications. |
-| **Company address** | The mailing address for your organization. Used in invoices and email footers where required. |
 
 ## Updating your settings
 
@@ -26,7 +24,7 @@ Navigate to **Settings → General** in your admin sidebar, or go directly to `/
     In the admin sidebar, click **Settings**, then click **General**.
   </Step>
   <Step title="Edit the fields">
-    Update any combination of **Site name**, **Site description**, **Footer text**, **Company name**, and **Company address** as needed.
+    Update any combination of **Site name**, **Site description**, and **Footer text** as needed.
   </Step>
   <Step title="Save your changes">
     Click **Save** to apply. Changes take effect immediately — no restart required.
@@ -39,6 +37,27 @@ Your site name is used in more places than it might seem. Wherever KrateCMS need
 
 <Note>
 If you rename your site, the new name appears immediately in the admin UI and in all emails sent after the change. Previously sent emails are not affected.
+</Note>
+
+## Business Info
+
+Your business identity details live on a dedicated **Business Info** page at **Settings → Business Info** (`/admin/settings/business-info`). These fields feed your [Krate page](/content/krate-page), transactional email footers, and structured data markup.
+
+| Field | Description |
+|---|---|
+| **Business name** | The legal or operating name of your organization. Used on the Krate page, in email footers, and in JSON-LD structured data. |
+| **Street address** | Line 1 of your mailing address. |
+| **Street address 2** | Optional second line (suite, unit, etc.). |
+| **City** | City or locality. |
+| **State / Region** | State, province, or region. |
+| **Postal code** | ZIP or postal code. |
+| **Country** | Country name. |
+| **Email** | A public contact email — rendered as a tap-to-email link on your Krate page. |
+| **Phone** | A public phone number — rendered as a tap-to-call link on your Krate page. |
+| **Business hours** | Per-day opening hours (Monday–Sunday), with options for Closed and By appointment. |
+
+<Note>
+  Business Info is always available in the admin — it is not gated behind any feature flag. If you have a [Krate page](/content/krate-page), use the display toggles there (**Show contact**, **Show business hours**, **Show address**) to control which sections appear publicly. Your business name and address also appear in transactional email footers regardless of the Krate page setting.
 </Note>
 
 ## Timezone

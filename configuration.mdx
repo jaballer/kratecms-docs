@@ -72,7 +72,7 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     | **Posts** | A scrolling feed of published posts with category filters (default) |
     | **Page** | A specific Page you select from the page picker — useful for custom landing pages |
     | **Marketing** | A legacy marketing template |
-    | **Krate page** | A link-in-bio landing page (bio, social links, content buttons, and latest posts), configured at **Settings → Krate page**. See [Krate page](/content/krate-page) |
+    | **Krate page** | A shareable landing page (bio, social links, content buttons, and latest posts), configured at **Settings → Krate page**. Also always available at `/links`. See [Krate page](/content/krate-page) |
 
     The public header and footer navigation is curated separately in the [menu builder](/settings/menus) at **Settings → Menus** — there is no "Posts in Nav" toggle on this page. To show a Posts link in your navigation, add an **Internal link** menu item pointing at the posts archive (`/posts`).
 
@@ -81,8 +81,14 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     </Note>
   </Accordion>
 
+  <Accordion title="Business Info — /admin/settings/business-info">
+    Your business name, address, contact details, and hours — the single source for your [Krate page](/content/krate-page) and transactional email footers. See [Business Info](/settings/general#business-info) for the full field reference.
+
+    Tenant sites only. Always available (not feature-gated).
+  </Accordion>
+
   <Accordion title="Krate page — /admin/settings/krate-page">
-    Configure your link-in-bio [Krate page](/content/krate-page): avatar, bio, social links, content buttons, and which recent posts to feature. It takes effect when your homepage type is set to **Krate page**.
+    Configure your [Krate page](/content/krate-page): avatar, bio, social links, content buttons, and which recent posts to feature. The Krate page is always accessible at `/links`; it also serves at `/` when set as your homepage.
 
     Tenant sites only. On by default.
   </Accordion>

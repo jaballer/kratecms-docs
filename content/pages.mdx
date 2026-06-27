@@ -11,7 +11,7 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
 
 <Steps>
   <Step title="Enter a title">
-    Type your page title in the **Title** field. KrateCMS generates a URL slug from the title automatically — for example, "About Us" becomes `/about-us`. You can edit the slug before saving if you need a specific URL.
+    Type your page title in the **Title** field. KrateCMS generates a URL slug from the title automatically — for example, "About Us" becomes `/about-us`.
 
     If you're building a hero-first layout and don't want the title to appear as a large heading above your first block, enable the **Hide title on rendered page** toggle directly beneath the Title field. This suppresses the on-page `<h1>` heading while still using the title in the browser tab and SEO metadata.
   </Step>
@@ -27,8 +27,11 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
   <Step title="Collapse blocks for easier editing">
     When your page has many blocks, use the collapse toggle on each block to fold it down to a single header row. Collapsed blocks stay in place — they're just easier to scroll past while you work on another section.
   </Step>
+  <Step title="Add a featured image (optional)">
+    Upload a featured image in the **Featured Image** card on the right side of the editor. Supported formats are JPEG, PNG, and WebP (maximum 2 MB). Once uploaded, an **Alt text** field appears — fill it in for accessibility and SEO. The featured image renders in the page header above your first block.
+  </Step>
   <Step title="Save the page">
-    Click **Save** to publish your page. The page becomes accessible at its slug-based URL immediately after saving.
+    Click **Create Page** in the sticky action bar at the top of the editor. The page becomes accessible at its slug-based URL immediately after saving. (When editing an existing page, the button reads **Save Changes**.)
   </Step>
 </Steps>
 
@@ -48,13 +51,22 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
     Places two content areas side by side. Useful for feature comparisons, text-plus-image layouts, or any design that benefits from a split view.
   </Card>
   <Card title="Video">
-    Embed a YouTube video by pasting the video URL. The embedded player appears inline within the page layout.
+    Embed a YouTube or Vimeo video by pasting the video URL. The embedded player appears inline within the page layout.
   </Card>
   <Card title="Quote">
-    A pull quote with an attribution line. Use quote blocks to highlight a testimonial, a key statement, or a notable excerpt.
+    A pull quote with an optional attribution. Use quote blocks to highlight a testimonial, a key statement, or a notable excerpt.
   </Card>
   <Card title="Accordion">
     A set of collapsible question-and-answer sections. Accordion blocks are ideal for FAQ pages or any content where you want to show summaries and let readers expand individual items for details.
+  </Card>
+  <Card title="Hero">
+    An oversized headline section with an optional eyebrow label, subheading, and call-to-action button. Choose left or center alignment. Use hero blocks to open a landing page with a bold visual statement — especially effective when paired with "Hide title" to avoid a redundant heading.
+  </Card>
+  <Card title="Media & Content">
+    An image beside a heading, body copy, and an optional button — arranged in a side-by-side layout. Choose whether the image sits on the left or right. Use this block for feature highlights, team bios, or any section that pairs a visual with explanatory text.
+  </Card>
+  <Card title="Contact Form">
+    Embeds your site's contact form (name, email, subject, message) directly on the page. Optionally add an intro heading and body text beside the form, and choose whether the form sits on the left or right. The form submits without a page reload when JavaScript is available.
   </Card>
 </CardGroup>
 
@@ -65,7 +77,7 @@ Each block has an optional **HTML ID** and **CSS Classes** field in its settings
 | Field | Use it for |
 |---|---|
 | **HTML ID** | A unique anchor for one specific block on the page (for example, `signup-hero`). Must be unique on the page; the `page-` prefix is reserved. |
-| **CSS Classes** | One or more space-separated classes you can reuse across blocks (for example, `promo-banner`) and target together. |
+| **CSS Classes** | One or more space-separated classes you can reuse across blocks (for example, `promo-banner`) and target together. You can also use the built-in brand color helpers — `kr8-bg-primary`, `kr8-bg-secondary`, `kr8-bg-accent`, `kr8-text-primary`, `kr8-text-secondary`, `kr8-text-accent`, `kr8-border-primary`, `kr8-border-secondary`, `kr8-border-accent` — which resolve to your site's [brand palette](/settings/brand#colors). |
 
 KrateCMS also adds these hooks automatically, so you can write CSS even without setting your own:
 
@@ -77,6 +89,16 @@ KrateCMS also adds these hooks automatically, so you can write CSS even without 
 | `.page-block` | Every block. |
 | `.page-block--{type}` | Every block of one type — for example, `.page-block--cta`. |
 
+Some blocks expose their layout choice as a `data-*` attribute, so you can target a specific variant:
+
+| Block | Attribute | Values |
+|---|---|---|
+| Hero (`.page-block--hero`) | `[data-align]` | `left` (default), `center` |
+| Media & Content (`.page-block--media-content`) | `[data-image-position]` | `left` (default), `right` |
+| Contact Form (`.page-block--contact-form`) | `[data-form-position]` | `left` (default), `right` |
+
+Media & Content also marks its two halves with `[data-role="media"]` and `[data-role="content"]`, and Contact Form marks its halves with `[data-role="intro"]` and `[data-role="form"]`, so you can target each side independently.
+
 Write your rules in **Settings → Brand → Custom CSS**. For example:
 
 ```css
@@ -85,6 +107,10 @@ Write your rules in **Settings → Brand → Custom CSS**. For example:
 
 /* A reusable promo treatment tagged onto specific blocks */
 .promo-banner { border: 2px solid var(--accent-color); padding: 2rem; }
+
+/* Dark split-panel treatment for a Media & Content block */
+.page-block--media-content { background: #0b0b0b; color: #fff; }
+.page-block--media-content [data-role="content"] { padding: 2.5rem; }
 ```
 
 <Note>
@@ -109,7 +135,7 @@ Only the visible on-page heading is hidden. This toggle is especially useful whe
 
 ## Slug-based URLs
 
-Every page gets a clean URL based on its title slug. A page titled "Our Story" is available at `/our-story`. You can customize the slug in the page editor before saving. Once a page is live and linked from other places, avoid changing its slug — doing so will break existing links.
+Every page gets a clean URL based on its title slug. A page titled "Our Story" is available at `/our-story`. The slug is generated automatically from the title and cannot be edited separately — to change the URL, change the title.
 
 ## Using a page as your homepage
 
