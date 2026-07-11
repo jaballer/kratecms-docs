@@ -14,7 +14,11 @@ Navigate to **Admin → Posts → New Post** (or go directly to `/admin/posts/cr
     Enter your post title in the **Title** field. KrateCMS automatically generates a URL slug from the title — for example, a title of "Welcome to Our Blog" becomes `/posts/welcome-to-our-blog`. The slug is generated for you and is not editable from the post editor; if you need a different URL, change the title.
   </Step>
   <Step title="Write your content">
-    The **Content** field uses the TinyMCE rich-text editor. You can format text, add headings, insert links, and create lists. To add images directly in the body, use the editor's image button, drag an image file into the editor, or paste one from your clipboard — the file uploads to your site's storage and is inserted inline. KrateCMS sanitizes post HTML at render time (via HTMLPurifier) before showing it to readers, so unsafe markup from pasted content is stripped from the public-facing page even if it is present in the stored content.
+    The **Content** field uses the Tiptap rich-text editor. You can format text, add headings, insert links, and create lists. To add images directly in the body, use the editor's image button (which opens the media picker — upload a new file or choose one from your media library), drag an image file into the editor, or paste one from your clipboard — the file uploads to your site's storage and is inserted inline.
+
+    Images insert immediately, with no pop-up. To describe an image, select it: a panel appears under the toolbar with **Alt text** and **Title** fields, plus a **Decorative** checkbox for images that need no description. An image without a description shows an amber dashed outline in the editor until you fill one in (or mark it decorative) — your readers never see the outline. Picking a library image that already has alt text carries the description in automatically.
+
+    KrateCMS sanitizes post HTML at render time (via HTMLPurifier) before showing it to readers, so unsafe markup from pasted content is stripped from the public-facing page even if it is present in the stored content.
   </Step>
   <Step title="Add an excerpt">
     The **Excerpt** field (optional, up to 500 characters) is a short summary of the post. Excerpts appear in post listings and previews.
@@ -98,7 +102,7 @@ Category filter tabs appear on the public homepage feed, letting readers browse 
 KrateCMS sanitizes post HTML at **render time** before showing it to readers, using HTMLPurifier. This means that any unsafe or potentially harmful markup — whether pasted from an external source or entered manually — is cleaned out before the post is displayed on a public page. Stored content may still contain the raw HTML you pasted; the protection is applied on the way out.
 
 <Note>
-  The TinyMCE editor may display pasted content differently from how it will appear to readers. Always preview your post after publishing to confirm the layout looks as expected.
+  The editor may display pasted content differently from how it will appear to readers. Always preview your post after publishing to confirm the layout looks as expected.
 </Note>
 
 ## Post fields reference
@@ -108,7 +112,7 @@ KrateCMS sanitizes post HTML at **render time** before showing it to readers, us
     Required. The headline of the post (up to 255 characters). Used to generate the URL slug and appears as the page heading on the published post.
   </Accordion>
   <Accordion title="Content">
-    Required. The full body of the post, edited in the TinyMCE rich-text editor. Supports formatted text, headings, links, lists, and inline images. Images can be uploaded straight into the body via the toolbar button, drag-and-drop, or paste.
+    Required. The full body of the post, edited in the Tiptap rich-text editor. Supports formatted text, headings, links, lists, and inline images. Images can be uploaded straight into the body via the toolbar button, drag-and-drop, or paste; select an inserted image to edit its alt text and title in place, or mark it decorative.
   </Accordion>
   <Accordion title="Excerpt">
     Optional. A short summary up to 500 characters. Shown in post listings and link previews.
