@@ -97,6 +97,22 @@ KrateCMS AI chat offers six modes. Pick a mode from the selector at the top of t
     | Create a page (saved as a draft) | Create pages |
     | Update a page | Edit pages |
 
+    There's no page equivalent of **Delete a post** — the agent can't delete a page, and it can't publish one either. A page it creates stays a draft until you publish it yourself.
+
+    **Two limits are worth knowing before you ask for a page edit:**
+
+    <Warning>
+      **The agent can only rewrite a page whose body is plain rich text.** Asking it to change the content of a page that contains any other block — an image, a contact form, a call to action, or even a text block carrying a full width, anchor ID, or CSS class — is refused, and **nothing on the page changes**. Replacing the body would collapse those blocks into a single text block and lose their settings, so the agent declines rather than risk it.
+
+      It will tell you so, and the rest of the page is still fair game: **title**, **excerpt**, **meta title**, **meta description**, and **hide title** all update normally. To change the body of a page like that, use the page editor.
+    </Warning>
+
+    <Note>
+      **Page search doesn't read page bodies.** It matches the **title**, **excerpt**, and **slug** only — a page's body lives in structured blocks rather than one searchable text field. If you search for a phrase you know appears inside a page and get nothing back, that's this limit rather than a broken tool. Search for the page's title instead, or find it in **Pages**.
+
+      Post search is different — it covers post title and content.
+    </Note>
+
     **Example prompts:**
 
     ```text
@@ -120,7 +136,11 @@ KrateCMS AI chat offers six modes. Pick a mode from the selector at the top of t
     </Note>
 
     <Warning>
-      Agent mode actions are real — they create and update actual content in your CMS. New posts and pages are always saved as **drafts**, so nothing the agent writes goes live until you review and publish it yourself. Authors and contributors can only act on their own posts, exactly as in the editor.
+      Agent mode actions are real — they create and update actual content in your CMS. Anything the agent **creates** is saved as a **draft**, posts and pages alike, so new content never appears on your site unreviewed.
+
+      **Updating is different.** If you have permission to publish a post, the agent can publish an existing one for you when you ask it to — say "publish the Year in Review post" and it goes live. Without that permission it refuses and tells you, rather than quietly saving a draft. Pages can't be published this way at all.
+
+      Authors and contributors can only act on their own posts, exactly as in the editor.
     </Warning>
   </Tab>
 </Tabs>
@@ -144,8 +164,10 @@ The AI agent operates entirely within your tenant's content. It can only see and
   <Accordion title="Use chat mode to draft, then copy into the editor">
     AI chat is a great place to generate raw content. Once you have something you like, copy it into the post editor and refine it before publishing.
   </Accordion>
-  <Accordion title="In agent mode, confirm before publishing">
-    When the AI creates or updates a post, it saves as a draft by default. Open the post editor to review, adjust, and set a publish date before making it live.
+  <Accordion title="In agent mode, review before publishing">
+    Anything the AI creates is saved as a draft. Open it in the editor to review and adjust before making it live.
+
+    Be deliberate about asking it to publish, though — if you have publish permission, "publish that post" does exactly that, with no preview step in between.
   </Accordion>
   <Accordion title="Iterate on responses">
     If the first response isn't quite right, follow up with a refinement. For example: "Make that shorter" or "Change the tone to be more formal" — the AI retains the conversation context.
