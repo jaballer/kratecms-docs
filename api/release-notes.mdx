@@ -68,6 +68,13 @@ curl "https://acme.yoursite.com/api/v1/release-notes?type=feature" \
     "last_page": 4,
     "per_page": 15,
     "total": 52
+  },
+  "links": {
+    "self": "https://acme.yoursite.com/api/v1/release-notes",
+    "first": "https://acme.yoursite.com/api/v1/release-notes?page=1",
+    "last": "https://acme.yoursite.com/api/v1/release-notes?page=4",
+    "prev": null,
+    "next": "https://acme.yoursite.com/api/v1/release-notes?page=2"
   }
 }
 ```
@@ -125,8 +132,6 @@ Returns `404` for an id that doesn't exist, or for an unpublished draft.
 <ResponseField name="data.published_at" type="string | null">
   ISO 8601 publish timestamp.
 </ResponseField>
-
----
 
 ---
 

@@ -58,7 +58,7 @@ Retry-After: 30
 
 ## Pagination
 
-List endpoints return a paginated envelope. Results are in the `data` array; pagination state is in `meta` and cursor links are in `links`.
+List endpoints return a paginated envelope. Results are in the `data` array, pagination state is in `meta`, and `links` carries `self` plus the `first` / `last` / `prev` / `next` page URLs (`prev` and `next` are `null` at the ends). Every list endpoint — posts, release notes, and media — uses this same shape.
 
 <CodeGroup>
 
@@ -79,6 +79,7 @@ curl https://acme.yoursite.com/api/v1/posts \
     "total": 42
   },
   "links": {
+    "self": "https://acme.yoursite.com/api/v1/posts",
     "first": "https://acme.yoursite.com/api/v1/posts?page=1",
     "last": "https://acme.yoursite.com/api/v1/posts?page=3",
     "prev": null,
