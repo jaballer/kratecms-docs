@@ -39,7 +39,7 @@ They deliberately do **not** cover:
 The **Allowed file types** list is intersected with the image formats KrateCMS can actually render, so an image field only ever accepts an image:
 
 - **JPEG, PNG, and WebP** are accepted wherever an image is inserted.
-- **GIF** is accepted for your site logo but not for content images.
+- **GIF** is inert here — no image surface governed by this setting accepts it, and removing it from the list changes nothing. (Your site logo does accept GIF, but the logo has its own fixed validator and ignores this setting entirely — see the table above.)
 - **PDF, DOC, and DOCX** are carried in the default list but are inert today — they're reserved for a future general file surface, and adding them changes nothing yet.
 
 <Warning>

@@ -30,7 +30,7 @@ https://acme.yoursite.com/api/v1
 The API is tenant-scoped. A request to `acme.yoursite.com/api/v1/posts` returns only that tenant's posts. Records from other tenants are never visible, regardless of the token you supply.
 
 <Note>
-  **One exception: writing release notes.** Release notes are platform-wide announcements shared by every site, so `POST`, `PATCH`, and `DELETE` on `/release-notes` work only against the **central platform domain** and are rejected on a site domain. Reading them works from anywhere. See [Release Notes API](/api/release-notes#writing-release-notes).
+  **One exception: writing release notes.** Release notes are platform-wide announcements shared by every site, so `POST`, `PATCH`, and `DELETE` on `/release-notes` work only against the **central platform domain** and are rejected on a site domain. Reading them works from anywhere. See [Release Notes API](/api/release-notes#post-/api/v1/release-notes).
 </Note>
 
 ## Authentication

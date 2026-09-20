@@ -94,14 +94,28 @@ Contact details, business hours, and your business address are managed from a se
 | **Show business address (with a "Get directions" link)** | Your business address, linked to Google Maps directions. |
 
 <Note>
-  Email and phone are controlled independently, so you can publish one without the other — a phone number for customers without exposing an inbox, for example. Each toggle also governs whether that detail appears in your page's structured data.
+  Email and phone are controlled independently, so you can publish one without the other — a phone number for customers without exposing an inbox, for example. Each toggle also governs whether that detail appears in your page's structured data; see [what your toggles do to structured data](#what-your-toggles-do-to-structured-data).
 </Note>
 
 <Note>
   Business Info is always available in the admin — it is not gated behind the Krate page feature flag, because it also feeds your transactional email footers. See [Business Info](/settings/general#business-info) for the full field reference.
 </Note>
 
-When a business address is present, the Krate page's structured data upgrades from `Person` to `LocalBusiness` JSON-LD, including your postal address, phone, email, and opening hours.
+### What your toggles do to structured data
+
+The toggles govern your page's JSON-LD as well as what visitors see, so hiding a detail also keeps it out of search engines.
+
+| Structured data | Emitted when |
+|---|---|
+| `LocalBusiness` type (instead of `Person`) | **Show business address** is on *and* an address is set |
+| `address` | Same condition — it's what upgrades the type |
+| `telephone` | **Show contact phone number** is on |
+| `email` | **Show contact email** is on |
+| `openingHoursSpecification` | **Show business hours** is on, for each day with a valid open–close range |
+
+<Note>
+  Turning the **address** toggle off keeps your page typed as `Person` even when an address is saved, and drops the phone, email, and hours properties along with it — they're nested inside the `LocalBusiness` block. Days marked Closed or By appointment are omitted rather than emitted as empty spans.
+</Note>
 
 <Note>
   Business hours support one interval per day — a single open–close range, with no overnight spans (the close time must be later than the open time). Split shifts and an "open now" indicator are planned for a later release.

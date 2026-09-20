@@ -128,15 +128,106 @@ Returns `404` for an id that doesn't exist, or for an unpublished draft.
 
 ---
 
-## Writing release notes
+---
 
-`POST`, `PATCH`, and `DELETE` endpoints exist at `/api/v1/release-notes` and `/api/v1/release-notes/{id}`, requiring a Bearer token with the matching release-notes permission. Publishing an entry additionally requires the publish permission — without it, an entry sent as published is saved as a draft instead.
+## POST /api/v1/release-notes
+
+Creates a release note. Requires a Bearer token whose user holds the create permission.
 
 <Warning>
-  These endpoints only work from the **central platform domain**. Calling them against a tenant site's domain is rejected, because the feed is shared across every site and isn't per-tenant content.
+  This endpoint, and the two below, work **only from the central platform domain**. Calling them against a site's domain is rejected, because the feed is shared across every site and isn't per-site content.
 </Warning>
 
-Unlike the web editor, the API doesn't expose a `slug` field — a draft's slug tracks its title automatically and freezes once published.
+<ParamField body="title" type="string" required>
+  The entry's headline. Maximum 255 characters.
+</ParamField>
+
+<ParamField body="body" type="string" required>
+  The announcement text. Maximum 5,000 characters.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  One of `feature`, `improvement`, `fix`, `security`, or `breaking`.
+</ParamField>
+
+<ParamField body="link_url" type="string">
+  Optional "read more" target. Either a full `http`/`https` URL or an internal path beginning with a single `/`. Protocol-relative values (`//host`) are rejected. Maximum 2,048 characters.
+</ParamField>
+
+<ParamField body="link_label" type="string">
+  Optional label for `link_url`. Renders as "Read more" when omitted. Maximum 100 characters.
+</ParamField>
+
+<ParamField body="is_published" type="boolean">
+  Whether to publish immediately. Defaults to `false`.
+</ParamField>
+
+<ParamField body="published_at" type="string">
+  Optional publish timestamp. Defaults to now when the entry is published without one.
+</ParamField>
+
+<Note>
+  Publishing needs its own permission. Sending `is_published: true` without it saves the entry as a **draft** instead of failing.
+</Note>
+
+There's no `slug` field — the API derives the slug from the title, keeps it tracking the title while the entry is a draft, and freezes it on publish. (The web editor does expose an editable slug.)
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://kratecms.com/api/v1/release-notes \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "title": "Media library",
+    "body": "Every file your site uploads now lives in one searchable library.",
+    "type": "feature",
+    "link_url": "/content/media-library",
+    "link_label": "Read the guide",
+    "is_published": true
+  }'
+```
+
+</CodeGroup>
+
+Returns `201 Created` with the new entry.
+
+---
+
+## PATCH /api/v1/release-notes/\{id\}
+
+Updates a release note. Requires the edit permission. Central platform domain only.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the entry.
+</ParamField>
+
+Accepts the same fields as `POST`, all optional — omit a field to leave it unchanged. `title`, `body`, and `type` cannot be set to empty when you do send them. Send `link_url: null` to clear the "read more" link.
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl -X PATCH https://kratecms.com/api/v1/release-notes/31 \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"type": "improvement", "link_url": null}'
+```
+
+</CodeGroup>
+
+Returns `200 OK` with the updated entry.
+
+---
+
+## DELETE /api/v1/release-notes/\{id\}
+
+Permanently deletes a release note. Requires the delete permission. Central platform domain only. Returns `204 No Content`.
 
 ## Reading release notes in the admin
 
