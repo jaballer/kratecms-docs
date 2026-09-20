@@ -1,0 +1,36 @@
+name: Docs checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  links:
+    name: Links and anchors
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install the Mintlify CLI
+        run: npm install -g mint
+
+      # Page paths. Does not look at URL fragments — that is the next step.
+      - name: Check for broken links
+        run: mint broken-links
+
+      # `mint export` needs no authentication, so this runs without a secret.
+      - name: Build a static export
+        run: mint export --output export.zip
+
+      - name: Unpack the export
+        run: unzip -q export.zip -d export
+
+      # Fragments, against the ids the build actually emitted.
+      - name: Check link anchors
+        run: node scripts/check-anchors.mjs export
