@@ -43,6 +43,10 @@ Returns a paginated list of media assets in the current tenant context.
   Trashed assets are never returned, and there's no API surface for trashing, restoring, or deleting. Those actions live in the admin only.
 </Note>
 
+<Note>
+  Pagination links keep your filters. `first`, `last`, `prev`, and `next` carry the `search`, `type`, and `source` you sent, so following `next` gives you page two of the *same* filtered set.
+</Note>
+
 ### Example
 
 <CodeGroup>
@@ -83,10 +87,10 @@ curl "https://acme.yoursite.com/api/v1/media?type=image&source=ai" \
   },
   "links": {
     "self": "https://acme.yoursite.com/api/v1/media?type=image&source=ai",
-    "first": "https://acme.yoursite.com/api/v1/media?page=1",
-    "last": "https://acme.yoursite.com/api/v1/media?page=2",
+    "first": "https://acme.yoursite.com/api/v1/media?type=image&source=ai&page=1",
+    "last": "https://acme.yoursite.com/api/v1/media?type=image&source=ai&page=2",
     "prev": null,
-    "next": "https://acme.yoursite.com/api/v1/media?page=2"
+    "next": "https://acme.yoursite.com/api/v1/media?type=image&source=ai&page=2"
   }
 }
 ```

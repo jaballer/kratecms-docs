@@ -90,6 +90,10 @@ curl https://acme.yoursite.com/api/v1/posts \
 
 Use the `next` link directly to fetch the following page, or pass a `page` query parameter manually.
 
+<Warning>
+  **One endpoint's page links don't keep your filters.** Posts and media carry the active query onto `first` / `last` / `prev` / `next`, so following them pages through the same filtered set. [Release notes](/api/release-notes) does not — its links point at the unfiltered feed, so a filtered request followed by `next` silently returns page two of everything. Reapply `type` there, or page by parameter.
+</Warning>
+
 ## Error responses
 
 All error responses return a JSON body. Validation errors include a per-field `errors` object.
