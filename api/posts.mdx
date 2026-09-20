@@ -103,7 +103,7 @@ curl https://acme.yoursite.com/api/v1/posts \
 ### Response fields
 
 <ResponseField name="data" type="array">
-  Array of post objects. See field descriptions under [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug) for the shape of each item.
+  Array of post objects. See field descriptions under [GET /api/v1/posts/\{idOrSlug\}](#get-/api/v1/posts/idorslug) for the shape of each item.
 </ResponseField>
 
 <ResponseField name="meta.current_page" type="integer">
@@ -278,7 +278,7 @@ curl https://acme.yoursite.com/api/v1/posts/42 \
 
 ## GET /api/v1/posts/by-slug/\{slug\}
 
-Returns a single post looked up by its slug. No authentication required. This is an explicit slug-only alias: the [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug) endpoint also resolves slugs, but this route enforces the slug character set below.
+Returns a single post looked up by its slug. No authentication required. This is an explicit slug-only alias: the [GET /api/v1/posts/\{idOrSlug\}](#get-/api/v1/posts/idorslug) endpoint also resolves slugs, but this route enforces the slug character set below.
 
 <ParamField path="slug" type="string" required>
   The post slug. Must contain only lowercase letters (`a–z`), digits (`0–9`), and hyphens (`-`). The route returns `404` for slugs containing other characters.
@@ -297,7 +297,7 @@ curl https://acme.yoursite.com/api/v1/posts/by-slug/hello-world \
 
 </CodeGroup>
 
-The response shape is identical to [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug).
+The response shape is identical to [GET /api/v1/posts/\{idOrSlug\}](#get-/api/v1/posts/idorslug).
 
 ---
 
@@ -492,7 +492,7 @@ curl -X PATCH https://acme.yoursite.com/api/v1/posts/42 \
 JSON `PATCH` requests work directly without the `_method` override. The method override is only needed when sending `multipart/form-data`.
 </Tip>
 
-The response shape is identical to [GET /api/v1/posts/\{idOrSlug\}](#get-apiv1postsidorslug), reflecting the updated values.
+The response shape is identical to [GET /api/v1/posts/\{idOrSlug\}](#get-/api/v1/posts/idorslug), reflecting the updated values.
 
 ---
 

@@ -105,16 +105,18 @@ Contact details, business hours, and your business address are managed from a se
 
 The toggles govern your page's JSON-LD as well as what visitors see, so hiding a detail also keeps it out of search engines.
 
+Everything below lives inside a `LocalBusiness` block, and that block only exists when **Show business address** is on and an address is set. With the address toggle off your page stays typed as `Person` and emits none of these, however the other toggles are set.
+
 | Structured data | Emitted when |
 |---|---|
 | `LocalBusiness` type (instead of `Person`) | **Show business address** is on *and* an address is set |
-| `address` | Same condition — it's what upgrades the type |
-| `telephone` | **Show contact phone number** is on |
-| `email` | **Show contact email** is on |
-| `openingHoursSpecification` | **Show business hours** is on, for each day with a valid open–close range |
+| `address` | Same condition — it's what creates the block |
+| `telephone` | That same condition, **and** **Show contact phone number** is on |
+| `email` | That same condition, **and** **Show contact email** is on |
+| `openingHoursSpecification` | That same condition, **and** **Show business hours** is on — one entry per day with a valid open–close range |
 
 <Note>
-  Turning the **address** toggle off keeps your page typed as `Person` even when an address is saved, and drops the phone, email, and hours properties along with it — they're nested inside the `LocalBusiness` block. Days marked Closed or By appointment are omitted rather than emitted as empty spans.
+  Days marked Closed or By appointment are skipped rather than emitted as empty spans, as is any day whose stored times aren't a valid range.
 </Note>
 
 <Note>

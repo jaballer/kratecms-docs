@@ -33,7 +33,7 @@ Each token carries its own expiry, chosen when it's issued. A token issued with 
 
 ## Use the token
 
-Pass the token as a Bearer credential in the `Authorization` header on every write request.
+Pass the token as a Bearer credential in the `Authorization` header on every request that needs one — that means all writes (`POST`, `PATCH`, `DELETE`) **and every [media](/api/media) request, reads included**. Omitting it from a media `GET` returns `401`.
 
 ```http
 Authorization: Bearer <your-token>
