@@ -264,7 +264,9 @@ curl https://acme.yoursite.com/api/v1/posts/42 \
 </ResponseField>
 
 <ResponseField name="data.author.email" type="string | null">
-  Email address of the author. Only present when the requesting token belongs to a user with the `posts.edit` permission; otherwise `null`.
+  Email address of the author, present only when the request is authenticated as a user with the `posts.edit` permission.
+
+  On the **public read endpoints this is always `null`**, because those routes don't resolve token authentication at all (see the note on `GET /api/v1/posts`). It is populated on the authenticated responses — the bodies returned by `POST`, `PATCH`, and the attach endpoints — and for [MCP](/integrations/mcp) clients, which authenticate every call.
 </ResponseField>
 
 <ResponseField name="data.links.self" type="string">
@@ -321,11 +323,19 @@ Creates a new post. Requires a Bearer token. The authenticated user must have th
 </ParamField>
 
 <ParamField body="featured_image" type="file">
-  Optional featured image. Accepted formats: `jpeg`, `png`, `jpg`, `webp`. Maximum file size: 2 MB. Send as `multipart/form-data` when including this field.
+  Optional featured image. Accepted formats: `jpeg`, `png`, `jpg`, `webp`. Maximum file size is the limit set on your site's [Media settings](/settings/media) page — **10 MB** by default. Send as `multipart/form-data` when including this field.
 </ParamField>
 
 <ParamField body="youtube_link" type="string">
   Optional YouTube URL. Accepts standard `youtube.com/watch?v=` and `youtu.be/` formats. Maximum 255 characters.
+</ParamField>
+
+<ParamField body="audio_url" type="string">
+  Optional HTTPS URL of an audio file hosted elsewhere. Must use `https`; maximum 255 characters. To attach a track from your media library instead, use [`POST /api/v1/posts/{id}/audio`](#post-/api/v1/posts/id/audio) after creating the post.
+</ParamField>
+
+<ParamField body="audio_filename" type="string">
+  Display label for the audio player, for example `"Episode 1 – Introduction"`. **Required whenever `audio_url` is set** — an external link carries no name of its own. Maximum 255 characters.
 </ParamField>
 
 <Note>
@@ -423,7 +433,7 @@ All fields are optional — send only the fields you want to change.
 </ParamField>
 
 <ParamField body="featured_image" type="file">
-  Replacement featured image. Accepted formats: `jpeg`, `png`, `jpg`, `webp`. Maximum file size: 2 MB. Cannot be combined with `remove_featured_image: true` in the same request.
+  Replacement featured image. Accepted formats: `jpeg`, `png`, `jpg`, `webp`. Maximum file size is the limit set on your site's [Media settings](/settings/media) page — **10 MB** by default. Cannot be combined with `remove_featured_image: true` in the same request.
 </ParamField>
 
 <ParamField body="remove_featured_image" type="boolean">
@@ -432,6 +442,24 @@ All fields are optional — send only the fields you want to change.
 
 <ParamField body="youtube_link" type="string">
   Replacement YouTube URL. Accepts standard `youtube.com/watch?v=` and `youtu.be/` formats. Pass `null` to clear. Maximum 255 characters.
+</ParamField>
+
+<ParamField body="audio_url" type="string | null">
+  An HTTPS URL of an audio file hosted elsewhere. Must use `https`; maximum 255 characters.
+
+  This is also how you **remove** a post's audio, or switch a library track back to an external link:
+
+  | To do this | Send |
+  |---|---|
+  | Remove the post's audio entirely | `{"audio_url": null}` |
+  | Replace a library track with an external link | `{"audio_url": "https://…", "audio_filename": "…"}` |
+  | Attach a library track | Not here — use [`POST /api/v1/posts/{id}/audio`](#post-/api/v1/posts/id/audio) |
+
+  Setting `audio_url` clears any linked library track, since a post carries one or the other, never both.
+</ParamField>
+
+<ParamField body="audio_filename" type="string | null">
+  Display label for the audio player. **Required whenever `audio_url` is set**, and it must stay non-empty while the post has an external audio URL — clearing it alone returns `422`.
 </ParamField>
 
 ### Multipart uploads
@@ -504,7 +532,7 @@ Attaches an existing media-library asset to a post as its featured image, by id.
 </ParamField>
 
 <ParamField body="media_id" type="integer" required>
-  ID of the media asset to attach. Must be an image in the same tenant context, and not in the library trash.
+  ID of the media asset to attach. Must be an image in the same tenant context, and not in the library trash — except when it is the image this post is already linked to, which stays re-attachable.
 </ParamField>
 
 Requires both the **Edit posts** and **Media** permissions — attaching reuses a library asset, so it's gated like browsing the library. Editors and above can target any post; authors and contributors only their own.
@@ -533,7 +561,7 @@ curl -X POST https://acme.yoursite.com/api/v1/posts/42/featured-image \
   Re-attaching the image a post already has stays allowed even once that asset has been trashed, so the call is safely idempotent. Attaching a *different* trashed asset returns `422`.
 </Note>
 
-A cross-tenant, non-image, or trashed `media_id` returns `422 Unprocessable Content`.
+A cross-tenant or non-image `media_id` returns `422 Unprocessable Content`, as does a **newly picked** trashed one — the exception above still holds, so re-sending the post's own currently-linked image succeeds even after that asset is trashed.
 
 ---
 
@@ -546,7 +574,7 @@ Attaches an existing media-library audio asset to a post, by id. No file bytes a
 </ParamField>
 
 <ParamField body="media_id" type="integer" required>
-  ID of the audio asset to attach. Must be an audio file in the same tenant context, and not in the library trash.
+  ID of the audio asset to attach. Must be an audio file in the same tenant context, and not in the library trash — except when it is the track this post is already linked to, which stays re-attachable.
 </ParamField>
 
 Gated exactly like the featured-image endpoint: **Edit posts** plus **Media**.

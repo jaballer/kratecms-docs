@@ -66,13 +66,15 @@ This guide walks you through logging into KrateCMS for the first time, orienting
   <Step title="Get an API token">
     To authenticate write operations against the API, you need a personal access token.
 
-    Navigate to `/admin/tokens` (super-admin access required). Click **Create Token**, give it a descriptive name (for example, `My Integration`), and click **Generate**.
+    **Tokens aren't issued from your own site's admin.** Ask your platform administrator to create one for your user account — token management lives on the central platform admin (`/admin/tokens`) and requires super-admin access. Tell them what the token is for, so they can give it a descriptive name and a sensible expiry.
 
-    Copy the token immediately — it is only displayed once. Store it in a secure location such as a password manager or your application's secrets store.
+    They'll send you the token value, which is shown only once. Store it somewhere safe, like a password manager or your application's secrets store.
 
     <Warning>
-      Treat your API token like a password. Anyone who holds it can create, update, and delete posts on your behalf. Revoke it from `/admin/tokens` if it is ever exposed.
+      Treat your API token like a password. Anyone who holds it can create, update, and delete posts on your behalf. If it's ever exposed, ask your platform administrator to revoke it immediately.
     </Warning>
+
+    See [Authentication](/api/authentication) for expiry, scoping, and revocation.
   </Step>
 
   <Step title="Make your first API call">

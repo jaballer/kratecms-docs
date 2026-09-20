@@ -87,7 +87,11 @@ The same suppression applies to the admin area, which is never tracked by your c
 
 ## Krate page link clicks
 
-If your homepage is a [Krate page](/content/krate-page), every visitor click on one of your links pushes a `krate_link_click` event into the data layer. You can build a GTM trigger on that event name to count link clicks — the core engagement number for a link-in-bio page — and forward it to Google Analytics or any other tag.
+If you have a [Krate page](/content/krate-page), visitor clicks on your **content links** and **social icons** push a `krate_link_click` event into the data layer. You can build a GTM trigger on that event name to count link clicks — the core engagement number for a link-in-bio page — and forward it to Google Analytics or any other tag.
+
+<Note>
+  Only those two link types emit the event. Contact links, the "Get directions" link, and pinned post links deliberately emit nothing, so don't use one of them to test your setup — you'll conclude tracking is broken when it isn't. See [measuring link clicks](/content/krate-page#measuring-link-clicks) for the event's fields.
+</Note>
 
 ## What isn't supported
 

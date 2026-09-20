@@ -3,7 +3,9 @@ title: "Customize colors, fonts, logo, and CSS in KrateCMS"
 description: "Customize every visual aspect of your site — colors, fonts, theme mode, logo, favicon, and custom CSS — from the Brand settings page."
 ---
 
-KrateCMS gives you full white-label control over how your site looks. From the Brand settings page you can change your color scheme, upload your logo and favicon, select your fonts, toggle dark mode, and even inject your own CSS rules. Changes apply instantly — no deploy or rebuild required. Color, font, and theme changes apply to both your public site and your admin panel; Custom CSS applies to your public site only.
+KrateCMS gives you full white-label control over how your site looks. From the Brand settings page you can change your color scheme, upload your logo and favicon, select your fonts, toggle dark mode, and even inject your own CSS rules. Changes apply instantly — no deploy or rebuild required.
+
+How far each setting reaches differs: **fonts and theme mode** apply to both your public site and your admin panel, **colors** style your public site, and **Custom CSS** applies to your public site only.
 
 ## Getting there
 
@@ -13,7 +15,7 @@ Navigate to **Settings → Brand** in your admin sidebar, or go directly to `/ad
 
 <CardGroup cols={2}>
   <Card title="Colors" icon="palette">
-    Set your primary, secondary, and accent colors. These are applied site-wide to buttons, links, highlights, and interactive elements.
+    Set your primary, secondary, and accent colors. They style your public site — buttons, links, and highlights — and are available to your Custom CSS.
   </Card>
   <Card title="Typography" icon="font">
     Choose separate fonts for your headings and body text from the available font library.
@@ -43,7 +45,7 @@ The **Primary color**, **Secondary color**, and **Accent color** fields accept a
 | **Accent** | Your [Krate page](/content/krate-page) — link button borders, the avatar ring, and focus rings. Also available through the `kr8-*-accent` helpers. |
 
 <Note>
-  **Your brand colors apply to your public site, not the admin.** The admin panel, sign-in screens, and profile pages keep a fixed neutral palette on purpose — so a bright brand color can't make your own editor hard to read, and the admin looks the same however you set your palette.
+  **Brand colors style your public site, not the admin interface.** The admin panel, sign-in screens, and profile pages keep a fixed neutral palette on purpose — so a bright brand color can't make your own editor hard to read. Fonts and theme mode are different: those *do* apply to the admin as well.
 </Note>
 
 <Steps>
@@ -131,7 +133,7 @@ body {
 
 /* Example: add a custom border to post cards */
 .post-card {
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--primary-color);
   border-radius: 8px;
 }
 ```
@@ -140,7 +142,7 @@ body {
 
 <AccordionGroup>
   <Accordion title="Do brand changes affect the admin as well as the public site?">
-    Color, typography, and theme-mode changes apply to both the public-facing site and the admin panel simultaneously. Custom CSS is the exception — it is applied to your public pages only, never the admin, so a bad rule can't break your editor.
+    Typography and theme-mode changes apply to both the public-facing site and the admin panel. **Colors do not** — the admin keeps a fixed neutral palette, so a brand color can never make your own editor hard to read. Custom CSS is public-pages-only too, never the admin, so a bad rule can't break your editor.
   </Accordion>
   <Accordion title="Can I revert to the default logo or favicon?">
     Yes. Open Brand settings and use the remove or replace control next to the logo or favicon upload. Saving with no image uploaded returns to the default placeholder.

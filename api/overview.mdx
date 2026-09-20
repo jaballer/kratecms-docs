@@ -12,7 +12,7 @@ An [OpenAPI 3.1 specification](https://github.com/jaballer/kratecms/blob/main/do
 | Resource | Public reads? | Endpoints |
 |---|---|---|
 | [Posts](/api/posts) | Yes | List, get by id or slug, create, update, delete, attach a featured image, attach audio |
-| [Release notes](/api/release-notes) | Yes | List, get, create, update, delete |
+| [Release notes](/api/release-notes) | Yes | List, get — plus create, update, delete **from the central platform domain only** |
 | [Media](/api/media) | **No** | List, get, update |
 
 <Note>
@@ -28,6 +28,10 @@ https://acme.yoursite.com/api/v1
 ```
 
 The API is tenant-scoped. A request to `acme.yoursite.com/api/v1/posts` returns only that tenant's posts. Records from other tenants are never visible, regardless of the token you supply.
+
+<Note>
+  **One exception: writing release notes.** Release notes are platform-wide announcements shared by every site, so `POST`, `PATCH`, and `DELETE` on `/release-notes` work only against the **central platform domain** and are rejected on a site domain. Reading them works from anywhere. See [Release Notes API](/api/release-notes#writing-release-notes).
+</Note>
 
 ## Authentication
 

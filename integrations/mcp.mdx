@@ -66,7 +66,9 @@ In Cowork, the two values are configured as `KRATECMS_API_URL` (your site's base
 | `update_media` | Edit an asset's alt text and title | Media |
 
 <Warning>
-  Editing alt text through `update_media` changes it **everywhere that asset is used**, since alt text is stored once on the asset. Handy for fixing a description across a whole site at once — worth being deliberate about when asking an assistant to do it in bulk.
+  Editing alt text through `update_media` updates **every featured-image and page-block placement** of that asset at once, since those read their description from the asset itself. Handy for fixing a description across a whole site — worth being deliberate about when asking an assistant to do it in bulk.
+
+  It does not reach inline images inside post content, which carry their own per-placement alt text.
 </Warning>
 
 ### Release notes

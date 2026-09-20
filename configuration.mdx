@@ -33,7 +33,7 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
   </Accordion>
 
   <Accordion title="Brand — /admin/settings/brand">
-    Brand settings control the entire visual identity of your site. Changes here apply to both the public-facing site and, where applicable, the admin interface.
+    Brand settings control the entire visual identity of your site. Fonts and theme mode apply to both the public-facing site and the admin interface; colors style your public site, leaving the admin on a fixed neutral palette.
 
     | Setting | What it does |
     |---|---|
@@ -152,8 +152,14 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     KrateCMS also automatically rejects passwords found in data breaches via the Have I Been Pwned database — this protection is always on and cannot be disabled.
   </Accordion>
 
-  <Accordion title="Chat — /admin/settings/chat">
-    Chat settings configure the AI assistant that powers the chat interface, the image generator, and the API Q&A mode.
+  <Accordion title="Chat — platform-managed">
+    <Warning>
+      **This panel isn't available in your site's settings.** Chat tuning is managed centrally by your platform operator, not per site, so there's no **Chat** entry in your sidebar to look for.
+
+      Don't confuse it with the AI chat *feature*, which is [enabled per site](/ai/chat) — you can have AI chat working and still have no Chat settings panel. To request the feature, or a change to any value below, contact your platform administrator.
+    </Warning>
+
+    For reference, these are the values your operator controls:
 
     | Setting | What it does |
     |---|---|
@@ -170,13 +176,6 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     | **AI Image HTTP Timeout** | Seconds to wait for an image generation response |
     | **API Read Allowed Hosts** | Allowlist of external hostnames the API Q&A mode is permitted to read |
 
-    <Note>
-      The Chat settings panel is gated by a feature flag. If you do not see it in your sidebar, the AI chat feature has not been enabled on your plan.
-    </Note>
-
-    <Warning>
-      The Chat settings panel is **platform-managed** — it isn't available on your site's own settings. The AI chat feature itself is [enabled per site](/ai/chat); its model and tuning are set by your platform operator. Ask them if you need a value changed.
-    </Warning>
   </Accordion>
 
   <Accordion title="Billing — /admin/settings/billing">
