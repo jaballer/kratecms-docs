@@ -6,7 +6,7 @@ description: "Set up Stripe subscription billing in KrateCMS to manage plans, pr
 KrateCMS uses Stripe to handle subscription billing, including plan creation, payment processing, renewals, and cancellations. Stripe processes all card data on its own secure infrastructure — KrateCMS never stores or handles raw payment information. Once the integration is configured, your members can subscribe to your Pro plan directly from your site and manage their billing through the Stripe customer portal.
 
 <Note>
-Billing settings may be gated depending on your KrateCMS plan or tenant configuration. If you do not see a billing section in your admin settings, contact your platform administrator to enable it.
+**Future-state guidance.** The Billing section is off platform-wide during the KrateCMS alpha and cannot be enabled for an individual site, so you won't find it in your admin settings yet. This page describes how the Stripe integration works once billing ships.
 </Note>
 
 ## What Stripe handles
@@ -62,7 +62,7 @@ The remaining events you typically need to receive — `customer.subscription.cr
     In the Stripe Dashboard, go to **Settings → Billing → Customer portal**. Enable the portal and configure the options you want to offer your members — such as cancellation, payment method updates, and plan switching between monthly and annual. No code changes are required; KrateCMS redirects members to the portal automatically.
   </Step>
   <Step title="Verify your billing settings in KrateCMS">
-    In your KrateCMS admin panel, navigate to `/admin/settings/billing` and confirm the integration is active. From here you can also link to the customer portal for testing.
+    Once billing ships, you'll confirm the integration at `/admin/settings/billing` in your KrateCMS admin panel and link to the customer portal from there for testing. That page isn't available yet — see the note at the top of this guide.
   </Step>
 </Steps>
 

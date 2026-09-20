@@ -5,7 +5,19 @@ description: "A reference overview of the KrateCMS REST API: base URL, tenant sc
 
 The KrateCMS REST API gives you programmatic access to your CMS content over HTTPS. All requests and responses use JSON. The API is versioned — every endpoint lives under `/api/v1` — so future breaking changes will land on a new version without affecting your existing integrations.
 
-An [OpenAPI 3.1 specification](https://github.com/jaballer/kratecms/blob/main/docs/api/openapi.yaml) is available in the repository, covering all posts endpoints with request/response schemas, authentication details, and error shapes.
+An [OpenAPI 3.1 specification](https://github.com/jaballer/kratecms/blob/main/docs/api/openapi.yaml) is available in the repository, covering every endpoint with request/response schemas, authentication details, and error shapes.
+
+## Resources
+
+| Resource | Public reads? | Endpoints |
+|---|---|---|
+| [Posts](/api/posts) | Yes | List, get by id or slug, create, update, delete, attach a featured image, attach audio |
+| [Release notes](/api/release-notes) | Yes | List, get — plus create, update, delete **from the central platform domain only** |
+| [Media](/api/media) | **No** | List, get, update |
+
+<Note>
+  Media is the exception to the public-read rule: every media request — including reads — requires a token whose user holds the **Media** permission. Posts and release notes serve published content to anyone.
+</Note>
 
 ## Base URL
 
@@ -17,9 +29,17 @@ https://acme.yoursite.com/api/v1
 
 The API is tenant-scoped. A request to `acme.yoursite.com/api/v1/posts` returns only that tenant's posts. Records from other tenants are never visible, regardless of the token you supply.
 
+<Note>
+  **One exception: writing release notes.** Release notes are platform-wide announcements shared by every site, so `POST`, `PATCH`, and `DELETE` on `/release-notes` work only against the **central platform domain** and are rejected on a site domain. Reading them works from anywhere. See [Release Notes API](/api/release-notes#post-/api/v1/release-notes).
+</Note>
+
 ## Authentication
 
-Read endpoints (`GET`) are public and require no credentials. Write endpoints (`POST`, `PATCH`, `DELETE`) require a Bearer token in the `Authorization` header. See [Authenticate with the KrateCMS API](/api/authentication) for how to obtain and use tokens.
+For posts and release notes, read endpoints (`GET`) are public and require no credentials, while write endpoints (`POST`, `PATCH`, `DELETE`) require a Bearer token in the `Authorization` header. Every media endpoint requires a token, reads included. See [Authenticate with the KrateCMS API](/api/authentication) for how to obtain and use tokens.
+
+<Note>
+  Public reads are resolved as a guest, even when you send a token. Drafts and members-only posts aren't returned by the public list endpoint on that basis alone — see the notes on each endpoint for how authenticated access differs.
+</Note>
 
 ## Cross-origin requests (CORS)
 
@@ -38,7 +58,7 @@ Retry-After: 30
 
 ## Pagination
 
-List endpoints return a paginated envelope. Results are in the `data` array; pagination state is in `meta` and cursor links are in `links`.
+List endpoints return a paginated envelope. Results are in the `data` array, pagination state is in `meta`, and `links` carries `self` plus the `first` / `last` / `prev` / `next` page URLs (`prev` and `next` are `null` at the ends). Every list endpoint — posts, release notes, and media — uses this same shape.
 
 <CodeGroup>
 
@@ -59,6 +79,7 @@ curl https://acme.yoursite.com/api/v1/posts \
     "total": 42
   },
   "links": {
+    "self": "https://acme.yoursite.com/api/v1/posts",
     "first": "https://acme.yoursite.com/api/v1/posts?page=1",
     "last": "https://acme.yoursite.com/api/v1/posts?page=3",
     "prev": null,

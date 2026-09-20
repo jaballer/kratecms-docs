@@ -19,11 +19,13 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     |---|---|
     | **Site Name** | The name displayed in the browser tab, emails, and the admin header |
     | **Site Description** | A short summary used in meta tags and the public homepage |
-    | **Footer Text** | Custom text or HTML shown in the site footer |
-    | **Company Name** | Your organization's legal or operating name (used in invoices and formal email footers) |
-    | **Company Address** | Mailing address used in invoices and email footers where required |
+    | **Footer Text** | Text shown in the site footer |
 
     Set your site name and description first — they appear in every outbound email your site sends and in search engine previews.
+
+    <Note>
+      Your organization's name, address, contact details, and business hours live on their own **Business Info** page, not here. See [Business Info](/settings/general#business-info).
+    </Note>
 
     <Note>
       Timezone is platform-managed via the `APP_TIMEZONE` environment variable and is not exposed as a UI field. Contact your platform administrator if you need it changed.
@@ -31,7 +33,7 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
   </Accordion>
 
   <Accordion title="Brand — /admin/settings/brand">
-    Brand settings control the entire visual identity of your site. Changes here apply to both the public-facing site and, where applicable, the admin interface.
+    Brand settings control the entire visual identity of your site. Fonts and theme mode apply to both the public-facing site and the admin interface; colors style your public site, leaving the admin on a fixed neutral palette.
 
     | Setting | What it does |
     |---|---|
@@ -93,12 +95,32 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     Tenant sites only. On by default.
   </Accordion>
 
-  <Accordion title="Analytics — platform-managed during alpha">
-    Tracking and analytics tags (Google Tag Manager, etc.) are configured at the **platform** level during the KrateCMS alpha period and are not available as a tenant-facing settings panel. Platform tags render across the central marketing site and every tenant subdomain.
+  <Accordion title="Media — /admin/settings/media">
+    Upload limits for images inserted anywhere in your content — the post editor, page blocks, featured images, and the [media library](/content/media-library).
+
+    | Setting | What it does |
+    |---|---|
+    | **Maximum upload size (MB)** | The largest single image file an editor can upload, from 1 to 100 (default 10) |
+    | **Allowed file types** | Comma-separated extensions permitted for uploads |
+
+    Audio, avatars, your logo, and your favicon keep their own fixed limits. See [Media settings](/settings/media).
+
+    Always on.
+  </Accordion>
+
+  <Accordion title="Tracking Tags — /admin/settings/tracking-tags">
+    Connect your own Google Tag Manager container so your analytics and advertising tags fire on your public pages.
+
+    | Setting | What it does |
+    |---|---|
+    | **Google Tag Manager ID** | Your container ID, in the form `GTM-XXXXXXX` |
+    | **Enable Google Tag Manager** | Turns your container on; both fields are required |
 
     <Warning>
-      The tenant `/admin/settings/analytics` route is blocked by middleware during alpha — tenants do not see this entry in the sidebar. Per-tenant analytics configuration will be exposed in a future release. For now, ask your platform administrator if you need a tag added.
+      Your container loads only for **logged-out** visitors, and never on sign-in or password-reset pages. Test from a private window. See [Tracking Tags](/settings/tracking-tags).
     </Warning>
+
+    Enabled per site. Renamed from "Analytics" — `/admin/settings/analytics` still redirects here.
   </Accordion>
 
   <Accordion title="Contact — /admin/settings/contact">
@@ -130,8 +152,14 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     KrateCMS also automatically rejects passwords found in data breaches via the Have I Been Pwned database — this protection is always on and cannot be disabled.
   </Accordion>
 
-  <Accordion title="Chat — /admin/settings/chat">
-    Chat settings configure the AI assistant that powers the chat interface, the image generator, and the API Q&A mode.
+  <Accordion title="Chat — platform-managed">
+    <Warning>
+      **This panel isn't available in your site's settings.** Chat tuning is managed centrally by your platform operator, not per site, so there's no **Chat** entry in your sidebar to look for.
+
+      Don't confuse it with the AI chat *feature*, which is [enabled per site](/ai/chat) — you can have AI chat working and still have no Chat settings panel. To request the feature, or a change to any value below, contact your platform administrator.
+    </Warning>
+
+    For reference, these are the values your operator controls:
 
     | Setting | What it does |
     |---|---|
@@ -148,13 +176,6 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     | **AI Image HTTP Timeout** | Seconds to wait for an image generation response |
     | **API Read Allowed Hosts** | Allowlist of external hostnames the API Q&A mode is permitted to read |
 
-    <Note>
-      The Chat settings panel is gated by a feature flag. If you do not see it in your sidebar, the AI chat feature has not been enabled on your plan.
-    </Note>
-
-    <Warning>
-      If a setting in the Chat panel appears grayed out and labeled "overridden by environment," it has been locked by your platform operator and cannot be changed from the UI.
-    </Warning>
   </Accordion>
 
   <Accordion title="Billing — /admin/settings/billing">
@@ -167,14 +188,14 @@ KrateCMS gives you control over your site's behavior, appearance, and security e
     - Download PDF invoices for past charges
 
     <Warning>
-      The Billing panel is gated by a feature flag and is off by default during early access. Contact your platform administrator to enable Stripe billing for your site.
+      **Future-state guidance.** The Billing panel is off platform-wide during early access and is not grantable per site, so there is nothing to request yet. The steps above describe how billing will work once it ships.
     </Warning>
   </Accordion>
 
   <Accordion title="Custom Domains — /admin/settings/domains">
     Connect your own domain to your site, verify it with DNS records, and choose a primary address. See [Custom domains](/settings/custom-domains).
 
-    Tenant sites only. Limited to the **admin** and **super-admin** roles; on by default.
+    Your site only. Limited to the **admin** and **super-admin** roles, and enabled per site — ask your platform administrator if you don't see it.
   </Accordion>
 </AccordionGroup>
 
@@ -184,18 +205,21 @@ When a setting can be configured both through the admin UI and through a platfor
 
 ## Quick reference
 
-| Category | URL | Access | Feature Flag |
+Settings appear in the sidebar in setup order, starting with your Krate page:
+
+| Category | URL | Access | Availability |
 |---|---|---|---|
-| General | `/admin/settings/general` | `settings.edit` | Always on |
+| Krate page | `/admin/settings/krate-page` | `settings.edit` | On by default (your site only) |
+| Business Info | `/admin/settings/business-info` | `settings.edit` | Always on |
 | Brand | `/admin/settings/brand` | `settings.edit` | Always on |
+| General | `/admin/settings/general` | `settings.edit` | Always on |
 | Menus | `/admin/settings/menus` | `settings.edit` | On by default |
 | Content | `/admin/settings/content` | `settings.edit` | Always on |
-| Krate page | `/admin/settings/krate-page` | `settings.edit` | On by default (tenant only) |
-| Security | `/admin/settings/security` | `settings.edit` | Always on |
+| Media | `/admin/settings/media` | `settings.edit` | Always on |
 | Contact | `/admin/settings/contact` | `settings.edit` | On by default |
-| Custom Domains | `/admin/settings/domains` | admin / super-admin | On by default (tenant only) |
-| Analytics | (platform-managed during alpha) | — | Not exposed to tenants |
-| Chat | `/admin/settings/chat` | `settings.edit` | Off by default |
-| Billing | `/admin/settings/billing` | `settings.billing` | Off by default |
+| Custom Domains | `/admin/settings/domains` | admin / super-admin | Enabled per site |
+| Tracking Tags | `/admin/settings/tracking-tags` | `settings.edit` | Enabled per site |
+| Security | `/admin/settings/security` | `settings.edit` | Always on |
+| Billing | `/admin/settings/billing` | `settings.billing` | Not yet available |
 
 By default, the `settings.edit` and `settings.billing` permissions are granted only to the **admin** and **super-admin** roles, so Settings is effectively limited to those roles unless a super-admin grants the permission to another role.

@@ -1,0 +1,250 @@
+---
+title: "Release Notes API: read platform announcements"
+description: "Reference for the KrateCMS release notes endpoints — read the platform's published announcements from any site, and manage them from the central domain."
+---
+
+Release notes are platform-wide announcements: the "what's new" feed of features, improvements, fixes, security updates, and breaking changes. Every site reads the same feed. All paths are prefixed with `/api/v1`.
+
+<Note>
+  **Release notes are authored by the platform, not by individual sites.** Read endpoints work from any site's domain. Write endpoints exist, but only work from the central platform domain — a tenant site can't publish to the shared feed.
+</Note>
+
+---
+
+## GET /api/v1/release-notes
+
+Returns a paginated list of published release notes, newest first. No authentication required.
+
+<ParamField query="type" type="string">
+  Filter to a single entry type. One of `feature`, `improvement`, `fix`, `security`, or `breaking`.
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Number of entries per page. Defaults to `15`; maximum `100`.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  Page number to retrieve. Defaults to `1`.
+</ParamField>
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl "https://acme.yoursite.com/api/v1/release-notes?type=feature" \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+```json
+{
+  "data": [
+    {
+      "id": 31,
+      "title": "Media library",
+      "slug": "media-library",
+      "body": "Every file your site uploads now lives in one searchable library.",
+      "link_url": "/content/media-library",
+      "link_label": "Read the guide",
+      "type": "feature",
+      "type_label": "Feature",
+      "is_published": true,
+      "published_at": "2026-07-05T17:00:00.000000Z",
+      "created_at": "2026-07-05T16:40:00.000000Z",
+      "updated_at": "2026-07-05T17:00:00.000000Z",
+      "author": {
+        "id": 1,
+        "name": "KrateCMS"
+      },
+      "links": {
+        "self": "https://acme.yoursite.com/api/v1/release-notes/31"
+      }
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 4,
+    "per_page": 15,
+    "total": 52
+  },
+  "links": {
+    "self": "https://acme.yoursite.com/api/v1/release-notes",
+    "first": "https://acme.yoursite.com/api/v1/release-notes?page=1",
+    "last": "https://acme.yoursite.com/api/v1/release-notes?page=4",
+    "prev": null,
+    "next": "https://acme.yoursite.com/api/v1/release-notes?page=2"
+  }
+}
+```
+
+---
+
+## GET /api/v1/release-notes/\{id\}
+
+Returns a single release note by its numeric id.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the entry. Unlike posts, this endpoint binds by id only — not by slug.
+</ParamField>
+
+Returns `404` for an id that doesn't exist, or for an unpublished draft.
+
+### Response fields
+
+<ResponseField name="data.id" type="integer">
+  Unique numeric identifier.
+</ResponseField>
+
+<ResponseField name="data.title" type="string">
+  The entry's headline.
+</ResponseField>
+
+<ResponseField name="data.slug" type="string">
+  URL-friendly identifier, unique across the platform. Used by the public web page, not by this API.
+</ResponseField>
+
+<ResponseField name="data.body" type="string">
+  The announcement text, up to 5,000 characters.
+</ResponseField>
+
+<ResponseField name="data.link_url" type="string | null">
+  Optional "read more" target — an absolute URL or an internal path. `null` if not set.
+</ResponseField>
+
+<ResponseField name="data.link_label" type="string | null">
+  Optional label for `link_url`. Renders as "Read more" when blank.
+</ResponseField>
+
+<ResponseField name="data.type" type="string">
+  One of `feature`, `improvement`, `fix`, `security`, or `breaking`.
+</ResponseField>
+
+<ResponseField name="data.type_label" type="string">
+  The human-readable form of `type`, for display.
+</ResponseField>
+
+<ResponseField name="data.is_published" type="boolean">
+  Whether the entry is published. Always `true` in public reads.
+</ResponseField>
+
+<ResponseField name="data.published_at" type="string | null">
+  ISO 8601 publish timestamp.
+</ResponseField>
+
+---
+
+## POST /api/v1/release-notes
+
+Creates a release note. Requires a Bearer token whose user holds the create permission.
+
+<Warning>
+  This endpoint, and the two below, work **only from the central platform domain**. Calling them against a site's domain is rejected, because the feed is shared across every site and isn't per-site content.
+</Warning>
+
+<ParamField body="title" type="string" required>
+  The entry's headline. Maximum 255 characters.
+</ParamField>
+
+<ParamField body="body" type="string" required>
+  The announcement text. Maximum 5,000 characters.
+</ParamField>
+
+<ParamField body="type" type="string" required>
+  One of `feature`, `improvement`, `fix`, `security`, or `breaking`.
+</ParamField>
+
+<ParamField body="link_url" type="string">
+  Optional "read more" target. Either a full `http`/`https` URL or an internal path beginning with a single `/`. Protocol-relative values (`//host`) are rejected. Maximum 2,048 characters.
+</ParamField>
+
+<ParamField body="link_label" type="string">
+  Optional label for `link_url`. Renders as "Read more" when omitted. Maximum 100 characters.
+</ParamField>
+
+<ParamField body="is_published" type="boolean">
+  Whether to publish immediately. Defaults to `false`.
+</ParamField>
+
+<ParamField body="published_at" type="string">
+  Optional publish timestamp. Defaults to now when the entry is published without one.
+</ParamField>
+
+<Note>
+  Publishing needs its own permission. Sending `is_published: true` without it saves the entry as a **draft** instead of failing.
+</Note>
+
+There's no `slug` field — the API derives the slug from the title, keeps it tracking the title while the entry is a draft, and freezes it on publish. (The web editor does expose an editable slug.)
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://kratecms.com/api/v1/release-notes \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{
+    "title": "Media library",
+    "body": "Every file your site uploads now lives in one searchable library.",
+    "type": "feature",
+    "link_url": "/content/media-library",
+    "link_label": "Read the guide",
+    "is_published": true
+  }'
+```
+
+</CodeGroup>
+
+Returns `201 Created` with the new entry.
+
+---
+
+## PATCH /api/v1/release-notes/\{id\}
+
+Updates a release note. Requires the edit permission. Central platform domain only.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the entry.
+</ParamField>
+
+Accepts the same fields as `POST`, all optional — omit a field to leave it unchanged. `title`, `body`, and `type` cannot be set to empty when you do send them. Send `link_url: null` to clear the "read more" link.
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl -X PATCH https://kratecms.com/api/v1/release-notes/31 \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"type": "improvement", "link_url": null}'
+```
+
+</CodeGroup>
+
+Returns `200 OK` with the updated entry.
+
+---
+
+## DELETE /api/v1/release-notes/\{id\}
+
+Permanently deletes a release note. Requires the delete permission. Central platform domain only. Returns `204 No Content`.
+
+## Reading release notes in the admin
+
+You don't need the API to keep up. Every admin dashboard shows a **Release Notes** widget with the five most recent entries, and the full searchable, type-filtered feed is published on the platform's public site.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="API overview" icon="book" href="/api/overview">
+    Base URL, authentication, pagination, and error codes.
+  </Card>
+  <Card title="MCP server" icon="plug" href="/integrations/mcp">
+    The same release-note tools, exposed to an AI client.
+  </Card>
+</CardGroup>

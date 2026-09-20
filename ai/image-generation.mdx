@@ -5,6 +5,14 @@ description: "Generate a featured image for any post from its own content, right
 
 KrateCMS can generate a featured image for a post directly from the editor. Instead of asking you to write an image prompt, it reads the post's **title and content** and produces a relevant image — so you write your post, click one button, and KrateCMS creates and attaches the image for you. It's powered by OpenAI's image models and stores the result in your site's cloud storage.
 
+<Warning>
+  **AI featured-image generation is currently switched off for every site.** The **Generate with AI** button won't appear in your post editor.
+
+  The feature is built and working — it's held behind a platform-wide switch while it's evaluated. That switch isn't per-site, so it can't be turned on for your site alone; it's on for everyone or no one. You're welcome to tell your platform administrator you'd use it, but expect it to arrive as a platform decision rather than an account change.
+
+  In the meantime, [upload an image](#upload-your-own-image-instead) or pick one from your [media library](/content/media-library).
+</Warning>
+
 <Note>
   This is the in-post featured-image generator. It's different from the **Images** mode in [AI chat](/ai/chat), where you generate standalone marketing images from a text prompt.
 </Note>
@@ -64,12 +72,10 @@ Because the image is derived from your post, the way to improve it is to improve
 
 ## Upload your own image instead
 
-If you'd rather use a specific image, upload one directly in the same **Featured Image** section instead of generating. Choose a file from your device (JPEG, PNG, or WebP, up to 2 MB) and you'll see a live preview before you save. Your upload is stored in your site's cloud storage, exactly like a generated image.
+Upload one directly in the same **Featured Image** section instead of generating. Choose a file from your device (JPEG, PNG, or WebP, up to the limit on your [Media settings](/settings/media) page — 10 MB by default) and you'll see a live preview before you save. On a saved post, **Choose from library** lets you reuse an image you've already uploaded.
 
 ## Storage and reuse
 
-Generated images are stored in your site's cloud storage automatically — you don't need to download and re-upload them. Each image is attached to the post it was created for. To use a similar image on another post, generate one from that post's content, or upload a file manually.
+Generated images are registered in your [media library](/content/media-library) alongside everything else you've uploaded, tagged with an **AI** badge so you can tell them apart. You don't need to download and re-upload them, and you can reuse a generated image on another post by picking it from the library.
 
-<Note>
-  AI image generation depends on your plan and site configuration. If you don't see the **Generate with AI** button in the Featured Image section, the feature hasn't been enabled for your site — contact your platform administrator.
-</Note>
+Replacing a post's generated image only detaches it — the image stays in your library until you trash it.

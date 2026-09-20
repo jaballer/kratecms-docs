@@ -37,7 +37,8 @@
               "content/pages",
               "content/homepage",
               "content/krate-page",
-              "content/media"
+              "content/media",
+              "content/media-library"
             ]
           },
           {
@@ -53,6 +54,9 @@
               "settings/general",
               "settings/brand",
               "settings/menus",
+              "settings/media",
+              "settings/tracking-tags",
+              "settings/custom-domains",
               "settings/security",
               "settings/billing"
             ]
@@ -60,6 +64,7 @@
           {
             "group": "Integrations",
             "pages": [
+              "integrations/mcp",
               "integrations/n8n",
               "integrations/stripe",
               "integrations/email"
@@ -80,7 +85,9 @@
           {
             "group": "Endpoints",
             "pages": [
-              "api/posts"
+              "api/posts",
+              "api/media",
+              "api/release-notes"
             ]
           }
         ]
