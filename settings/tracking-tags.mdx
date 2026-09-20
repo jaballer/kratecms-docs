@@ -1,0 +1,109 @@
+---
+title: "Connect your own Google Tag Manager container"
+description: "Run your own Google Tag Manager container on your public site to track visitor behavior with your own analytics, advertising, and measurement tags."
+---
+
+Tracking Tags lets you run **your own Google Tag Manager (GTM) container** on your public site. Once connected, any tag you configure in your GTM account — Google Analytics, conversion tracking, advertising pixels, heatmaps — fires on your public pages without you touching any code.
+
+<Note>
+  Tracking Tags is enabled per site. If you don't see **Tracking Tags** in your settings, it hasn't been turned on for your site yet — contact your platform administrator to request it.
+</Note>
+
+## Getting there
+
+Navigate to **Settings → Tracking Tags** in your admin sidebar, or go directly to `/admin/settings/tracking-tags`.
+
+<Note>
+  This page was previously called "Analytics". The old URL `/admin/settings/analytics` still redirects here. It was renamed because a GTM container isn't limited to analytics — it can carry any tag type GTM supports.
+</Note>
+
+## Connecting your container
+
+<Steps>
+  <Step title="Find your container ID">
+    In your [Google Tag Manager](https://tagmanager.google.com) account, your container ID appears at the top of the workspace. It looks like `GTM-XXXXXXX`.
+  </Step>
+  <Step title="Enter it in KrateCMS">
+    Paste the ID into **Google Tag Manager ID**, then tick **Enable Google Tag Manager**.
+  </Step>
+  <Step title="Save">
+    Click **Save Tracking Tags Settings**. Your container starts loading on your public pages immediately.
+  </Step>
+  <Step title="Publish your container">
+    A GTM container does nothing until you publish a version of it from the GTM dashboard. If your tags aren't firing, check that you've published.
+  </Step>
+</Steps>
+
+Both fields must be set — a container ID with the checkbox unticked loads nothing.
+
+## Your container only runs for logged-out visitors
+
+This is the single most important thing to know about Tracking Tags, and the most common source of a false "tag not found" report.
+
+<Warning>
+  **Your GTM container fires only for visitors who are not signed in.** That includes you. If you open your own site while logged into the admin — even in another tab — your container will not load, and Tag Assistant will report your tag as missing.
+
+  Always test from a **private or incognito window** where you are signed out.
+</Warning>
+
+This is deliberate, not a limitation to work around. Tags you configure are JavaScript running on your site, and KrateCMS never executes that code inside a signed-in session where it could reach an administrator's page. The practical consequence: **your analytics measure logged-out traffic only.** If your site is members-only, or most of your audience browses signed in, your container will see very little of it.
+
+## Verifying your tags
+
+<Steps>
+  <Step title="Open a private window">
+    Make sure you are signed out of your KrateCMS admin.
+  </Step>
+  <Step title="Load a public page">
+    Visit your homepage or a published post.
+  </Step>
+  <Step title="Check the network requests">
+    Open your browser's developer tools, go to the Network tab, and filter for `gtm.js`. You should see a request carrying your container ID.
+  </Step>
+  <Step title="Or use Tag Assistant">
+    [Tag Assistant](https://tagassistant.google.com) and GTM Preview mode both work — again, from a signed-out session.
+  </Step>
+</Steps>
+
+If your tag is still missing while logged out, check in this order:
+
+1. **Is the container published** in your GTM dashboard?
+2. **Are both fields saved** — the ID *and* the enable checkbox?
+3. **Is Tracking Tags still enabled for your site?** If access was granted and later withdrawn, your saved container ID stays stored but stops loading.
+
+<Note>
+  Tag Assistant's "Pages Tagged" count won't reach 100%. Sign-in, password-reset, and other account pages deliberately never load your container.
+</Note>
+
+## Pages where tags never fire
+
+Your container is suppressed entirely on authentication pages — sign-in, registration, password reset, and email verification.
+
+<Warning>
+  This is a privacy protection, not a bug. Password-reset URLs contain a one-time token and often the account's email address in the address bar. Analytics tools record the full page URL by default, so letting tags fire there would ship credentials and personal data to a third party.
+</Warning>
+
+The same suppression applies to the admin area, which is never tracked by your container.
+
+## Krate page link clicks
+
+If your homepage is a [Krate page](/content/krate-page), every visitor click on one of your links pushes a `krate_link_click` event into the data layer. You can build a GTM trigger on that event name to count link clicks — the core engagement number for a link-in-bio page — and forward it to Google Analytics or any other tag.
+
+## What isn't supported
+
+| Not available | Why |
+|---|---|
+| Custom `<head>` or `<body>` script slots | Arbitrary script injection is a security risk. Run your scripts through your GTM container instead. |
+| Direct GA4, Meta, or LinkedIn tag fields | Wire those tags inside your own GTM container — that's what GTM is for. |
+| Tracking signed-in visitors | Tenant-owned JavaScript never runs in an authenticated session. See above. |
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Krate page" icon="link" href="/content/krate-page">
+    The link-in-bio landing page whose clicks emit `krate_link_click`.
+  </Card>
+  <Card title="Brand settings" icon="palette" href="/settings/brand">
+    Colors, typography, logo, and Custom CSS for your public site.
+  </Card>
+</CardGroup>

@@ -1,0 +1,190 @@
+---
+title: "Media API: list, search, and update library assets"
+description: "Reference for the KrateCMS media endpoints: list and filter your media library, fetch a single asset, and edit alt text and titles."
+---
+
+The Media API exposes your [media library](/content/media-library) — listing and searching assets, and editing their alt text and titles. All paths are prefixed with `/api/v1` and are scoped to the tenant domain you send the request to.
+
+<Warning>
+  **Media has no public tier.** Unlike posts and release notes, *every* media endpoint — reads included — requires a Bearer token whose user holds the **Media** permission (editor and above). There is no guest access to the library at any level.
+</Warning>
+
+<Note>
+  You can't upload file bytes over the API. Uploading happens through the admin; these endpoints read and describe assets that already exist. To attach an existing asset to a post, use [`POST /api/v1/posts/{id}/featured-image`](/api/posts#post-apiv1postsidfeatured-image) or [`POST /api/v1/posts/{id}/audio`](/api/posts#post-apiv1postsidaudio).
+</Note>
+
+---
+
+## GET /api/v1/media
+
+Returns a paginated list of media assets in the current tenant context.
+
+<ParamField query="search" type="string">
+  Free-text search across the asset's filename, alt text, and title.
+</ParamField>
+
+<ParamField query="type" type="string">
+  Filter by kind. One of `image`, `video`, `audio`, or `document`.
+</ParamField>
+
+<ParamField query="source" type="string">
+  Filter by where the asset came from. One of `upload`, `ai`, or `import`.
+</ParamField>
+
+<ParamField query="per_page" type="integer">
+  Number of assets per page. Defaults to `15`; maximum `100`.
+</ParamField>
+
+<ParamField query="page" type="integer">
+  Page number to retrieve. Defaults to `1`.
+</ParamField>
+
+<Note>
+  Trashed assets are never returned, and there's no API surface for trashing, restoring, or deleting. Those actions live in the admin only.
+</Note>
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl "https://acme.yoursite.com/api/v1/media?type=image&source=ai" \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Accept: application/json"
+```
+
+</CodeGroup>
+
+```json
+{
+  "data": [
+    {
+      "id": 118,
+      "url": "https://acme.yoursite.com/storage/library/9f3c2a.jpg",
+      "mime": "image/jpeg",
+      "size": 284915,
+      "width": 1600,
+      "height": 900,
+      "alt": "A hero image",
+      "title": "conference-keynote",
+      "source": "upload",
+      "created_at": "2026-08-02T14:10:00.000000Z",
+      "updated_at": "2026-08-02T14:12:00.000000Z",
+      "links": {
+        "self": "https://acme.yoursite.com/api/v1/media/118"
+      }
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 15,
+    "total": 24
+  }
+}
+```
+
+---
+
+## GET /api/v1/media/\{id\}
+
+Returns a single media asset by id.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the asset. Media has no slug — this segment is always numeric.
+</ParamField>
+
+Returns `404` if no asset with that id exists in the current tenant context.
+
+### Response fields
+
+<ResponseField name="data.id" type="integer">
+  Unique numeric identifier for the asset.
+</ResponseField>
+
+<ResponseField name="data.url" type="string">
+  Absolute URL to the stored file.
+</ResponseField>
+
+<ResponseField name="data.mime" type="string | null">
+  The file's MIME type, for example `image/jpeg` or `audio/mpeg`. May be `null` for assets registered before their type could be read.
+</ResponseField>
+
+<ResponseField name="data.size" type="integer | null">
+  File size in bytes, or `null` if it couldn't be measured.
+</ResponseField>
+
+<ResponseField name="data.width" type="integer | null">
+  Pixel width. Always `null` for non-image assets.
+</ResponseField>
+
+<ResponseField name="data.height" type="integer | null">
+  Pixel height. Always `null` for non-image assets.
+</ResponseField>
+
+<ResponseField name="data.alt" type="string | null">
+  Alt text describing the asset. This is the single source of the description wherever the asset is used as a featured or page-block image.
+</ResponseField>
+
+<ResponseField name="data.title" type="string | null">
+  The asset's library caption. Seeded from the uploaded filename, and editable.
+</ResponseField>
+
+<ResponseField name="data.source" type="string">
+  Where the asset came from: `upload`, `ai`, or `import`.
+</ResponseField>
+
+---
+
+## PATCH /api/v1/media/\{id\}
+
+Updates an asset's alt text and title. These are the only editable fields — the file itself is immutable.
+
+<ParamField path="id" type="integer" required>
+  Numeric ID of the asset to update.
+</ParamField>
+
+<ParamField body="alt" type="string">
+  New alt text, up to 255 characters. Send an empty string to clear it.
+</ParamField>
+
+<ParamField body="title" type="string">
+  New library title, up to 255 characters. Send an empty string to clear it.
+</ParamField>
+
+Returns `200 OK` with the updated asset.
+
+### Example
+
+<CodeGroup>
+
+```bash curl
+curl -X PATCH https://acme.yoursite.com/api/v1/media/118 \
+  -H "Authorization: Bearer <your-token>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"alt": "Keynote speaker on stage at the 2026 conference"}'
+```
+
+</CodeGroup>
+
+<Warning>
+  **Editing `alt` changes it everywhere.** Alt text is stored on the asset, not on the posts and pages that use it, so a single `PATCH` updates the description on every published placement of that image. That's what makes it worth fixing centrally — and worth checking before you script a bulk update.
+</Warning>
+
+<Note>
+  Omit a field to leave it untouched. Sending it blank — empty or whitespace-only — clears it. That's the opposite of what happens at upload time, where a blank title falls back to the filename; here you're erasing something that already exists.
+
+  Whitespace is treated as blank deliberately: a space-only alt would satisfy "has alt text" checks everywhere the asset is used while telling a screen reader nothing.
+</Note>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Media library" icon="images" href="/content/media-library">
+    The admin surface these endpoints read.
+  </Card>
+  <Card title="MCP server" icon="plug" href="/integrations/mcp">
+    The same media tools, exposed to an AI client.
+  </Card>
+</CardGroup>

@@ -1,0 +1,141 @@
+---
+title: "Connect an AI assistant to your site with MCP"
+description: "Let Claude or another MCP client read and manage your posts, release notes, and media library directly, using the same permissions and tenant scoping as the admin."
+---
+
+KrateCMS ships a built-in [Model Context Protocol](https://modelcontextprotocol.io) server. Connect an MCP client — Claude Desktop, Claude in Cowork, or any other — and it can read and manage your **posts**, **release notes**, and **media library** directly, without you pasting content back and forth.
+
+Everything the assistant does runs through the same permission, validation, and tenant-scoping rules as a signed-in user. It can't do anything the account behind its token couldn't do by hand.
+
+<Note>
+  There's nothing to install or host. The MCP server is part of your KrateCMS site — it ships with every deploy. All you configure is your client: a URL and a token.
+</Note>
+
+## What you'll need
+
+| | |
+|---|---|
+| **Endpoint URL** | Your site's address with `/mcp` appended — for example `https://acme.kratecms.com/mcp` |
+| **Token** | A Sanctum personal access token for the user the assistant should act as |
+
+Tokens are issued by your platform administrator — see [Authentication](/api/authentication#obtain-a-token).
+
+<Tip>
+  Ask for a token with **no expiry** for a connector you intend to leave running, and give it a descriptive name so it can be revoked on its own later without disturbing your other integrations.
+</Tip>
+
+## Connecting a client
+
+Add a remote MCP connector pointing at your endpoint, with the token sent as a bearer header:
+
+```
+URL:    https://acme.kratecms.com/mcp
+Header: Authorization: Bearer <your-token>
+```
+
+In Cowork, the two values are configured as `KRATECMS_API_URL` (your site's base URL, without `/mcp`) and `KRATECMS_API_TOKEN`.
+
+<Warning>
+  **The URL you point at decides which site the assistant acts on.** Pointed at `acme.kratecms.com`, it sees only Acme's content. Pointed at the central platform domain, it sees platform content. A token can't reach across sites, whichever URL you use.
+</Warning>
+
+## Available tools
+
+### Posts
+
+| Tool | What it does | Permission needed |
+|---|---|---|
+| `list_posts` | List and filter posts by search, category, or status | Authenticated |
+| `get_post` | Fetch one post by id or slug | Authenticated |
+| `create_post` | Create a post | Create posts |
+| `update_post` | Update a post's fields | Edit posts |
+| `delete_post` | Delete a post | Delete posts |
+| `set_featured_image` | Attach a library image to a post | Edit posts **and** Media |
+| `set_post_audio` | Attach a library audio track to a post | Edit posts **and** Media |
+
+<Tip>
+  Ask for `view: summary` when the assistant is scanning a list rather than reading posts in full. It drops the body content, which keeps large lists from filling the assistant's context.
+</Tip>
+
+### Media
+
+| Tool | What it does | Permission needed |
+|---|---|---|
+| `list_media` | List and filter your library by search, type, or source | Media |
+| `get_media` | Fetch one asset by id | Media |
+| `update_media` | Edit an asset's alt text and title | Media |
+
+<Warning>
+  Editing alt text through `update_media` changes it **everywhere that asset is used**, since alt text is stored once on the asset. Handy for fixing a description across a whole site at once — worth being deliberate about when asking an assistant to do it in bulk.
+</Warning>
+
+### Release notes
+
+| Tool | What it does | Permission needed |
+|---|---|---|
+| `list_release_notes` | List platform announcements, filtered by type | Authenticated |
+| `get_release_note` | Fetch one announcement by id | Authenticated |
+| `create_release_note` | Write a new announcement | Create release notes |
+| `update_release_note` | Edit an announcement | Edit release notes |
+| `delete_release_note` | Delete an announcement | Delete release notes |
+
+<Note>
+  Reading release notes works from any site. **Writing them only works against the central platform domain** — the feed is shared across every site, so a tenant site can't publish to it.
+</Note>
+
+## What you can't do over MCP
+
+<Warning>
+  **You can't upload files.** No image or audio bytes cross the MCP boundary. The assistant can attach, describe, and reorganize assets that are already in your [media library](/content/media-library), but the upload itself happens in the admin.
+</Warning>
+
+Media has no delete tool either — assets are reclaimed only through the library's trash, in the admin.
+
+## Permissions still apply
+
+The token's user, roles, and site govern every call:
+
+- A `published` status from an account without publish permission is quietly saved as a **draft** instead.
+- Authors and contributors can only update or delete **their own** posts, exactly as in the editor.
+- Media tools need the **Media** permission (editor and above); there's no per-asset ownership.
+- Attaching an image or track is gated on *both* post-edit and media permissions, since it reaches across two resources.
+
+## Rate limits
+
+The MCP endpoint allows **120 requests per minute**, double the REST API's limit, because agentic tool loops make many calls per turn. The budget is per user account — separate users don't compete, but multiple tokens on the *same* user share one allowance.
+
+Exceeding it returns `429 Too Many Requests` with a `Retry-After` header.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The client can't connect, or reports a session error">
+    A connection failure most often comes down to the token or the URL, even when the error mentions sessions or page expiry. Check that the URL ends in `/mcp`, that the token hasn't expired or been revoked, and that it's being sent as `Authorization: Bearer <token>`.
+  </Accordion>
+  <Accordion title="The assistant can't see drafts">
+    Draft posts are visible to their own author and to editors and above. If the assistant only sees published content, its token belongs to an account without that reach.
+  </Accordion>
+  <Accordion title="The assistant sees the wrong site's content">
+    The endpoint URL decides the site. Point it at the exact domain whose content you want — a token used against a different site's domain is rejected rather than silently switched.
+  </Accordion>
+  <Accordion title="Media tools return a permission error">
+    Media requires the **Media** permission, which contributors and authors don't have. Posts tools will still work on the same token.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="API authentication" icon="key" href="/api/authentication">
+    How tokens are issued, scoped, and revoked.
+  </Card>
+  <Card title="Media library" icon="images" href="/content/media-library">
+    The library the media tools read and describe.
+  </Card>
+  <Card title="Posts API" icon="code" href="/api/posts">
+    The REST endpoints each post tool wraps.
+  </Card>
+  <Card title="AI chat" icon="sparkles" href="/ai/chat">
+    The in-admin assistant, a separate surface from MCP.
+  </Card>
+</CardGroup>

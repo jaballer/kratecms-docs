@@ -1,9 +1,11 @@
 ---
 title: "Upload and manage images, audio, and media in KrateCMS"
-description: "Upload featured images for posts and pages, manage your profile avatar, embed audio with a waveform player, and generate AI images — all stored securely with tenant-isolated cloud storage."
+description: "Upload featured images for posts and pages, insert inline images, attach audio with a waveform player, and manage your profile avatar — all stored securely with tenant-isolated cloud storage."
 ---
 
 KrateCMS handles media uploads in several places across the admin: featured images on posts and pages, inline images within post content and page blocks, audio files with a visual waveform player, and avatar photos on user profiles. Every file you upload is stored in isolated cloud storage — your uploads are kept completely separate from those of other sites on the platform.
+
+Uploads from the content surfaces are also registered in your site's [media library](/content/media-library), so you can find, describe, and reuse any file later instead of uploading a second copy.
 
 ## Featured images on posts
 
@@ -15,26 +17,51 @@ To add or change a post's featured image:
   <Step title="Open the post editor">
     Go to **Admin → Posts** and click the post you want to edit, or go to **Admin → Posts → New Post** to start a new one.
   </Step>
-  <Step title="Upload an image">
-    Click the **Featured Image** field and select an image from your device. Supported formats are JPEG, PNG, and WebP. The maximum file size is 2 MB. A live preview of the image appears as soon as you select it, before you save.
+  <Step title="Upload an image, or pick one you already have">
+    Click the **Featured Image** field and select an image from your device — supported formats are JPEG, PNG, and WebP, up to the size limit on your [Media settings](/settings/media) page (10 MB by default). A live preview appears as soon as you select a file, before you save.
+
+    On an already-saved post, **Choose from library** opens the [media library](/content/media-library) so you can reuse an image you've uploaded before.
+  </Step>
+  <Step title="Describe the image">
+    Once an image is set, an **Alt text** field appears. Write a short description of the image for screen readers and search engines.
   </Step>
   <Step title="Save the post">
     Click **Save**. The image is uploaded and attached to the post. It appears at the top of the post when visitors view it.
   </Step>
 </Steps>
 
+<Note>
+  Alt text is stored on the image itself rather than on the post, so editing it updates every place that image is used. See [alt text](/content/media-library#editing-titles-and-alt-text) in the media library.
+</Note>
+
 ### Generate a featured image with AI
 
-If you don't have an image ready, KrateCMS can generate one from the post's own content. Open a saved post in the editor and click **Generate with AI** in the Featured Image section — there's no prompt to write.
-
-See [AI image generation](/ai/image-generation) for the full walkthrough.
+KrateCMS can generate a featured image from a post's own content, with no prompt to write. This is currently switched off for tenant sites — see [AI image generation](/ai/image-generation) for what the feature does and how to ask your platform administrator to enable it.
 
 ## Inline images in post content
 
-Beyond the featured image, you can place images anywhere inside a post's body. In the post editor's rich-text toolbar, use the image button, drag an image file into the editor, or paste one from your clipboard — the file uploads to your site's storage immediately and is inserted at your cursor.
+Beyond the featured image, you can place images anywhere inside a post's body. In the post editor's rich-text toolbar, use the image button — which opens the media picker, where you can upload a new file or choose one from your [library](/content/media-library) — or drag an image file into the editor, or paste one from your clipboard. Uploaded files go to your site's storage immediately and are inserted at your cursor.
+
+Select any inserted image to open its **alt/title panel**, where you can describe it or mark it as decorative. The editor flags images that still have no description.
 
 <Note>
   Inline images use the same image formats as the rest of KrateCMS (see [Supported file types](#supported-file-types) below). SVG files are not accepted as an inline upload.
+</Note>
+
+<Warning>
+  Unlike featured and page-block images, an inline image's alt text is stored per placement rather than on the asset. Using the same image in two posts means describing it in each — which is often what you want, since the same picture can mean different things in different contexts.
+</Warning>
+
+## Audio on posts
+
+A post can carry a single audio track, rendered on the published post with a waveform seek bar.
+
+You can attach audio three ways: upload a file in the post editor's audio field, pick a track already in your [media library](/content/media-library), or paste an external HTTPS link to a file hosted elsewhere. A post carries either a library track or an external URL, never both — attaching one clears the other.
+
+Uploads go to your storage as soon as you choose the file, before you save the post, so a large track uploads with a progress indicator instead of stalling the save.
+
+<Note>
+  Picking a library track fills the post's display name from that asset's library title. Renaming the asset later doesn't rewrite posts that already used it.
 </Note>
 
 ## Featured images on pages
@@ -45,7 +72,9 @@ Pages also support a featured image, which appears in the page header area above
   If you enable **Hide title** on a page that has a featured image, the title heading is hidden but the featured image still shows. If **Hide title** is on and there is no featured image, the entire header area is removed so there's no blank space at the top of the page.
 </Note>
 
-To add a featured image to a page, open the page in **Admin → Pages**, upload an image in the **Featured Image** field, and save.
+To add a featured image to a page, open the page in **Admin → Pages**, upload an image in the **Featured Image** field (or choose one from your library), and save.
+
+Images inside a page's blocks work the same way — **Choose image** on an image or media-and-content block opens the media picker. Like featured images, a page-block image reads its alt text from the asset, so describing it once covers every block that uses it.
 
 ## Avatar uploads
 
@@ -59,6 +88,8 @@ To update your avatar:
   </Step>
   <Step title="Upload a photo">
     Click the avatar upload area and select an image from your device. Supported formats are JPEG, PNG, and WebP (maximum 2 MB). A preview appears immediately so you can check it before saving.
+
+    Avatars aren't registered in the media library — they're profile images, not reusable assets.
   </Step>
   <Step title="Save">
     Save your profile. Your avatar is updated immediately and visible on your public profile.
@@ -67,19 +98,27 @@ To update your avatar:
 
 ## Supported file types
 
-KrateCMS accepts standard web image formats for all upload fields:
+Limits differ by surface. Content images share one configurable limit; identity images and audio have their own fixed ones.
 
-| Format | Extension |
-|---|---|
-| JPEG | `.jpg`, `.jpeg` |
-| PNG | `.png` |
-| WebP | `.webp` |
+| Surface | Formats | Maximum size |
+|---|---|---|
+| Featured images, inline images, page-block images, library uploads | JPEG, PNG, WebP | Set on [Media settings](/settings/media) — **10 MB** by default |
+| Post audio | MP3, M4A, WAV, FLAC, OGG | **50 MB** |
+| User avatar, Krate page avatar | JPEG, PNG, WebP | **2 MB** |
+| Site logo | JPEG, PNG, GIF | **2 MB** |
+| Favicon | ICO, PNG, JPEG | **512 KB** |
 
-The maximum file size for any single upload is **2 MB**.
+<Note>
+  Only the first row is configurable. The **Maximum upload size** and **Allowed file types** settings govern content image uploads; avatars, logo, favicon, and audio keep their own fixed limits regardless of what you set there.
+</Note>
 
 <Tip>
   Compress your images before uploading to keep page load times fast. Tools like [Squoosh](https://squoosh.app) can reduce file size significantly without visible quality loss.
 </Tip>
+
+<Warning>
+  KrateCMS doesn't resize or re-encode your uploads, which means it also doesn't strip **EXIF metadata** — including GPS coordinates embedded by phone cameras. If that matters for images you're publishing, remove the metadata before uploading.
+</Warning>
 
 ## How your files are stored
 
@@ -93,11 +132,19 @@ All uploads are stored in cloud object storage (Cloudflare R2 or S3, depending o
 
 ## Where each file type is stored
 
-| Upload type | Where it appears |
-|---|---|
-| Post featured image | Top of the published post |
-| Post content image | Inline within the post body, where you inserted it |
-| Page featured image | Page header area, above the first block |
-| Page block image | Inline within the block, in position on the page |
-| User avatar | Profile page and admin account display |
-| AI-generated image | Attached to the post as its featured image automatically when generation finishes |
+| Upload type | Where it appears | In the library? |
+|---|---|---|
+| Post featured image | Top of the published post | Yes |
+| Post content image | Inline within the post body, where you inserted it | Yes |
+| Post audio | Waveform player on the published post | Yes |
+| Page featured image | Page header area, above the first block | Yes |
+| Page block image | Inline within the block, in position on the page | Yes |
+| Library upload | Nowhere until you use it — stocked for later | Yes |
+| AI-generated image | Attached to the post as its featured image automatically when generation finishes | Yes |
+| User avatar | Profile page and admin account display | No |
+| Site logo, favicon | Site navigation and browser tab | No |
+| Krate page avatar | Top of your Krate page | No |
+
+<Note>
+  Files that aren't in the library are managed only from the screen that uploads them — replace a logo from **Settings → Brand**, an avatar from your profile. Everything else is browsable, searchable, and reusable from **Media**.
+</Note>

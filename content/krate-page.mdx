@@ -88,9 +88,14 @@ Contact details, business hours, and your business address are managed from a se
 
 | Toggle | What it controls |
 |---|---|
-| **Show contact** | Tap-to-email and tap-to-call buttons (only appear when an email or phone is set in Business Info). |
+| **Show contact email** | A tap-to-email button (appears only when an email is set in Business Info). |
+| **Show contact phone number** | A tap-to-call button (appears only when a phone number is set in Business Info). |
 | **Show business hours** | A structured opening-hours table, Monday through Sunday. |
-| **Show address** | Your business address with a "Get directions" link to Google Maps. |
+| **Show business address (with a "Get directions" link)** | Your business address, linked to Google Maps directions. |
+
+<Note>
+  Email and phone are controlled independently, so you can publish one without the other — a phone number for customers without exposing an inbox, for example. Each toggle also governs whether that detail appears in your page's structured data.
+</Note>
 
 <Note>
   Business Info is always available in the admin — it is not gated behind the Krate page feature flag, because it also feeds your transactional email footers. See [Business Info](/settings/general#business-info) for the full field reference.
@@ -135,6 +140,74 @@ Show your most recent published posts inline, beneath your links.
 | **Show excerpts** | Whether each post shows its excerpt under the title. |
 
 The posts block respects each post's own visibility — drafts and members-only posts never appear to logged-out visitors.
+
+## Sharing your page
+
+Your Krate page carries a **share control** in the top-right corner. On a phone it opens your device's native share sheet; on a desktop it opens a short menu offering copy-link, X, and email.
+
+Because `/links` is a permanent address that works regardless of which homepage type you've chosen, it's the link to hand out.
+
+## KrateCMS branding
+
+Your Krate page shows a small KrateCMS brand mark in the top-left corner and a "Made with KrateCMS" badge in the footer. Both link back to KrateCMS.
+
+<Note>
+  Branding removal is available as a paid option — contact your platform administrator. Hiding the marks with Custom CSS won't work; they're pinned in place until branding removal is enabled for your site.
+</Note>
+
+## Styling your Krate page with Custom CSS
+
+The Krate page carries stable CSS hooks so you can restyle it from **Settings → Brand → Custom CSS** without fighting the markup.
+
+**Class hooks** target repeated elements:
+
+| Selector | What it targets |
+|---|---|
+| `.krate-link` | Each content link button |
+| `.krate-avatar-ring` | The ring around your avatar |
+| `.krate-social` | Each social icon |
+| `.krate-share` | The share control |
+| `.krate-branding` | The KrateCMS brand marks |
+
+**ID hooks** target whole sections, and are present only when that section actually renders:
+
+| Selector | Section |
+|---|---|
+| `#krate-display-name` | Your name and tagline |
+| `#krate-bio` | Your bio |
+| `#krate-link-list` | The stack of content links |
+| `#krate-business-hours` | The opening-hours table |
+| `#krate-branding-badge` | The footer "Made with KrateCMS" badge |
+
+```css
+#krate-link-list .krate-link {
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+```
+
+<Note>
+  Custom CSS applies to your public pages only — it never affects the admin. See [Brand settings](/settings/brand#custom-css) for the full CSS hook reference.
+</Note>
+
+## Measuring link clicks
+
+When you've connected your own [Google Tag Manager container](/settings/tracking-tags), visitor clicks on your Krate page emit a `krate_link_click` event you can build a trigger on. Each event carries:
+
+| Field | Value |
+|---|---|
+| `link_kind` | `content` for a link button, `social` for a social icon |
+| `link_label` | The link's visible label |
+| `link_url` | The destination's origin — for example `https://music.example` |
+
+<Note>
+  Only content links and social icons are tracked. Contact links, the "Get directions" link, and pinned post links deliberately emit nothing — email addresses and phone numbers are personal data that analytics tools shouldn't receive.
+
+  `link_url` is reduced to the scheme and host before it's sent, dropping the path and query string, since a link's path can carry personal data. Your visitors still go to the full URL.
+</Note>
+
+Click tracking only runs when your GTM container is configured and enabled — with no container, no tracking code is added to the page at all.
 
 ## Edit your Krate page in one click
 

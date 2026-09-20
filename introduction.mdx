@@ -16,7 +16,7 @@ KrateCMS gives your team a fully featured content management system accessible f
     Write and publish posts with the Tiptap editor, featured images, and categories.
   </Card>
   <Card title="AI Chat & Agent" icon="robot" href="/ai/chat">
-    Use the built-in AI assistant to draft content, generate images, and manage posts by conversation.
+    Use the built-in AI assistant to draft content and manage posts and pages by conversation.
   </Card>
 </CardGroup>
 
@@ -32,17 +32,23 @@ Pages work differently — they are built from a modular block library. Drag and
 
 Choose what visitors see when they land on your site: a scrolling posts feed (the default), a legacy marketing template, any Page you have built — just like WordPress's "page as homepage" option — or a shareable [Krate page](/content/krate-page). Switch between them any time from **Settings → Content**.
 
+### Media library
+
+Every file your site uploads — featured images, inline images, page-block images, and audio — lands in a searchable [media library](/content/media-library). Browse it as a grid or a list, filter by type and source, reuse any asset instead of uploading it twice, and describe an image once so its alt text is right everywhere it appears. Trash and restore keep the library tidy without destroying anything a published page still uses.
+
 ### AI tools
 
-KrateCMS includes a real-time AI chat interface powered by OpenAI. You can hold conversations, generate featured images for posts directly inside the editor, and enable agent mode — where the AI can create, search, update, and list posts on your behalf through tool-calling. Token usage is tracked per message.
+KrateCMS includes a real-time AI chat interface powered by OpenAI. You can hold conversations, and enable agent mode — where the AI creates, searches, updates, and lists your **posts and pages** on your behalf through tool-calling, under exactly the permissions your account already has. Token usage is tracked per message.
+
+Beyond the admin, the built-in [MCP server](/integrations/mcp) connects an outside AI client — like Claude — directly to your posts, media library, and release notes.
 
 ### REST API
 
-Every tenant gets a versioned REST API at `/api/v1/`. Public endpoints (like listing posts) require no authentication. Write operations use Sanctum tokens that you generate from the admin. Full CRUD is available for posts, and a Postman collection is included.
+Every tenant gets a versioned REST API at `/api/v1/` covering [posts](/api/posts), [media](/api/media), and [release notes](/api/release-notes). Post and release-note reads are public and need no credentials; writes, and every media call, use a Sanctum token. An OpenAPI 3.1 specification and a Postman collection are included.
 
 ### Brand and settings
 
-Customize your site's colors, typography, logo, favicon, theme mode, and inject custom CSS — all from **Settings → Brand**. Build your header and footer navigation in the menu builder under **Settings → Menus**. General settings let you set the site name, description, footer text, and company details. Security settings control login attempt limits, session timeouts, and password policies.
+Customize your site's colors, typography, logo, favicon, theme mode, and inject custom CSS — all from **Settings → Brand**. Build your header and footer navigation in the menu builder under **Settings → Menus**. Set upload size and file type limits under **Settings → Media**, and connect your own Google Tag Manager container under **Settings → Tracking Tags**. General settings cover the site name, description, footer text, and business details; security settings control login attempt limits, session timeouts, and password policies.
 
 ## Roles and what they can do
 
@@ -52,9 +58,9 @@ KrateCMS uses seven roles. Your role is set when your account is created and can
 |---|---|
 | **super-admin** | Full platform access; bypasses all permission checks |
 | **admin** | All permissions across content, users, and settings |
-| **manager** | Content and page management; can view users |
-| **editor** | Full control over posts and pages |
-| **author** | Same as editor, but limited to their own content |
+| **manager** | Posts, pages, and the media library; can view users |
+| **editor** | Posts, pages, and the media library |
+| **author** | Their own posts only — no pages, no media library |
 | **contributor** | Can create and edit their own posts; cannot publish |
 | **viewer** | Read-only access to published posts |
 
@@ -64,4 +70,12 @@ KrateCMS uses seven roles. Your role is set when your account is created and can
 
 ## Feature availability
 
-Some features — including Analytics, AI Chat configuration, and Billing — are gated by plan-level feature flags. If you do not see a settings category in your sidebar, it may not be enabled on your current plan. Contact your platform administrator for access.
+Some features are enabled per site rather than shipped to everyone. If a settings category or sidebar link is missing, it hasn't been turned on for your site — contact your platform administrator to request it.
+
+| Feature | How it's enabled |
+|---|---|
+| [Tracking Tags](/settings/tracking-tags) | Enabled per site |
+| [Custom Domains](/settings/custom-domains) | Enabled per site |
+| [AI Chat](/ai/chat) | Enabled per site |
+| [AI featured images](/ai/image-generation) | Currently off for all sites |
+| Billing | Not yet available to sites |

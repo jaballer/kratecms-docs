@@ -3,19 +3,33 @@ title: "Authenticating requests to the KrateCMS API"
 description: "How to obtain a Bearer token from the KrateCMS admin, use it on write requests, and understand tenant scoping and token revocation."
 ---
 
-KrateCMS uses Laravel Sanctum personal access tokens for API authentication. Read endpoints (`GET`) are public and work without any credentials. Write endpoints (`POST`, `PATCH`, `DELETE`) require you to pass a valid Bearer token with every request.
+KrateCMS uses Laravel Sanctum personal access tokens for API authentication. Post and release-note read endpoints (`GET`) are public and work without any credentials. Write endpoints (`POST`, `PATCH`, `DELETE`) — and *every* [media](/api/media) endpoint, reads included — require you to pass a valid Bearer token with every request.
+
+The same token authenticates the [MCP server](/integrations/mcp).
 
 ## Obtain a token
 
 ### Admin UI (recommended)
 
-Navigate to `/admin/tokens` on your tenant domain. This path requires super-admin access. From there you can:
+Tokens are issued from the platform's central admin at `/admin/tokens`, which requires super-admin access. That page can:
 
-- Issue new tokens with a descriptive label
-- See all active tokens and their last-used timestamps
+- Issue new tokens with a descriptive label and a chosen expiry — 7, 30, or 90 days, or no expiry at all
+- List all active tokens with their last-used timestamps
 - Revoke individual tokens
 
-When you create a token, the plaintext value is displayed **once** in a confirmation banner. Copy it immediately — KrateCMS stores only a hashed version and cannot show it again.
+<Note>
+  **Token management isn't available from your own site's admin.** If you need a token for your site, ask your platform administrator to issue one for your user account. Every issuance and revocation is recorded in an audit log.
+</Note>
+
+When a token is created, the plaintext value is displayed **once** in a confirmation banner. Copy it immediately — KrateCMS stores only a hashed version and cannot show it again.
+
+## Token expiry
+
+Each token carries its own expiry, chosen when it's issued. A token issued with no expiry stays valid until it's revoked — useful for a long-running integration you don't want to re-key on a schedule.
+
+<Note>
+  An expired token is rejected like an invalid one. If a working integration starts failing authentication without any change on your side, check whether its token has passed its expiry date.
+</Note>
 
 ## Use the token
 
@@ -44,9 +58,9 @@ Tokens grant full write access to your tenant's content. Treat them like passwor
 
 ## Tenant scoping
 
-Tokens are issued in the context of a specific tenant. A token issued on `acme.yoursite.com` **cannot** be used against `beta.yoursite.com`. Attempting to use a token across tenants returns a `403` response immediately.
+A token belongs to a user, and that user belongs to one context. A token for a user on `acme.yoursite.com` **cannot** be used against `beta.yoursite.com` — attempting it returns `403` immediately.
 
-If you need API access across multiple tenants, issue a separate token from each tenant's `/admin/tokens` page.
+The host you call also decides what the token acts on: the same request sent to your site's domain operates on your site's content, and sent to the central platform domain it operates on platform content. If you need API access across multiple sites, request a separate token for a user in each one.
 
 ## Error responses
 

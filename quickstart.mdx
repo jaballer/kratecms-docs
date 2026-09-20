@@ -23,13 +23,20 @@ This guide walks you through logging into KrateCMS for the first time, orienting
 
     - **Posts** — create, edit, and publish written content
     - **Pages** — build structured pages with the block editor
+    - **Media** — browse, search, and reuse every file your site has uploaded
     - **Users** — manage team members and their roles (admin and above)
     - **Settings** — configure your site's branding, content rules, and security
 
     A **setup checklist** appears at the top of the dashboard on new sites, leading with **Set up your Krate page**, followed by steps like setting your site name, uploading a logo, and configuring your contact form. It's collapsible, and it disappears on its own once you've completed every step.
 
+    A **Release Notes** widget on the dashboard shows what's recently changed on the platform.
+
     <Note>
-      Your sidebar may show fewer items depending on your role. Contributors and authors see Posts and their Profile; editors and managers also see Pages; admins see the full sidebar including Settings and Users.
+      Your sidebar may show fewer items depending on your role. Contributors and authors see Posts and their Profile; editors and managers also see Pages and Media; admins see the full sidebar including Settings and Users.
+    </Note>
+
+    <Note>
+      Settings are ordered by setup flow, starting with your Krate page — working top to bottom is a reasonable way to configure a new site.
     </Note>
   </Step>
 
@@ -40,7 +47,7 @@ This guide walks you through logging into KrateCMS for the first time, orienting
 
     - **Title** — the headline for your post
     - **Body** — write and format your content using the Tiptap rich-text editor; use the toolbar to add headings, links, lists, and inline images
-    - **Featured Image** — upload an image, or use **Generate with AI** to create one from your post's content (available once the post is saved)
+    - **Featured Image** — upload an image, or choose one from your [media library](/content/media-library); add **Alt text** to describe it
     - **Category** — choose from Text, Audio, Video, or Uncategorized
     - **Visibility** — set to **Public** so anyone can read it, or **Members Only** to restrict it to logged-in users
     - **Publish Date** — defaults to now; set a future date to schedule the post
@@ -112,5 +119,11 @@ Now that your first post is live and you have a working API token, explore the r
   </Card>
   <Card title="Explore the API" icon="brackets-curly" href="/api/overview">
     Read the full API reference and download the Postman collection.
+  </Card>
+  <Card title="Organize your media" icon="images" href="/content/media-library">
+    Search, describe, and reuse every file your site has uploaded.
+  </Card>
+  <Card title="Connect an AI assistant" icon="plug" href="/integrations/mcp">
+    Let Claude read and manage your content through the built-in MCP server.
   </Card>
 </CardGroup>

@@ -34,7 +34,17 @@ Navigate to **Settings → Brand** in your admin sidebar, or go directly to `/ad
 
 ## Colors
 
-The **Primary color**, **Secondary color**, and **Accent color** fields accept any valid hex color value (for example, `#4c44e4`). The primary color is used for the most prominent interactive elements — main buttons, active navigation links, and focus states. The secondary color provides a complementary tone for surfaces and supporting UI elements. The accent color is used for highlights and decorative elements throughout the UI.
+The **Primary color**, **Secondary color**, and **Accent color** fields accept any valid hex color value (for example, `#4c44e4`). Each one reaches a different part of your site:
+
+| Color | Where it shows up |
+|---|---|
+| **Primary** | Visitor-facing buttons — page-block calls to action and your contact form's submit button. Also available through the `kr8-*-primary` helpers below. |
+| **Secondary** | Available through the `kr8-*-secondary` helpers and your Custom CSS. Nothing uses it by default. |
+| **Accent** | Your [Krate page](/content/krate-page) — link button borders, the avatar ring, and focus rings. Also available through the `kr8-*-accent` helpers. |
+
+<Note>
+  **Your brand colors apply to your public site, not the admin.** The admin panel, sign-in screens, and profile pages keep a fixed neutral palette on purpose — so a bright brand color can't make your own editor hard to read, and the admin looks the same however you set your palette.
+</Note>
 
 <Steps>
   <Step title="Open Brand settings">
@@ -44,7 +54,7 @@ The **Primary color**, **Secondary color**, and **Accent color** fields accept a
     Click the color swatch next to **Primary color**, **Secondary color**, or **Accent color** to open the color picker, or type a hex value directly into the input field.
   </Step>
   <Step title="Save">
-    Click **Save**. Your new colors apply immediately across your public site and the admin.
+    Click **Save**. Your new colors apply immediately across your public site.
   </Step>
 </Steps>
 
@@ -93,7 +103,7 @@ KrateCMS includes nine built-in CSS utility classes that resolve to your brand p
 | `kr8-text-primary`, `kr8-text-secondary`, `kr8-text-accent` | Sets the text color |
 | `kr8-border-primary`, `kr8-border-secondary`, `kr8-border-accent` | Sets the border color |
 
-These helpers reference your live brand colors — change your palette in the color settings above and every block using these classes updates automatically.
+These helpers reference your live brand colors — change your palette in the color settings above and every block using these classes updates automatically. They're the main way to put your secondary color to work, since nothing uses it by default.
 
 ## Custom CSS
 
@@ -101,9 +111,17 @@ The Custom CSS field lets you write arbitrary CSS rules that are injected into e
 
 To target a specific page or an individual block, use the per-page and per-block **CSS hooks** — automatic selectors like `#page-{id}` and `.page-block--{type}`, plus the **HTML ID** / **CSS Classes** fields on each block. See [Style blocks with CSS hooks](/content/pages#style-blocks-with-css-hooks) for the full list.
 
+Your [Krate page](/content/krate-page#styling-your-krate-page-with-custom-css) has its own hooks — `.krate-link`, `.krate-social`, `#krate-bio`, `#krate-link-list`, and others — for restyling the link-in-bio surface.
+
 <Tip>
 Custom CSS is powerful, but it runs on every public page of your site. (It is no longer injected into the admin panel, so a styling mistake can't lock you out of your own editor.) Test your rules carefully with a narrow selector before saving — broad selectors like `* { ... }` can have unintended side effects.
 </Tip>
+
+<Warning>
+  **Don't `@import` stylesheets or fonts from arbitrary third-party hosts.** A security policy on your published site restricts where styles, fonts, and scripts may load from, so an `@import` pointing at an unapproved host is silently blocked in production even though it works in a local preview.
+
+  Write your rules inline in this field, and pick typefaces from the built-in font library above rather than linking an external font service.
+</Warning>
 
 ```css
 /* Example: increase the default body font size */

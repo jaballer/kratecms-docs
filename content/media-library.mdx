@@ -1,0 +1,145 @@
+---
+title: "Browse, organize, and reuse files in the media library"
+description: "The media library is a single home for every file your site has uploaded — search and filter assets, edit alt text and titles once, reuse images across posts and pages, and trash what you no longer need."
+---
+
+Every file your site uploads — featured images, in-content images, page-block images, audio tracks, and AI-generated images — is registered in a central **media library**. The library is where you browse what you already have, describe it once, reuse it anywhere, and clear out what you no longer need.
+
+## Opening the library
+
+Go to **Media** in the admin sidebar, or go directly to `/admin/media`.
+
+<Note>
+  The media library requires the **Media** permission, which is granted to editors and above. Unlike posts, there is no per-file ownership — every editor on your site sees and manages the same library.
+</Note>
+
+## Browsing your files
+
+The library opens on the **Library** tab, showing your assets newest-first. A second **Trash** tab holds anything you've removed but not yet purged.
+
+### Grid and list views
+
+Use the **View mode** control to switch between **Grid view** — large thumbnails, best for finding an image by eye — and **List view**, a denser row-per-asset layout that's easier to scan when you're looking for a specific filename or want to compare file sizes.
+
+Your choice applies to both the Library and Trash tabs, and is remembered in your browser between visits.
+
+### Searching and filtering
+
+| Control | What it does |
+|---|---|
+| **Search** | Matches against the filename, alt text, and title. |
+| **Type** | Narrows to a single kind of asset: image, video, audio, or document. |
+| **Source** | Narrows by where the file came from: uploaded, AI-generated, or imported. |
+
+Set any combination and click **Filter**. **Clear** resets everything back to the full library.
+
+<Tip>
+  Because **Search** covers titles and alt text as well as filenames, describing your assets pays off twice — once for accessibility, and again every time you need to find the file later.
+</Tip>
+
+### What each tile shows
+
+Every asset displays its title, an **AI** badge when it was generated rather than uploaded, and a line of stored facts: file size, pixel dimensions, and the date it was added. Any fact the library doesn't have for that file is simply left out — dimensions never appear for audio, for instance.
+
+Click a thumbnail to open a **preview**: the full uncropped image (or a player, for audio and video) alongside the asset's title, filename, stored facts, alt text, type, and source. From the Library tab the preview also offers **Open original**, which opens the raw file in a new tab.
+
+## Uploading files
+
+You can add files to the library directly, without going through a post or page editor.
+
+<Steps>
+  <Step title="Open the Library tab">
+    Uploading is only available on the **Library** tab, not on **Trash**.
+  </Step>
+  <Step title="Choose or drag your files">
+    Click **Choose files** to pick from your device, or drag files straight onto the drop zone. You can select several at once.
+  </Step>
+  <Step title="Watch each file complete">
+    Files upload one at a time, each with its own progress indicator; queued files show as **Waiting**. Finished uploads appear at the top of the library.
+  </Step>
+</Steps>
+
+If you upload a large batch quickly enough to hit the rate limit, the queue pauses rather than failing — the remaining files stay listed so you can click **Retry remaining**, or **Discard remaining** to drop them.
+
+Images are checked against the size and format limits on your [Media settings](/settings/media) page. Audio has its own fixed limits — see [supported formats](/content/media#supported-file-types).
+
+<Note>
+  Uploads are captioned automatically from the filename you uploaded, minus its extension. That's a starting point, not a commitment — retitle any asset from its tile.
+</Note>
+
+## Editing titles and alt text
+
+Click **Edit details** on any tile to edit two fields inline:
+
+| Field | What it's for |
+|---|---|
+| **Title** | The asset's caption in the library and in the picker. Used for finding the file later, not shown to your visitors. |
+| **Alt text** | A short description of the image for screen readers and search engines. |
+
+Click **Save** to apply, or **Cancel** to discard.
+
+<Warning>
+  **Alt text is single-source.** An image's description lives on the asset itself, not on the post that uses it — so editing it here updates it everywhere that image appears, including posts and pages you published months ago. That's the point: describe an image once, correctly, and every placement benefits.
+</Warning>
+
+Titles work the other way around. A title describes the asset *in the library*; where it reaches a page — an audio track's display name, for example — it's copied at the time you pick it. Retitling an asset later doesn't rewrite posts that already used it.
+
+## Copying a file's URL
+
+On the Library tab, each tile offers **Copy URL**, which puts the asset's direct address on your clipboard. Use it when you need to reference a file somewhere the picker doesn't reach.
+
+<Warning>
+  A URL you paste outside the editor — into a menu item, your Custom CSS, or an external site — isn't tracked as a use of that asset. If the file is later trashed and purged, that reference stops resolving. Pasting the URL into a post's external audio field *is* tracked.
+</Warning>
+
+## Trashing and restoring
+
+Click **Move to trash** on a tile and confirm to remove an asset from the Library tab. Nothing is destroyed at this point — the file moves to the **Trash** tab, where **Restore** puts it back.
+
+To clear several at once, use **Select** on each tile (or **Select all on this page**), then **Move selected to trash**. On the Trash tab the same selection drives **Restore selected**. Bulk actions apply to the current page of results.
+
+<Warning>
+  **Trashing is not the same as removing a file from your site.** A trashed asset that a published post or page still uses keeps rendering for visitors. KrateCMS warns you with an "in use" message when you trash something that's still referenced, so you can go clear the reference first.
+</Warning>
+
+Trashed assets are permanently deleted only after a retention window set by your platform operator — 30 days by default — and only once nothing references them any more. An asset still in use is skipped by the cleanup and kept indefinitely.
+
+## Reusing an asset
+
+Anywhere KrateCMS accepts an image or an audio file, you can pull one from the library instead of uploading a new copy:
+
+| Surface | How to reach the library |
+|---|---|
+| **Post or page featured image** | **Choose from library** in the Featured Image card, on the edit screen |
+| **In-content images** | The image button in the post editor's toolbar |
+| **Page-block images** | **Choose image** on an image or media-and-content block |
+| **Post audio** | The audio field in the post editor |
+
+Each opens the same picker: a **Library** tab to browse, search, and filter your existing assets, and an **Upload** tab to add a new file without leaving the screen. Picking an image that already has alt text carries that description along with it.
+
+<Note>
+  Contributors can upload through the post editor's image picker but can't browse the shared library — browsing requires the same editor-level permission as the library page itself.
+</Note>
+
+## What happens when you remove an image from a post
+
+Replacing or removing a post's featured image, or deleting the post entirely, only **detaches** the asset. The file stays in your library, available for reuse.
+
+This means the library is the one place files are actually deleted, and it's deliberate: a shared asset can never be destroyed out from under another post that's still using it. The trade-off is that images you experimented with and abandoned stay in the library until you trash them.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Uploading media" icon="upload" href="/content/media">
+    Where each kind of upload appears, supported formats, and how files are stored.
+  </Card>
+  <Card title="Media settings" icon="sliders" href="/settings/media">
+    Set the maximum upload size and permitted file types for your site.
+  </Card>
+  <Card title="Posts" icon="file-text" href="/content/posts">
+    Featured images, inline images, and audio on posts.
+  </Card>
+  <Card title="Media API" icon="code" href="/api/media">
+    List, search, and update library assets programmatically.
+  </Card>
+</CardGroup>

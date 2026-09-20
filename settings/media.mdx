@@ -1,0 +1,88 @@
+---
+title: "Set upload size and file type limits for your site"
+description: "Control the maximum image upload size and which file types your editors can upload, from the Media settings page."
+---
+
+Media settings control what your editors are allowed to upload through the content surfaces — the post editor, page blocks, featured image fields, and direct uploads to the [media library](/content/media-library).
+
+## Getting there
+
+Navigate to **Settings → Media** in your admin sidebar, or go directly to `/admin/settings/media`.
+
+## Settings overview
+
+| Setting | What it does | Default |
+|---|---|---|
+| **Maximum upload size (MB)** | The largest single image file an editor can upload, in megabytes. Accepts a value from 1 to 100. | 10 MB |
+| **Allowed file types** | A comma-separated list of file extensions permitted for uploads. | `jpg,jpeg,png,gif,webp,pdf,doc,docx` |
+
+## What these limits cover
+
+These two settings apply to image uploads on:
+
+- In-content images in the post editor
+- Page-block images
+- Post and page featured images, from both the admin and the API
+- Direct uploads to the media library
+
+They deliberately do **not** cover:
+
+| Upload | Limit | Why it's separate |
+|---|---|---|
+| Post audio | 50 MB, MP3/M4A/WAV/FLAC/OGG | Audio is sized and validated on its own scale — widening an image setting shouldn't silently change what counts as an acceptable track. |
+| User and Krate page avatars | 2 MB, JPEG/PNG/WebP | Profile images, not library assets. |
+| Site logo | 2 MB, JPEG/PNG/GIF | Brand identity, managed in [Brand settings](/settings/brand). |
+| Favicon | 512 KB, ICO/PNG/JPEG | Brand identity, managed in [Brand settings](/settings/brand). |
+
+## Allowed file types in practice
+
+The **Allowed file types** list is intersected with the image formats KrateCMS can actually render, so an image field only ever accepts an image:
+
+- **JPEG, PNG, and WebP** are accepted wherever an image is inserted.
+- **GIF** is accepted for your site logo but not for content images.
+- **PDF, DOC, and DOCX** are carried in the default list but are inert today — they're reserved for a future general file surface, and adding them changes nothing yet.
+
+<Warning>
+  SVG and HTML are rejected regardless of what you put in this field. Both can carry executable content, so allowing them would let an uploaded "image" run scripts on your site.
+</Warning>
+
+<Note>
+  If you clear the field, or enter only document types, KrateCMS falls back to the full set of supported image formats rather than rejecting every upload.
+</Note>
+
+## Choosing a maximum size
+
+Raising the limit doesn't guarantee large uploads will succeed — your platform's web server has its own ceiling, and it wins.
+
+<Warning>
+  If you set **Maximum upload size** higher than the server allows, an oversized file is rejected by the server before KrateCMS sees it, and the editor shows a generic "Upload failed" message instead of a helpful size error. If large uploads fail without explaining why, lower this setting or ask your platform operator what the server limit is.
+</Warning>
+
+<Tip>
+  Most web images should be well under 1 MB after compression. A generous limit is a safety margin for the occasional large photo, not a target — oversized images slow down every visitor who loads the page.
+</Tip>
+
+## Updating your settings
+
+<Steps>
+  <Step title="Open Media settings">
+    In the admin sidebar, click **Settings**, then click **Media**.
+  </Step>
+  <Step title="Adjust the limits">
+    Set **Maximum upload size (MB)** and edit **Allowed file types** as needed.
+  </Step>
+  <Step title="Save your changes">
+    Click **Save Media Settings**. New limits apply to the next upload — files already uploaded are unaffected.
+  </Step>
+</Steps>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Media library" icon="images" href="/content/media-library">
+    Browse, search, and reuse everything your site has uploaded.
+  </Card>
+  <Card title="Uploading media" icon="upload" href="/content/media">
+    Where each kind of upload appears and how files are stored.
+  </Card>
+</CardGroup>

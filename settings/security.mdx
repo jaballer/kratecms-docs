@@ -35,6 +35,10 @@ Navigate to **Settings → Security** in your admin sidebar, or go directly to `
 Setting a very high max login attempts value (for example, 100) significantly weakens protection against brute-force attacks. Most sites benefit from a value between 3 and 10.
 </Warning>
 
+<Note>
+  Your lockout settings sit on top of a platform-wide rate limit that KrateCMS applies to sign-in, registration, password-reset, and forgot-password requests. That limit is per IP address and shared across every site on the platform, so it can't be sidestepped by spreading attempts across different sites — and it applies however generous your own lockout setting is.
+</Note>
+
 ## Password security
 
 KrateCMS automatically checks every new password against the [Have I Been Pwned](https://haveibeenpwned.com) database. This check runs whenever a user registers, resets their password, or changes their password from within the app.
