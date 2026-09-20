@@ -7,9 +7,10 @@
     "light": "#a49cf4"
   },
   "logo": {
-    "light": "https://media.brand.dev/c33ca468-9db7-44b3-803c-c1eccd4704c3.svg",
-    "dark": "https://media.brand.dev/c33ca468-9db7-44b3-803c-c1eccd4704c3.svg"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
+  "favicon": "/favicon.svg",
   "navbar": {
     "primary": {
       "type": "github",
