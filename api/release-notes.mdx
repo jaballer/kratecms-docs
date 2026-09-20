@@ -27,6 +27,12 @@ Returns a paginated list of published release notes, newest first. No authentica
   Page number to retrieve. Defaults to `1`.
 </ParamField>
 
+<Warning>
+  **Pagination links drop your `type` filter.** Unlike [posts](/api/posts) and [media](/api/media), whose page links carry the active filters, `first` / `last` / `prev` / `next` here point at the unfiltered feed — so following `next` after a filtered request silently returns page two of *everything*.
+
+  Reapply `type` yourself when paging, or build the URL from the `page` parameter rather than following the link.
+</Warning>
+
 ### Example
 
 <CodeGroup>

@@ -1,0 +1,7 @@
+# Build output from `mint export`, used by the anchor check in CI.
+# Safe to delete; regenerate with `mint export --output export.zip`.
+export.zip
+export/
+
+.DS_Store
+node_modules/
