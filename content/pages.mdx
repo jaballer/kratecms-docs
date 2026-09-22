@@ -100,12 +100,13 @@ The Custom HTML block covers anything the other blocks don't. Paste the embed co
 ### What visitors and signed-in users see
 
 - **Visitors who aren't signed in** get your code live, as part of the page — scripts included.
-- **You, and anyone else who's signed in,** see it in an isolated preview frame, marked with a short note. The frame keeps the code from running inside a signed-in session. Some embeds need cookies or browser storage — certain booking and form widgets, for example — and may not load inside the frame, so check those from a private window.
+- **You, and anyone else who's signed in,** see it in an isolated preview frame. If you can edit pages, a short note above the frame says why. The frame keeps the code from running inside a signed-in session. Some embeds need cookies or browser storage — certain booking and form widgets, for example — and may not load inside the frame, so check those from a private window. A block that only adds a floating widget, such as a chat bubble, shows nothing in the frame.
 - **On a members-only site,** everyone who can see the page is signed in, so everyone gets the isolated preview.
 
 ### Styling and loading resources
 
 - Target the block from your [Custom CSS](/settings/brand#custom-css) with `.page-block--html`, or the wrapper around your code with `[data-role="custom-html"]`.
+- In the signed-in preview, rules that target the block or its wrapper style the frame around your code, not the code inside it. Your site-wide Custom CSS, fonts, and brand colors do apply inside the frame.
 - A `<style>` tag inside the block applies to the whole page, not just the block, so use specific selectors.
 - Pages that contain a Custom HTML block may load scripts, styles, fonts, frames, and form submissions from any HTTPS host, so third-party embeds work. Every other page keeps your site's stricter security policy.
 
