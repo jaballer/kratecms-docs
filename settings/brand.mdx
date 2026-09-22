@@ -122,7 +122,7 @@ Custom CSS is powerful, but it runs on every public page of your site. (It is no
 <Warning>
   **Don't `@import` stylesheets or fonts from arbitrary third-party hosts.** A security policy on your published site restricts where styles, fonts, and scripts may load from, so an `@import` pointing at an unapproved host is silently blocked in production even though it works in a local preview.
 
-  Write your rules inline in this field, and pick typefaces from the built-in font library above rather than linking an external font service.
+  Write your rules inline in this field, and pick typefaces from the built-in font library above rather than linking an external font service. To load an external stylesheet or font on a single page, add it with a [Custom HTML block](/content/pages#custom-html) on that page — pages with one may load styles and fonts from any HTTPS host.
 </Warning>
 
 ```css

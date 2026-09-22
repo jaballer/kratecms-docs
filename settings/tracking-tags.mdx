@@ -97,7 +97,7 @@ If you have a [Krate page](/content/krate-page), visitor clicks on your **conten
 
 | Not available | Why |
 |---|---|
-| Custom `<head>` or `<body>` script slots | Arbitrary script injection is a security risk. Run your scripts through your GTM container instead. |
+| Site-wide `<head>` or `<body>` script slots | Arbitrary site-wide script injection is a security risk. Run site-wide scripts through your GTM container instead; for a script on a single page, use a [Custom HTML block](/content/pages#custom-html). |
 | Direct GA4, Meta, or LinkedIn tag fields | Wire those tags inside your own GTM container — that's what GTM is for. |
 | Tracking signed-in visitors | Tenant-owned JavaScript never runs in an authenticated session. See above. |
 

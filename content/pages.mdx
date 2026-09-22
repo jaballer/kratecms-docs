@@ -16,7 +16,7 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
     If you're building a hero-first layout and don't want the title to appear as a large heading above your first block, enable the **Hide title on rendered page** toggle directly beneath the Title field. This suppresses the on-page `<h1>` heading while still using the title in the browser tab and SEO metadata.
   </Step>
   <Step title="Add your first block">
-    Click **Add block** to insert the first content block. A menu of available block types appears — choose the one that fits your content.
+    Click **Add Module** to insert the first content block. A menu of available block types appears — choose the one that fits your content.
   </Step>
   <Step title="Fill in the block">
     Each block type has its own fields. Complete the fields for your block, then add more blocks as needed to build out the full page.
@@ -48,12 +48,15 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
     A focused block with a headline, supporting text, and a button. Use CTA blocks to drive readers toward a specific action — signing up, contacting you, or visiting another page.
   </Card>
   <Card title="Two-column layout">
-    Places two content areas side by side. Useful for feature comparisons, text-plus-image layouts, or any design that benefits from a split view.
+    Places two columns of text side by side, each with its own heading and body copy. Useful for feature comparisons or any section that benefits from a split view.
   </Card>
   <Card title="Video">
     Embed a YouTube or Vimeo video by pasting the video URL. The embedded player appears inline within the page layout, with its caption centered beneath it.
 
-    Embeds are limited to YouTube, Vimeo, and SoundCloud — a security policy on your published site blocks iframes from other hosts.
+    To embed a player from any other host, paste its embed code into a [Custom HTML](#custom-html) block instead.
+  </Card>
+  <Card title="Audio">
+    Click **Choose audio** to upload a track or pick one from your [media library](/content/media-library) — MP3, M4A, WAV, FLAC, or OGG, up to 50 MB — or paste an HTTPS link to an audio file. A block plays one or the other, never both. Add an optional title and caption; a track picked from the library uses its library title unless you type your own.
   </Card>
   <Card title="Quote">
     A pull quote with an optional attribution. Use quote blocks to highlight a testimonial, a key statement, or a notable excerpt.
@@ -70,7 +73,45 @@ Go to **Admin → Pages → New Page** (or navigate directly to `/admin/pages/cr
   <Card title="Contact Form">
     Embeds your site's contact form (name, email, subject, message) directly on the page. Optionally add an intro heading and body text beside the form, and choose whether the form sits on the left or right. The form submits without a page reload when JavaScript is available.
   </Card>
+  <Card title="Custom HTML">
+    Paste embed code — a booking calendar, a signup form, a map, a social feed — or write your own HTML, CSS, and JavaScript. It renders on the page exactly as you write it. See [Custom HTML](#custom-html) for how it behaves.
+  </Card>
 </CardGroup>
+
+## Custom HTML
+
+The Custom HTML block covers anything the other blocks don't. Paste the embed code a service gives you — Calendly, Typeform, Google Maps, a Mailchimp signup form — or build a one-off section with your own markup, styles, and scripts.
+
+<Steps>
+  <Step title="Add the block">
+    Click **Add Module** and choose **Custom HTML**.
+  </Step>
+  <Step title="Name it (optional)">
+    Give it a **Name**, such as "Booking calendar". Only you see the name — it labels the block in the editor's list, so you can tell your embeds apart. Visitors never see it.
+  </Step>
+  <Step title="Paste your code">
+    Paste or write your code in the **HTML** field, up to 50,000 characters. If the markup has an unclosed or extra tag — including an unclosed `<form>`, `<script>`, or comment — a warning appears under the field. Fix it before you publish: broken markup can spill out of the block and disturb the rest of the page.
+  </Step>
+  <Step title="Save and check it">
+    Save the page, then open it in a private browser window to see exactly what visitors see.
+  </Step>
+</Steps>
+
+### What visitors and signed-in users see
+
+- **Visitors who aren't signed in** get your code live, as part of the page — scripts included.
+- **You, and anyone else who's signed in,** see it in an isolated preview frame, marked with a short note. The frame keeps the code from running inside a signed-in session. Some embeds need cookies or browser storage — certain booking and form widgets, for example — and may not load inside the frame, so check those from a private window.
+- **On a members-only site,** everyone who can see the page is signed in, so everyone gets the isolated preview.
+
+### Styling and loading resources
+
+- Target the block from your [Custom CSS](/settings/brand#custom-css) with `.page-block--html`, or the wrapper around your code with `[data-role="custom-html"]`.
+- A `<style>` tag inside the block applies to the whole page, not just the block, so use specific selectors.
+- Pages that contain a Custom HTML block may load scripts, styles, fonts, frames, and form submissions from any HTTPS host, so third-party embeds work. Every other page keeps your site's stricter security policy.
+
+<Warning>
+  Anyone who can edit pages — editors, managers, and admins — can add a Custom HTML block, and its code runs for every visitor to that page. Only paste code from sources you trust, and only give page-editing access to people you trust to run code on your site.
+</Warning>
 
 ## Style blocks with CSS hooks
 
@@ -99,7 +140,7 @@ Some blocks expose their layout choice as a `data-*` attribute, so you can targe
 | Media & Content (`.page-block--media-content`) | `[data-image-position]` | `left` (default), `right` |
 | Contact Form (`.page-block--contact-form`) | `[data-form-position]` | `left` (default), `right` |
 
-Media & Content also marks its two halves with `[data-role="media"]` and `[data-role="content"]`, and Contact Form marks its halves with `[data-role="intro"]` and `[data-role="form"]`, so you can target each side independently.
+Media & Content also marks its two halves with `[data-role="media"]` and `[data-role="content"]`, and Contact Form marks its halves with `[data-role="intro"]` and `[data-role="form"]`, so you can target each side independently. Custom HTML wraps your code in `[data-role="custom-html"]`.
 
 Write your rules in **Settings → Brand → Custom CSS**. For example:
 
